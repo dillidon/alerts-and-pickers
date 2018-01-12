@@ -1,5 +1,9 @@
 ![](Assets/Logo.png)
 
+<div align = "center">
+<img src="Assets/Logo.png" height="200" />
+</div>
+
 ![License](https://img.shields.io/badge/licence-MIT-lightgray.svg)
 ![Platform](https://img.shields.io/badge/platform-iOS-brightgreen.svg)
 ![Xcode 9+](https://img.shields.io/badge/Xcode-9%2B-brightgreen.svg)
