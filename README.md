@@ -9,7 +9,7 @@
 ![Swift 4.0+](https://img.shields.io/badge/Swift-4.0%2B-orange.svg)
 # Alerts & Pickers
 
-Advanced usage of native UIAlertController.
+Advanced usage of native UIAlertController with TextField, DatePicker, PickerView, TableView and CollectionView.
 
 
 
