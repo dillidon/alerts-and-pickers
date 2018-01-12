@@ -1,5 +1,3 @@
-![](Assets/Logo.png)
-
 <div align = "center">
 <img src="Assets/Logo.png" height="200" />
 </div>
