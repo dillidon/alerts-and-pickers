@@ -15,7 +15,7 @@ Advanced usage of native UIAlertController with TextField, DatePicker, PickerVie
 
 ### Features
 
-* Custom pickers based on UIDataPicker, UIPickerView, UITableView and UICollectionView.
+* Custom pickers based on UITextField, UIDatePicker, UIPickerView, UITableView and UICollectionView.
 * Easy contentViewController placement.
 * Attributed title label and message label.
 * Button customization: image and title color.
