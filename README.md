@@ -1,12 +1,16 @@
 <div align = "center">
-<img src="Assets/Logo.png" height="200" />
+<img src="Assets/Logo.png" width="700" />
 </div>
 
-![License](https://img.shields.io/badge/licence-MIT-lightgray.svg)
-![Platform](https://img.shields.io/badge/platform-iOS-brightgreen.svg)
-![Xcode 9+](https://img.shields.io/badge/Xcode-9%2B-brightgreen.svg)
-![iOS 11.0+](https://img.shields.io/badge/iOS-11%2B-brightgreen.svg)
-![Swift 4.0+](https://img.shields.io/badge/Swift-4.0%2B-orange.svg)
+<p align="center">
+<img src="https://img.shields.io/badge/Swift-4.0-orange.svg" alt="Swift 4.0"/>
+<img src="https://img.shields.io/badge/platform-iOS-brightgreen.svg" alt="Platform: iOS"/>
+<img src="https://img.shields.io/badge/Xcode-9%2B-brightgreen.svg" alt="XCode 9+"/>
+<img src="https://img.shields.io/badge/iOS-11%2B-brightgreen.svg" alt="iOS 11"/>
+<img src="https://img.shields.io/badge/licence-MIT-lightgray.svg" alt="Licence MIT"/>
+</a>
+</p>
+
 # Alerts & Pickers
 
 Advanced usage of native UIAlertController with TextField, DatePicker, PickerView, TableView and CollectionView.
@@ -14,25 +18,24 @@ Advanced usage of native UIAlertController with TextField, DatePicker, PickerVie
 
 
 ### Features
-
-* Custom pickers based on UITextField, UIDatePicker, UIPickerView, UITableView and UICollectionView.
-* Easy contentViewController placement.
-* Attributed title label and message label.
-* Button customization: image and title color.
-* Understandable action button placement.
-* Easy presentation.
-* Swift style.
+- [x] Custom pickers based on UITextField, UIDatePicker, UIPickerView, UITableView and UICollectionView.
+- [x] Easy contentViewController placement.
+- [x] Attributed title label and message label.
+- [x] Button customization: image and title color.
+- [x] Understandable action button placement.
+- [x] Easy presentation.
+- [x] Pure Swift 4.
 
 <div align = "center">
-<img src="Assets/gifs/actionSheet-.gif" width="300" />
-<img src="Assets/gifs/alert-.gif" width="300" />
+<img src="Assets/gifs/actionSheet-.gif" width="400" />
+<img src="Assets/gifs/alert-.gif" width="400" />
 </div>
 
 ## Usage
 
 <div align = "center">
-<img src="Assets/gifs/actionSheet-simple.gif" width="250" />
-<img src="Assets/gifs/alert-simple.gif" width="250" />
+<img src="Assets/gifs/actionSheet-simple.gif" width="350" />
+<img src="Assets/gifs/alert-simple.gif" width="350" />
 </div>
 
 - New Alert
@@ -76,8 +79,8 @@ alert.show(animated: true, vibrate: true) {
 }
 ```
 <div align = "center">
-<img src="Assets/gifs/actionSheet-simple-image.gif" width="250" />
-<img src="Assets/gifs/alert-simple-image.gif" width="250" />
+<img src="Assets/gifs/actionSheet-simple-image.gif" width="350" />
+<img src="Assets/gifs/alert-simple-image.gif" width="350" />
 </div>
 
 
@@ -110,8 +113,8 @@ In native UIAlertController you can only add `UITextField` to `.alert` style wit
 You can use both styles `.alert` and `.actionSheet` of `UIAlertController`.
 
 <div align = "center">
-<img src="Assets/gifs/actionSheet-textField-1.gif" width="250" />
-<img src="Assets/gifs/alert-textField-1.gif" width="250" />
+<img src="Assets/gifs/actionSheet-textField-1.gif" width="350" />
+<img src="Assets/gifs/alert-textField-1.gif" width="350" />
 </div>
 
 ```swift
@@ -144,8 +147,8 @@ alert.show()
 You can use both styles `.alert` and `.actionSheet` of `UIAlertController`.
 
 <div align = "center">
-<img src="Assets/gifs/actionSheet-textField-2.gif" width="250" />
-<img src="Assets/gifs/alert-textField-2.gif" width="250" />
+<img src="Assets/gifs/actionSheet-textField-2.gif" width="350" />
+<img src="Assets/gifs/alert-textField-2.gif" width="350" />
 </div>
 
 ```swift
@@ -197,8 +200,8 @@ alert.show()
 `UIDatePicker` does not look very much in `.alert` style.
 
 <div align = "center">
-<img src="Assets/gifs/actionSheet-datePicker.gif" width="250" />
-<img src="Assets/gifs/alert-datePicker.gif" width="250" />
+<img src="Assets/gifs/actionSheet-datePicker.gif" width="350" />
+<img src="Assets/gifs/alert-datePicker.gif" width="350" />
 </div>
 
 ```swift
@@ -215,14 +218,14 @@ alert.show()
 Example how to use `UIPickerView` as `contentViewController` and change height of the `UIAlertController`.
 
 <div align = "center">
-<img src="Assets/gifs/actionSheet-pickerView.gif" width="250" />
-<img src="Assets/gifs/alert-pickerView.gif" width="250" />
+<img src="Assets/gifs/actionSheet-pickerView.gif" width="350" />
+<img src="Assets/gifs/alert-pickerView.gif" width="350" />
 </div>
 
 ```swift
 let alert = UIAlertController(style: .actionSheet, title: "Picker View", message: "Preferred Content Height")
 
-let frameSizes: [CGFloat] = (150...300).map { CGFloat($0) }
+let frameSizes: [CGFloat] = (150...400).map { CGFloat($0) }
 let pickerViewValues: [[String]] = [frameSizes.map { Int($0).description }]
 let pickerViewSelectedValue: PickerViewViewController.Index = (column: 0, row: frameSizes.index(of: 216) ?? 0)
 
@@ -244,8 +247,8 @@ Is based on `UITableView` with `UIActivityIndicatorView`.
 * #### Country Picker
 
 <div align = "center">
-<img src="Assets/gifs/actionSheet-countryPicker.gif" width="250" />
-<img src="Assets/gifs/alert-countryPicker.gif" width="250" />
+<img src="Assets/gifs/actionSheet-countryPicker.gif" width="350" />
+<img src="Assets/gifs/alert-countryPicker.gif" width="350" />
 </div>
 
 ```swift
@@ -260,8 +263,8 @@ alert.show()
 * #### Phone Code Picker
 
 <div align = "center">
-<img src="Assets/gifs/actionSheet-phoneCodePicker.gif" width="250" />
-<img src="Assets/gifs/alert-phoneCodePicker.gif" width="250" />
+<img src="Assets/gifs/actionSheet-phoneCodePicker.gif" width="350" />
+<img src="Assets/gifs/alert-phoneCodePicker.gif" width="350" />
 </div>
 
 ```swift
@@ -276,8 +279,8 @@ alert.show()
 * #### Currency Picker
 
 <div align = "center">
-<img src="Assets/gifs/actionSheet-currencyPicker.gif" width="250" />
-<img src="Assets/gifs/alert-currencyPicker.gif" width="250" />
+<img src="Assets/gifs/actionSheet-currencyPicker.gif" width="350" />
+<img src="Assets/gifs/alert-currencyPicker.gif" width="350" />
 </div>
 
 ```swift
@@ -298,8 +301,8 @@ Is based on `UICollectionView` with `UIActivityIndicatorView`.
 * #### Horizontal Image Picker
 
 <div align = "center">
-<img src="Assets/gifs/actionSheet-imagePicker-h.gif" width="250" />
-<img src="Assets/gifs/alert-imagePicker-h.gif" width="250" />
+<img src="Assets/gifs/actionSheet-imagePicker-h.gif" width="350" />
+<img src="Assets/gifs/alert-imagePicker-h.gif" width="350" />
 </div>
 
 ```swift
@@ -319,8 +322,8 @@ alert.show()
 * #### Vertical Image Picker
 
 <div align = "center">
-<img src="Assets/gifs/actionSheet-imagePicker-v.gif" width="250" />
-<img src="Assets/gifs/alert-imagePicker-v.gif" width="250" />
+<img src="Assets/gifs/actionSheet-imagePicker-v.gif" width="350" />
+<img src="Assets/gifs/alert-imagePicker-v.gif" width="350" />
 </div>
 
 ```swift
