@@ -80,10 +80,6 @@ final class TwoTextFieldsViewController: UIViewController {
         textFieldTwo.height = textFieldView.height / 2
         textFieldTwo.center.x = textFieldView.width / 2
         textFieldTwo.center.y = textFieldView.height - textFieldView.height / 4
-        
-        Log(textFieldView.frame)
-        Log(textFieldOne.frame)
-        Log(textFieldTwo.frame)
     }
 }
 

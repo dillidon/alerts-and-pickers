@@ -165,7 +165,6 @@ final class LocalePickerViewController: UIViewController {
     }
     
     func updateInfo() {
-        Log(info)
         info = []
         
         let bundle = Bundle.main//Bundle(for: LocationPickerViewController.self)
