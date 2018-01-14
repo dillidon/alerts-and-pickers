@@ -64,7 +64,9 @@ alert.setMessage(font: .systemFont(ofSize: 16), color: .black)
 - Add button with image
 
 ```swift
-alert.addAction(image: image, title: "Title", color: .black, style: .default)
+alert.addAction(image: image, title: "Title", color: .black, style: .default) { action in
+    // completion handler
+}
 ```
 
 * Show Alert
@@ -75,7 +77,7 @@ alert.show()
 
 // or show alert with options
 alert.show(animated: true, vibrate: true) {
-  // do smth on completion
+    // completion handler
 }
 ```
 <div align = "center">
