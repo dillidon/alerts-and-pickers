@@ -19,6 +19,7 @@ Advanced usage of native UIAlertController with TextField, DatePicker, PickerVie
 
 ### Features
 - [x] Custom pickers based on UITextField, UIDatePicker, UIPickerView, UITableView and UICollectionView.
+- [x] Example using a Storyboard.
 - [x] Easy contentViewController placement.
 - [x] Attributed title label and message label.
 - [x] Button customization: image and title color.
@@ -342,6 +343,29 @@ alert.addImagePicker(
 alert.addAction(title: "OK", style: .cancel)
 alert.show()
 ```
+
+## ColorPicker
+
+Example how to use UIViewController instantiated from Storyboard with Autolayout as `contentViewController` in the `UIAlertController`.
+
+<div align = "center">
+<img src="Assets/gifs/actionSheet-colorPicker.gif" width="350" />
+<img src="Assets/gifs/alert-colorPicker.gif" width="350" />
+</div>
+
+```swift
+var color: UIColor = UIColor(hex: 0xFF2DC6)
+
+let alert = UIAlertController(style: .actionSheet)
+alert.set(title: color.hexString, font: .systemFont(ofSize: 17), color: color)
+alert.addColorPicker(color: color) { [unowned self] new in
+    color = new
+    alert.set(title: color.hexString, font: .systemFont(ofSize: 17), color: color)
+}
+alert.addAction(title: "Done", style: .cancel)
+alert.show()
+```
+
 
 ## Alerts vs. Action Sheets
 

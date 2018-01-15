@@ -22,7 +22,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="58" translatesAutoresizingMaskIntoConstraints="NO" id="H76-RG-mdB">
-                                <rect key="frame" x="32" y="58" width="311" height="406"/>
+                                <rect key="frame" x="32" y="44" width="311" height="406"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="O1k-Pl-OA3">
                                         <rect key="frame" x="55.5" y="0.0" width="200" height="200"/>
@@ -69,7 +69,6 @@
                                                     <userDefinedRuntimeAttribute type="color" keyPath="minColor">
                                                         <color key="value" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="image" keyPath="thumbIcon" value="drop"/>
                                                 </userDefinedRuntimeAttributes>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gc1-Bj-h3h" customClass="GradientSlider" customModule="Alerts_Pickers" customModuleProvider="target">
@@ -91,7 +90,6 @@
                                                     <userDefinedRuntimeAttribute type="number" keyPath="thickness">
                                                         <real key="value" value="2"/>
                                                     </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="image" keyPath="thumbIcon" value="smallSun"/>
                                                 </userDefinedRuntimeAttributes>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ES1-8x-tqc" customClass="GradientSlider" customModule="Alerts_Pickers" customModuleProvider="target">
@@ -128,7 +126,7 @@
                         <constraints>
                             <constraint firstItem="H76-RG-mdB" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="32" id="7Mv-do-LHH"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" relation="greaterThanOrEqual" secondItem="H76-RG-mdB" secondAttribute="bottom" constant="32" id="7Ze-7P-Hlk"/>
-                            <constraint firstItem="H76-RG-mdB" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" constant="58" id="BeQ-CN-YUq"/>
+                            <constraint firstItem="H76-RG-mdB" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" constant="44" id="BeQ-CN-YUq"/>
                             <constraint firstAttribute="trailing" secondItem="H76-RG-mdB" secondAttribute="trailing" constant="32" id="oBJ-V3-sTK"/>
                         </constraints>
                     </view>
@@ -145,8 +143,4 @@
             <point key="canvasLocation" x="305" y="367"/>
         </scene>
     </scenes>
-    <resources>
-        <image name="drop" width="22" height="22"/>
-        <image name="smallSun" width="16" height="16"/>
-    </resources>
 </document>

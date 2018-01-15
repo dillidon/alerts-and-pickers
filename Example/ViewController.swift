@@ -33,7 +33,7 @@ class ViewController: UIViewController {
             case .currencyPicker: return "TableView"
             case .horizontalImagePicker: return "CollectionView"
             case .verticalImagePicker: return "CollectionView"
-            case .colorPicker: return "Hue, Brightness, Saturation"
+            case .colorPicker: return "Storyboard & Autolayout"
             case .photoLibraryPicker: return "Like in Telegram"
             }
         }
