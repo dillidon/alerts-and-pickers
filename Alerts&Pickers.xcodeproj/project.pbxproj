@@ -37,6 +37,7 @@
 		FA3BB2C72008B46900E06F8F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3BB2AB2008B46800E06F8F /* AppDelegate.swift */; };
 		FA3BB2CD2008B98F00E06F8F /* Assets in Resources */ = {isa = PBXBuildFile; fileRef = FA3BB2CC2008B98F00E06F8F /* Assets */; };
 		FA3BB2CF2008B9FA00E06F8F /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = FA3BB2CE2008B9FA00E06F8F /* LICENSE */; };
+		FABFAA64200C1D4600961895 /* GradientSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = FABFAA63200C1D4600961895 /* GradientSlider.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -72,6 +73,7 @@
 		FA3BB2AB2008B46800E06F8F /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		FA3BB2CC2008B98F00E06F8F /* Assets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Assets; sourceTree = "<group>"; };
 		FA3BB2CE2008B9FA00E06F8F /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		FABFAA63200C1D4600961895 /* GradientSlider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GradientSlider.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -118,6 +120,7 @@
 		FA3BB28F2008B46500E06F8F /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				FABFAA63200C1D4600961895 /* GradientSlider.swift */,
 				FA3BB2902008B46500E06F8F /* Label.swift */,
 				FA3BB2912008B46500E06F8F /* SegmentedControl.swift */,
 				FA3BB2922008B46500E06F8F /* TextField.swift */,
@@ -258,6 +261,7 @@
 				FA3BB2C12008B46900E06F8F /* ImagePickerViewController.swift in Sources */,
 				FA3BB2BC2008B46900E06F8F /* Common+Extensions.swift in Sources */,
 				FA3BB2B42008B46800E06F8F /* UIView+Extensions.swift in Sources */,
+				FABFAA64200C1D4600961895 /* GradientSlider.swift in Sources */,
 				FA3BB2B82008B46900E06F8F /* UIColor+Extensions.swift in Sources */,
 				FA3BB2B72008B46800E06F8F /* UITextView+Extensions.swift in Sources */,
 				FA3BB2BB2008B46900E06F8F /* Optional+Extensions.swift in Sources */,
