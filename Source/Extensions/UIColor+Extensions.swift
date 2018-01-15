@@ -3,16 +3,24 @@ import UIKit
 
 extension UIColor {
     
+    /// SwifterSwift: https://github.com/SwifterSwift/SwifterSwift
     /// Hexadecimal value string (read-only).
     public var hexString: String {
-        var red:	CGFloat = 0
-        var green:	CGFloat = 0
-        var blue:	CGFloat = 0
-        var alpha:	CGFloat = 0
-        
-        getRed(&red, green: &green, blue: &blue, alpha: &alpha)
-        let rgb: Int = (Int)(red*255)<<16 | (Int)(green*255)<<8 | (Int)(blue*255)<<0
-        return NSString(format:"#%06x", rgb).uppercased as String
+        let components: [Int] = {
+            let c = cgColor.components!
+            let components = c.count == 4 ? c : [c[0], c[0], c[0], c[1]]
+            return components.map { Int($0 * 255.0) }
+        }()
+        return String(format: "#%02X%02X%02X", components[0], components[1], components[2])
+    }
+    
+    /// SwifterSwift: https://github.com/SwifterSwift/SwifterSwift
+    /// Short hexadecimal value string (read-only, if applicable).
+    public var shortHexString: String? {
+        let string = hexString.replacingOccurrences(of: "#", with: "")
+        let chrs = Array(string)
+        guard chrs[0] == chrs[1], chrs[2] == chrs[3], chrs[4] == chrs[5] else { return nil }
+        return "#\(chrs[0])\(chrs[2])\(chrs[4])"
     }
     
     /// Color to Image
@@ -24,6 +32,60 @@ extension UIColor {
         let image = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         return image! // was image
+    }
+    
+    /// SwifterSwift: https://github.com/SwifterSwift/SwifterSwift
+    /// RGB components for a Color (between 0 and 255).
+    ///
+    ///        UIColor.red.rgbComponents.red -> 255
+    ///        UIColor.green.rgbComponents.green -> 255
+    ///        UIColor.blue.rgbComponents.blue -> 255
+    ///
+    public var rgbComponents: (red: Int, green: Int, blue: Int) {
+        var components: [CGFloat] {
+            let c = cgColor.components!
+            if c.count == 4 {
+                return c
+            }
+            return [c[0], c[0], c[0], c[1]]
+        }
+        let r = components[0]
+        let g = components[1]
+        let b = components[2]
+        return (red: Int(r * 255.0), green: Int(g * 255.0), blue: Int(b * 255.0))
+    }
+    
+    /// SwifterSwift: https://github.com/SwifterSwift/SwifterSwift
+    /// RGB components for a Color represented as CGFloat numbers (between 0 and 1)
+    ///
+    ///        UIColor.red.rgbComponents.red -> 1.0
+    ///        UIColor.green.rgbComponents.green -> 1.0
+    ///        UIColor.blue.rgbComponents.blue -> 1.0
+    ///
+    public var cgFloatComponents: (red: CGFloat, green: CGFloat, blue: CGFloat) {
+        var components: [CGFloat] {
+            let c = cgColor.components!
+            if c.count == 4 {
+                return c
+            }
+            return [c[0], c[0], c[0], c[1]]
+        }
+        let r = components[0]
+        let g = components[1]
+        let b = components[2]
+        return (red: r, green: g, blue: b)
+    }
+    
+    /// SwifterSwift: https://github.com/SwifterSwift/SwifterSwift
+    /// Get components of hue, saturation, and brightness, and alpha (read-only).
+    public var hsbaComponents: (hue: CGFloat, saturation: CGFloat, brightness: CGFloat, alpha: CGFloat) {
+        var h: CGFloat = 0.0
+        var s: CGFloat = 0.0
+        var b: CGFloat = 0.0
+        var a: CGFloat = 0.0
+        
+        self.getHue(&h, saturation: &s, brightness: &b, alpha: &a)
+        return (hue: h, saturation: s, brightness: b, alpha: a)
     }
 }
 

@@ -6,6 +6,8 @@
 //  Copyright © 2015 Jonathan Hull. All rights reserved.
 //
 
+// thx https://github.com/jonhull/GradientSlider
+
 import UIKit
 
 @IBDesignable class GradientSlider: UIControl {

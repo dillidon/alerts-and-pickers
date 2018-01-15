@@ -91,6 +91,7 @@ extension UIAlertController {
         let attributes: [NSAttributedStringKey: Any] = [.font: font, .foregroundColor: color]
         let attributedTitle = NSMutableAttributedString(string: title, attributes: attributes)
         setValue(attributedTitle, forKey: "attributedTitle")
+        Log("new title = \(attributedTitle)")
     }
     
     /// Set alert's message, font and color

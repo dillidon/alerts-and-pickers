@@ -17,6 +17,8 @@ class ViewController: UIViewController {
         case currencyPicker = "Currency Picker"
         case horizontalImagePicker = "Horizontal Image Picker"
         case verticalImagePicker = "Vertical Image Picker"
+        case colorPicker = "Color Picker"
+        case photoLibraryPicker = "Photo Library Picker"
         
         var description: String {
             switch self {
@@ -31,6 +33,8 @@ class ViewController: UIViewController {
             case .currencyPicker: return "TableView"
             case .horizontalImagePicker: return "CollectionView"
             case .verticalImagePicker: return "CollectionView"
+            case .colorPicker: return "Hue, Brightness, Saturation"
+            case .photoLibraryPicker: return "Like in Telegram"
             }
         }
         
@@ -47,21 +51,25 @@ class ViewController: UIViewController {
             case .currencyPicker: return #imageLiteral(resourceName: "currency")
             case .horizontalImagePicker: return #imageLiteral(resourceName: "listings")
             case .verticalImagePicker: return #imageLiteral(resourceName: "four_rect")
+            case .colorPicker: return #imageLiteral(resourceName: "colors")
+            case .photoLibraryPicker: return #imageLiteral(resourceName: "library")
             }
         }
         
-        var color: UIColor {
+        var color: UIColor? {
             switch self {
             case .simple, .simpleWithImages: return UIColor(hex: 0x007AFF)//UIColor(hex: 0x5AC8FA)
             case .oneTextField, .twoTextFields: return UIColor(hex: 0x5AC8FA)//UIColor(hex: 0x4CD964)
             case .dataPicker, .pickerView: return UIColor(hex: 0x4CD964)//UIColor(hex: 0xFFCC00)
             case .countryPicker, .phoneCodePicker, .currencyPicker: return UIColor(hex: 0xFF5722)
             case .horizontalImagePicker, .verticalImagePicker: return UIColor(hex: 0xFF2DC6)
+            case .colorPicker: return nil//return UIColor(hex: 0x5AC8FA)
+            case .photoLibraryPicker: return .gray//UIColor(hex: 0x5AC8FA)
             }
         }
     }
     
-    fileprivate lazy var alerts: [AlertType] = [.simple, .simpleWithImages, .oneTextField, .twoTextFields, .dataPicker, .pickerView, .countryPicker, .phoneCodePicker, .currencyPicker, .horizontalImagePicker, .verticalImagePicker]
+    fileprivate lazy var alerts: [AlertType] = [.simple, .simpleWithImages, .oneTextField, .twoTextFields, .dataPicker, .pickerView, .countryPicker, .phoneCodePicker, .currencyPicker, .horizontalImagePicker, .verticalImagePicker, .colorPicker]
     
     // MARK: UI Metrics
     
@@ -150,10 +158,11 @@ class ViewController: UIViewController {
             let config: CellConfig = { [unowned self] cell in
 
                 cell?.imageView?.image = type.image
-                cell?.imageView?.tintColor = type.color
                 cell?.textLabel?.text = type.rawValue
                 cell?.detailTextLabel?.text = type.description
                 cell?.detailTextLabel?.textColor = .darkGray
+                
+                cell?.imageView?.tintColor = type.color
             }
             
             let action: CellConfig = { [unowned self] cell in
@@ -329,6 +338,20 @@ class ViewController: UIViewController {
                         }))
                     alert.addAction(title: "OK", style: .cancel)
                     alert.show()
+                    
+                case .colorPicker:
+                    var color: UIColor = UIColor(hex: 0xFF2DC6)
+                    let alert = UIAlertController(style: self.alertStyle)
+                    alert.set(title: color.hexString, font: .systemFont(ofSize: 17), color: color)
+                    alert.addColorPicker(color: color) { [unowned self] new in
+                        color = new
+                        alert.set(title: color.hexString, font: .systemFont(ofSize: 17), color: color)
+                    }
+                    alert.addAction(title: "Done", style: .cancel)
+                    alert.show()
+                    
+                case .photoLibraryPicker:
+                    break
                 }
             }
             return CellData(config: config, action: action)
