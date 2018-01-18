@@ -155,7 +155,7 @@ class ViewController: UIViewController {
     func updateDataSource() {
         dataSource = alerts.map { type in
             
-            let config: CellConfig = { [unowned self] cell in
+            let config: CellConfig = { cell in
 
                 cell?.imageView?.image = type.image
                 cell?.textLabel?.text = type.rawValue
@@ -202,7 +202,7 @@ class ViewController: UIViewController {
                         textField.keyboardType = .default
                         //textField.isSecureTextEntry = true
                         textField.returnKeyType = .done
-                        textField.action { [unowned self] textField in
+                        textField.action { textField in
                             Log("textField = \(String(describing: textField.text))")
                         }
                     }
@@ -228,7 +228,7 @@ class ViewController: UIViewController {
                         textField.keyboardAppearance = .default
                         textField.keyboardType = .default
                         textField.returnKeyType = .continue
-                        textField.action { [unowned self] textField in
+                        textField.action { textField in
                             Log("textField = \(String(describing: textField.text))")
                         }
                     }
@@ -248,7 +248,7 @@ class ViewController: UIViewController {
                         textField.keyboardType = .default
                         textField.isSecureTextEntry = true
                         textField.returnKeyType = .done
-                        textField.action { [unowned self] textField in
+                        textField.action { textField in
                             Log("textField = \(String(describing: textField.text))")
                         }
                     }
@@ -265,7 +265,7 @@ class ViewController: UIViewController {
                     
                 case .dataPicker:
                     let alert = UIAlertController(style: self.alertStyle, title: "Date Picker", message: "Select Date")
-                    alert.addDatePicker(mode: .dateAndTime, date: Date(), minimumDate: nil, maximumDate: nil) { [unowned self] new in
+                    alert.addDatePicker(mode: .dateAndTime, date: Date(), minimumDate: nil, maximumDate: nil) { new in
                         cell?.detailTextLabel?.text = new.dateTimeString(ofStyle: .long)
                     }
                     alert.addAction(title: "Done", style: .cancel)
@@ -278,7 +278,7 @@ class ViewController: UIViewController {
                     let pickerViewValues: [[String]] = [frameSizes.map { Int($0).description }]
                     let pickerViewSelectedValue: PickerViewViewController.Index = (column: 0, row: frameSizes.index(of: 216) ?? 0)
                     
-                    alert.addPickerView(values: pickerViewValues, initialSelection: pickerViewSelectedValue) { [unowned self] vc, picker, index, values in
+                    alert.addPickerView(values: pickerViewValues, initialSelection: pickerViewSelectedValue) { vc, picker, index, values in
                         
                         DispatchQueue.main.async {
                             UIView.animate(withDuration: 1) {
@@ -291,7 +291,7 @@ class ViewController: UIViewController {
                     
                 case .countryPicker:
                     let alert = UIAlertController(style: self.alertStyle, message: "Select Countries")
-                    alert.addLocalePicker(type: .country) { [unowned self] info in
+                    alert.addLocalePicker(type: .country) { info in
                         Log(info)
                     }
                     alert.addAction(title: "OK", style: .cancel)
@@ -299,7 +299,7 @@ class ViewController: UIViewController {
                 
                 case .phoneCodePicker:
                     let alert = UIAlertController(style: self.alertStyle, title: "Select Phone Code")
-                    alert.addLocalePicker(type: .phoneCode) { [unowned self] info in
+                    alert.addLocalePicker(type: .phoneCode) { info in
                         Log(info)
                     }
                     alert.addAction(title: "OK", style: .cancel)
@@ -307,7 +307,7 @@ class ViewController: UIViewController {
                     
                 case .currencyPicker:
                     let alert = UIAlertController(style: self.alertStyle, title: "Currencies", message: "Select one")
-                    alert.addLocalePicker(type: .currency) { [unowned self] info in
+                    alert.addLocalePicker(type: .currency) { info in
                         alert.title = info?.currencyCode
                         alert.message = "is selected"
                     }
@@ -320,7 +320,7 @@ class ViewController: UIViewController {
                         flow: .horizontal,
                         paging: true,
                         images: self.photos,
-                        selection: .single(action: { [unowned self] image in
+                        selection: .single(action: { image in
                             Log(image)
                         }))
                     alert.addAction(title: "OK", style: .cancel)
@@ -333,7 +333,7 @@ class ViewController: UIViewController {
                         paging: false,
                         height: UIScreen.main.bounds.height,
                         images: self.photos,
-                        selection: .multiple(action: { [unowned self] images in
+                        selection: .multiple(action: { images in
                             Log(images)
                         }))
                     alert.addAction(title: "OK", style: .cancel)
@@ -343,7 +343,7 @@ class ViewController: UIViewController {
                     var color: UIColor = UIColor(hex: 0xFF2DC6)
                     let alert = UIAlertController(style: self.alertStyle)
                     alert.set(title: color.hexString, font: .systemFont(ofSize: 17), color: color)
-                    alert.addColorPicker(color: color) { [unowned self] new in
+                    alert.addColorPicker(color: color) { new in
                         color = new
                         alert.set(title: color.hexString, font: .systemFont(ofSize: 17), color: color)
                     }

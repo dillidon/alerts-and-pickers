@@ -77,7 +77,9 @@ final class ImagePickerViewController: UIViewController {
         $0.showsVerticalScrollIndicator = false
         $0.showsHorizontalScrollIndicator = false
         $0.decelerationRate = UIScrollViewDecelerationRateFast
-        $0.contentInsetAdjustmentBehavior = .never
+        if #available(iOS 11.0, *) {
+            $0.contentInsetAdjustmentBehavior = .never
+        }
         $0.bounces = false
         $0.backgroundColor = .clear
         $0.maskToBounds = false
@@ -160,7 +162,7 @@ final class ImagePickerViewController: UIViewController {
     
     func reloadDataSource() {
         dataSource = data.map { image in
-            let config: CellConfig = { [unowned self] cell in
+            let config: CellConfig = { cell in
                 cell?.imageView.image = image
             }
             let action: CellConfig = { [unowned self] cell in
