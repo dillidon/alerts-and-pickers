@@ -2,13 +2,11 @@ import UIKit
 
 extension UIAlertController {
     
-    /// Add a textField
+    /// Add a Color Picker
     ///
     /// - Parameters:
-    ///   - height: textField height
-    ///   - hInset: right and left margins to AlertController border
-    ///   - vInset: bottom margin to button
-    ///   - configuration: textField
+    ///   - color: input color
+    ///   - action: for selected color
     
     func addColorPicker(color: UIColor = .black, action: ColorPickerViewController.Action?) {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)

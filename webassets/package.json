@@ -1,0 +1,20 @@
+{
+  "scripts": {
+    "build": "webpack --config ./webpack.config.js"
+  },
+  "devDependencies": {
+    "babel-core": "^6.24.1",
+    "babel-loader": "^7.0.0",
+    "babel-preset-es2015": "^6.24.1",
+    "css-loader": "^0.28.1",
+    "extract-text-webpack-plugin": "^2.1.0",
+    "file-loader": "^0.11.1",
+    "style-loader": "^0.17.0",
+    "webpack": "^2.5.1"
+  },
+  "dependencies": {
+    "highlight.js": "^9.11.0",
+    "markdown-it": "^8.3.1",
+    "markdown-it-emoji": "^1.3.0"
+  }
+}

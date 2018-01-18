@@ -1,4 +1,5 @@
 import UIKit
+import SafariServices
 
 class ViewController: UIViewController {
     
@@ -18,6 +19,8 @@ class ViewController: UIViewController {
         case horizontalImagePicker = "Horizontal Image Picker"
         case verticalImagePicker = "Vertical Image Picker"
         case colorPicker = "Color Picker"
+        case textViewer = "Text Viewer"
+        case markdownViewer = "Markdown Viewer"
         case photoLibraryPicker = "Photo Library Picker"
         
         var description: String {
@@ -34,6 +37,8 @@ class ViewController: UIViewController {
             case .horizontalImagePicker: return "CollectionView"
             case .verticalImagePicker: return "CollectionView"
             case .colorPicker: return "Storyboard & Autolayout"
+            case .textViewer: return "UITextView, not editable"
+            case .markdownViewer: return "Base on MarkdownView"
             case .photoLibraryPicker: return "Like in Telegram"
             }
         }
@@ -52,6 +57,8 @@ class ViewController: UIViewController {
             case .horizontalImagePicker: return #imageLiteral(resourceName: "listings")
             case .verticalImagePicker: return #imageLiteral(resourceName: "four_rect")
             case .colorPicker: return #imageLiteral(resourceName: "colors")
+            case .textViewer: return #imageLiteral(resourceName: "title")
+            case .markdownViewer: return #imageLiteral(resourceName: "title")
             case .photoLibraryPicker: return #imageLiteral(resourceName: "library")
             }
         }
@@ -59,17 +66,18 @@ class ViewController: UIViewController {
         var color: UIColor? {
             switch self {
             case .simple, .simpleWithImages: return UIColor(hex: 0x007AFF)//UIColor(hex: 0x5AC8FA)
-            case .oneTextField, .twoTextFields: return UIColor(hex: 0x5AC8FA)//UIColor(hex: 0x4CD964)
+            case .oneTextField, .twoTextFields, .textViewer, .markdownViewer: return UIColor(hex: 0x5AC8FA)//UIColor(hex: 0x4CD964)
             case .dataPicker, .pickerView: return UIColor(hex: 0x4CD964)//UIColor(hex: 0xFFCC00)
             case .countryPicker, .phoneCodePicker, .currencyPicker: return UIColor(hex: 0xFF5722)
             case .horizontalImagePicker, .verticalImagePicker: return UIColor(hex: 0xFF2DC6)
             case .colorPicker: return nil//return UIColor(hex: 0x5AC8FA)
+            
             case .photoLibraryPicker: return .gray//UIColor(hex: 0x5AC8FA)
             }
         }
     }
     
-    fileprivate lazy var alerts: [AlertType] = [.simple, .simpleWithImages, .oneTextField, .twoTextFields, .dataPicker, .pickerView, .countryPicker, .phoneCodePicker, .currencyPicker, .horizontalImagePicker, .verticalImagePicker, .colorPicker]
+    fileprivate lazy var alerts: [AlertType] = [.simple, .simpleWithImages, .oneTextField, .twoTextFields, .dataPicker, .pickerView, .countryPicker, .phoneCodePicker, .currencyPicker, .horizontalImagePicker, .verticalImagePicker, .colorPicker, .textViewer, .markdownViewer]
     
     // MARK: UI Metrics
     
@@ -348,6 +356,69 @@ class ViewController: UIViewController {
                         alert.set(title: color.hexString, font: .systemFont(ofSize: 17), color: color)
                     }
                     alert.addAction(title: "Done", style: .cancel)
+                    alert.show()
+                
+                case .textViewer:
+                    let alert = UIAlertController(style: self.alertStyle)
+                    alert.set(title: "U.S. Returns & Refunds Policy", font: .systemFont(ofSize: 17), color: .orange)
+                    let config: TextViewerViewController.Config = { [unowned self] textView in
+                        textView.text = returnPolicy
+                        textView.isEditable = false
+                        textView.isSelectable = true
+                        textView.backgroundColor = nil
+                        textView.font = .systemFont(ofSize: 15)
+                        textView.textColor = .orange
+                    }
+                    alert.addTextViewer(config: config) { [unowned self] new in
+                        Log(new)
+                    }
+                    alert.addAction(title: "Done", color: .orange, style: .cancel)
+                    alert.show()
+                    
+                case .markdownViewer:
+                    let alert = UIAlertController(style: self.alertStyle)
+                    
+                    alert.addMarkdownViewer { [unowned self] view in
+                        
+                        /*
+                        let path = Bundle.main.path(forResource: "sample", ofType: "md")!
+                        
+                        let url = URL(fileURLWithPath: path)
+                        let markdown = try! String(contentsOf: url, encoding: String.Encoding.utf8)
+                        
+                        DispatchQueue.main.async {
+                            view.load(markdown: markdown)
+                            Log("markdown did load")
+                        }
+                        */
+                        
+                        view.onTouchLink = { [weak self] request in
+                            guard let url = request.url else { return false }
+                            
+                            if url.scheme == "file" {
+                                return true
+                            } else if url.scheme == "https" {
+                                alert.dismiss(animated: true, completion: nil)
+                                let safari = SFSafariViewController(url: url)
+                                self?.present(safari, animated: true, completion: nil)
+                                return false
+                            } else {
+                                return false
+                            }
+                        }
+                        
+                        let session = URLSession(configuration: .default)
+                        let url = URL(string: "https://raw.githubusercontent.com/matteocrippa/awesome-swift/master/README.md")!
+                        let task = session.dataTask(with: url) { [weak self] data, _, _ in
+                            let str = String(data: data!, encoding: String.Encoding.utf8)
+                            DispatchQueue.main.async {
+                                view.load(markdown: str)
+                            }
+                        }
+                        task.resume()
+                        
+                    }
+                    alert.addAction(title: "OK", color: .black, style: .cancel)
                     alert.show()
                     
                 case .photoLibraryPicker:

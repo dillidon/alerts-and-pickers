@@ -40,7 +40,15 @@ extension UIAlertController {
     ///   - animated: set true to animate presentation of alert controller (default is true).
     ///   - vibrate: set true to vibrate the device while presenting the alert (default is false).
     ///   - completion: an optional completion handler to be called after presenting alert controller (default is nil).
-    public func show(animated: Bool = true, vibrate: Bool = false, completion: (() -> Void)? = nil) {
+    public func show(animated: Bool = true, vibrate: Bool = false, style: UIBlurEffectStyle? = nil, completion: (() -> Void)? = nil) {
+        
+        /// TODO: change UIBlurEffectStyle
+        if let style = style {
+            for subview in view.allSubViewsOf(type: UIVisualEffectView.self) {
+                subview.effect = UIBlurEffect(style: style)
+            }
+        }
+        
         DispatchQueue.main.async {
             UIApplication.shared.keyWindow?.rootViewController?.present(self, animated: animated, completion: completion)
             if vibrate {
@@ -91,7 +99,6 @@ extension UIAlertController {
         let attributes: [NSAttributedStringKey: Any] = [.font: font, .foregroundColor: color]
         let attributedTitle = NSMutableAttributedString(string: title, attributes: attributes)
         setValue(attributedTitle, forKey: "attributedTitle")
-        Log("new title = \(attributedTitle)")
     }
     
     /// Set alert's message, font and color
