@@ -89,7 +89,7 @@ alert.show(animated: true, vibrate: true) {
 
 ## Set Content ViewController
 
-When setting your own custom `UIViewController` into `UIAlertController` keep in mind to set `prefferedContentSize.height` of the controller otherwise it will no effect. You can not set `prefferedContentSize.width`.
+When setting your own custom `UIViewController` into `UIAlertController` keep in mind to set `preferredContentSize.height` of the controller otherwise it will no effect. You can not set `preferredContentSize.width`.
 
 ```swift
 let alert = UIAlertController(style: .alert, title: "Title")
