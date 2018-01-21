@@ -17,6 +17,7 @@ Pod::Spec.new do |s|
   s.osx.deployment_target = "10.9"
   s.ios.deployment_target = "10.0"
   s.source       = { :git => "git@github.com:dillidon/Alerts-Pickers.git", :tag => "#{s.version}" }
-  s.source_files  = "Alerts-Pickers/Source/**/*.{swift}"
+  s.source_files  = "Source/**/*.{swift}"
+  s.resource  = "Source/Pickers/Countries.bundle"
 
 end
