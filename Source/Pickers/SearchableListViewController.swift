@@ -31,8 +31,20 @@ final class SearchableListViewController: UIViewController {
     
     public typealias Action = (Any?) -> Swift.Void
     
-    fileprivate let cellIdentifier = "ItemCell"
+    fileprivate let cellIdentifier = ItemTableViewCell.identifier
     
+    fileprivate lazy var containerView: UIView = {
+        $0.backgroundColor = .clear
+        $0.clipsToBounds = true
+        
+        return $0
+    }(UIView(frame: .zero))
+    fileprivate lazy var searchBar: UISearchBar = {
+        $0.delegate = self
+        $0.searchBarStyle = .minimal
+        
+        return $0
+    }(UISearchBar(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 40)))
     fileprivate lazy var tableView: UITableView = {
         $0.dataSource = self
         $0.delegate = self
@@ -43,25 +55,28 @@ final class SearchableListViewController: UIViewController {
         
         $0.bounces = true
         $0.backgroundColor = .clear
-        $0.clipsToBounds = false
-        $0.decelerationRate = UIScrollViewDecelerationRateFast
-        $0.maskToBounds = false
+        $0.clipsToBounds = true
+        $0.maskToBounds = true
         $0.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0)
         $0.showsHorizontalScrollIndicator = false
         $0.showsVerticalScrollIndicator = false
+        $0.tableFooterView = UIView()
         
-        $0.register(UITableViewCell.self, forCellReuseIdentifier: cellIdentifier)
+        $0.register(ItemTableViewCell.self, forCellReuseIdentifier: cellIdentifier)
         
         return $0
     }(UITableView(frame: .zero, style: .plain))
     
     fileprivate var action: Action?
     fileprivate var dataSource: [String] = []
+    fileprivate var filteredDataSource: [String] = []
     
     // MARK: - UI Metrics
     
     var preferredHeight: CGFloat {
-        return UIScreen.main.bounds.height
+        // NOTE: Workaround for alert controller being scrollable, in addition to the table view
+        
+        return UIScreen.main.bounds.height * 0.50
     }
     
     // MARK: - Methods
@@ -69,6 +84,8 @@ final class SearchableListViewController: UIViewController {
     required init?(dataSource: [String], action: Action?) {
         self.dataSource = dataSource
         self.action = action
+        
+        self.filteredDataSource = dataSource
         
         super.init(nibName: nil, bundle: nil)
     }
@@ -85,6 +102,64 @@ final class SearchableListViewController: UIViewController {
         view = tableView
     }
     
+    override func viewDidLoad() {
+        tableView.tableHeaderView = searchBar
+    }
+    
+}
+
+final class ItemTableViewCell: UITableViewCell {
+    
+    // MARK: Properties
+    
+    static let identifier = String(describing: ItemTableViewCell.self)
+    
+    // MARK: Methods
+    
+    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+        super.init(style: .default, reuseIdentifier: reuseIdentifier)
+        
+        selectionStyle = .none
+        backgroundColor = nil
+        contentView.backgroundColor = nil
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+    }
+    
+    override func setSelected(_ selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
+        
+        accessoryType = selected ? .checkmark : .none
+    }
+    
+}
+
+extension SearchableListViewController: UISearchBarDelegate {
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        guard let text = searchBar.text else {
+            filteredDataSource = dataSource
+            
+            tableView.reloadData()
+            
+            return
+        }
+        
+        filteredDataSource = dataSource
+        
+        if !text.isEmpty {
+            filteredDataSource = dataSource.filter { $0.lowercased().contains(text.lowercased()) }
+        }
+        
+        tableView.reloadData()
+    }
+
 }
 
 extension SearchableListViewController: UITableViewDataSource {
@@ -94,14 +169,13 @@ extension SearchableListViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return dataSource.count
+        return filteredDataSource.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! ItemTableViewCell
         
-        cell.backgroundColor = .clear
-        cell.textLabel?.text = dataSource[indexPath.row]
+        cell.textLabel?.text = filteredDataSource[indexPath.row]
         
         return cell
     }
@@ -111,7 +185,7 @@ extension SearchableListViewController: UITableViewDataSource {
 extension SearchableListViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        action?(dataSource[indexPath.row])
+        action?(filteredDataSource[indexPath.row])
     }
     
 }
