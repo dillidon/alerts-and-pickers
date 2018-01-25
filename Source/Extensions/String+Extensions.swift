@@ -1,4 +1,30 @@
-import UIKit.UIFont
+import UIKit
+
+extension String {
+    
+    subscript (i: Int) -> Character {
+        return self[index(startIndex, offsetBy: i)]
+    }
+    
+    subscript (i: Int) -> String {
+        return String(self[i] as Character)
+    }
+    
+    subscript (r: Range<Int>) -> String {
+        let start = index(startIndex, offsetBy: r.lowerBound)
+        let end = index(startIndex, offsetBy: r.upperBound)
+        return String(self[Range(start ..< end)])
+    }
+    
+    var containsAlphabets: Bool {
+        //Checks if all the characters inside the string are alphabets
+        let set = CharacterSet.letters
+        return self.utf16.contains {
+            guard let unicode = UnicodeScalar($0) else { return false }
+            return set.contains(unicode)
+        }
+    }
+}
 
 // MARK: - NSAttributedString extensions
 public extension String {
@@ -34,5 +60,25 @@ public extension String {
     /// - Returns: a NSAttributedString versions of string colored with given color.
     public func colored(with color: UIColor) -> NSAttributedString {
         return NSMutableAttributedString(string: self, attributes: [.foregroundColor: color])
+    }
+}
+
+extension Array where Element: NSAttributedString {
+    func joined(separator: NSAttributedString) -> NSAttributedString {
+        var isFirst = true
+        return self.reduce(NSMutableAttributedString()) {
+            (r, e) in
+            if isFirst {
+                isFirst = false
+            } else {
+                r.append(separator)
+            }
+            r.append(e)
+            return r
+        }
+    }
+    
+    func joined(separator: String) -> NSAttributedString {
+        return joined(separator: NSAttributedString(string: separator))
     }
 }

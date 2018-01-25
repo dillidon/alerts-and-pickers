@@ -12,12 +12,13 @@ extension UIAlertController {
     ///   - selection: type and action for selection of image/images
     
     func addImagePicker(flow: UICollectionViewScrollDirection, paging: Bool, height: CGFloat? = nil, images: [UIImage], selection: ImagePickerViewController.SelectionType? = nil) {
-        let imagePicker = ImagePickerViewController(flow: flow, paging: paging, data: images, selection: selection)
+        let imagePicker = ImagePickerViewController(flow: flow, paging: paging, images: images, selection: selection)
         if let height = height {
             imagePicker.preferredContentSize.height = height
         } else {
             imagePicker.preferredContentSize.height = imagePicker.preferredHeight
         }
+        imagePicker.alertController = self
         set(vc: imagePicker)
     }
 }
@@ -70,7 +71,9 @@ final class ImagePickerViewController: UIViewController {
     
     // MARK: Properties
     
-    fileprivate lazy var collectionView: UICollectionView = {
+    var alertController: UIAlertController?
+    
+    fileprivate lazy var collectionView: UICollectionView = { [unowned self] in
         $0.dataSource = self
         $0.delegate = self
         $0.register(ItemWithImage.self, forCellWithReuseIdentifier: String(describing: ItemWithImage.self))
@@ -94,7 +97,8 @@ final class ImagePickerViewController: UIViewController {
         return $0
     }(UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge))
     
-    fileprivate var data: [UIImage]
+    fileprivate lazy var images = [UIImage]()
+    
     fileprivate var selection: SelectionType?
     fileprivate var dataSource: [CellData] = []
     
@@ -102,11 +106,10 @@ final class ImagePickerViewController: UIViewController {
     
     // MARK: Initialize
     
-    required init(flow: UICollectionViewScrollDirection, paging: Bool, data: [UIImage], selection: SelectionType?) {
-        self.data = data
-        self.selection = selection
+    required init(flow: UICollectionViewScrollDirection, paging: Bool, images: [UIImage], selection: SelectionType?) {
         super.init(nibName: nil, bundle: nil)
-        
+        self.images = images
+        self.selection = selection
         self.layout.scrollDirection = flow
         
         collectionView.isPagingEnabled = paging
@@ -117,7 +120,6 @@ final class ImagePickerViewController: UIViewController {
         case .multiple(_)?:
             collectionView.allowsMultipleSelection = true
         case .none: break }
-        //layout.estimatedItemSize = UICollectionViewFlowLayoutAutomaticSize
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -159,7 +161,7 @@ final class ImagePickerViewController: UIViewController {
     }
     
     func reloadDataSource() {
-        dataSource = data.map { image in
+        dataSource = images.map { image in
             let config: CellConfig = { [unowned self] cell in
                 cell?.imageView.image = image
             }
@@ -181,7 +183,7 @@ final class ImagePickerViewController: UIViewController {
     }
 }
 
-// MARK: - TableViewDelegate
+// MARK: - CollectionViewDelegate
 
 extension ImagePickerViewController: UICollectionViewDelegate {
     
@@ -197,7 +199,7 @@ extension ImagePickerViewController: UICollectionViewDelegate {
     }
 }
 
-// MARK: - TableViewDataSource
+// MARK: - CollectionViewDataSource
 
 extension ImagePickerViewController: UICollectionViewDataSource {
     
@@ -212,11 +214,13 @@ extension ImagePickerViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let item = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: ItemWithImage.self), for: indexPath) as? ItemWithImage else { return UICollectionViewCell() }
         dataSource[indexPath.item].config?(item)
+        
         return item
     }
 }
 
-/// UICollectionViewDelegateFlowLayout
+// MARK: - CollectionViewDelegateFlowLayout
+
 extension ImagePickerViewController: UICollectionViewDelegateFlowLayout {
     
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
@@ -285,11 +289,7 @@ class ItemWithImage: UICollectionViewCell {
     
     public func setup() {
         backgroundColor = .clear
-        //contentView.backgroundColor = .clear
-        //contentView.addSubview(imageView)
-        
-        
-        
+
         let unselected: UIView = UIView()
         unselected.addSubview(imageView)
         unselected.addSubview(unselectedCircle)

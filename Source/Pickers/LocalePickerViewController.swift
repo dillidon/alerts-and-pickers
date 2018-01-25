@@ -14,13 +14,6 @@ extension UIAlertController {
     }
 }
 
-public typealias CellConfig = (UITableViewCell?) -> Swift.Void
-
-struct CellData {
-    var config: CellConfig?
-    var action: CellConfig?
-}
-
 final class LocalePickerViewController: UIViewController {
     
     // MARK: UI Metrics
@@ -79,7 +72,7 @@ final class LocalePickerViewController: UIViewController {
     
     fileprivate var info: [Info] = []
     
-    fileprivate lazy var tableView: UITableView = {
+    fileprivate lazy var tableView: UITableView = { [unowned self] in
         $0.dataSource = self
         $0.delegate = self
         $0.backgroundColor = nil

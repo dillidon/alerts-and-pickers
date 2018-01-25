@@ -4,6 +4,8 @@ open class Label: UILabel {
     
     public typealias Action = (Label) -> Swift.Void
     
+    fileprivate var actionOnTouch: Action?
+    
     open var insets: UIEdgeInsets = .zero
     
     override open func drawText(in rect: CGRect) {
@@ -26,9 +28,7 @@ open class Label: UILabel {
         return contentSize
     }
     
-    fileprivate var actionOnTouch: Action?
-    
-    public func action(_ closure: Action?) {
+    public func action(_ closure: @escaping Action) {
         Log("action did set")
         if actionOnTouch == nil {
             let gesture = UITapGestureRecognizer(

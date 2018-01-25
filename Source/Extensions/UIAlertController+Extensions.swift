@@ -16,12 +16,20 @@ extension UIAlertController {
         self.init(title: title, message: message, preferredStyle: style)
         
         // TODO: for iPad or other views
-        if style == .actionSheet, let source = source {
+        let isPad: Bool = UIDevice.current.userInterfaceIdiom == .pad
+        let root = UIApplication.shared.keyWindow?.rootViewController?.view
+        
+        //self.responds(to: #selector(getter: popoverPresentationController))
+        if let source = source {
+            Log("----- source")
             popoverPresentationController?.sourceView = source
             popoverPresentationController?.sourceRect = source.bounds
-            //popoverController.barButtonItem = buttonBack
-            //popoverController.sourceView = view
-            //popoverController.sourceRect = sender.customView?.bounds ?? CGRectMake(self.view.bounds.size.width / 2.0, self.view.bounds.size.height / 2.0, 1.0, 1.0) //view.bounds //CGRectMake(self.view.bounds.size.width / 2.0, self.view.bounds.size.height / 2.0, 1.0, 1.0)
+        } else if isPad, let source = root, style == .actionSheet {
+            Log("----- is pad")
+            popoverPresentationController?.sourceView = source
+            popoverPresentationController?.sourceRect = CGRect(x: source.bounds.midX, y: source.bounds.midY, width: 0, height: 0)
+            //popoverPresentationController?.permittedArrowDirections = .down
+            popoverPresentationController?.permittedArrowDirections = .init(rawValue: 0)
         }
         
         if let color = tintColor {
@@ -65,6 +73,8 @@ extension UIAlertController {
     ///   - isEnabled: isEnabled status for action (default is true)
     ///   - handler: optional action handler to be called when button is tapped (default is nil)
     func addAction(image: UIImage? = nil, title: String, color: UIColor? = nil, style: UIAlertActionStyle = .default, isEnabled: Bool = true, handler: ((UIAlertAction) -> Void)? = nil) {
+        //let isPad: Bool = UIDevice.current.userInterfaceIdiom == .pad
+        //let action = UIAlertAction(title: title, style: isPad && style == .cancel ? .default : style, handler: handler)
         let action = UIAlertAction(title: title, style: style, handler: handler)
         action.isEnabled = isEnabled
         

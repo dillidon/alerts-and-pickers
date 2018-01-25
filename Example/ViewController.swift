@@ -20,7 +20,7 @@ class ViewController: UIViewController {
         case verticalImagePicker = "Vertical Image Picker"
         case colorPicker = "Color Picker"
         case textViewer = "Text Viewer"
-        case markdownViewer = "Markdown Viewer"
+        case contactsPicker = "Contacts Picker"
         case photoLibraryPicker = "Photo Library Picker"
         
         var description: String {
@@ -38,7 +38,7 @@ class ViewController: UIViewController {
             case .verticalImagePicker: return "CollectionView"
             case .colorPicker: return "Storyboard & Autolayout"
             case .textViewer: return "UITextView, not editable"
-            case .markdownViewer: return "Base on MarkdownView"
+            case .contactsPicker: return "With SearchController"
             case .photoLibraryPicker: return "Like in Telegram"
             }
         }
@@ -58,26 +58,32 @@ class ViewController: UIViewController {
             case .verticalImagePicker: return #imageLiteral(resourceName: "four_rect")
             case .colorPicker: return #imageLiteral(resourceName: "colors")
             case .textViewer: return #imageLiteral(resourceName: "title")
-            case .markdownViewer: return #imageLiteral(resourceName: "title")
+            case .contactsPicker: return #imageLiteral(resourceName: "user")
             case .photoLibraryPicker: return #imageLiteral(resourceName: "library")
             }
         }
         
         var color: UIColor? {
             switch self {
-            case .simple, .simpleWithImages: return UIColor(hex: 0x007AFF)//UIColor(hex: 0x5AC8FA)
-            case .oneTextField, .twoTextFields, .textViewer, .markdownViewer: return UIColor(hex: 0x5AC8FA)//UIColor(hex: 0x4CD964)
-            case .dataPicker, .pickerView: return UIColor(hex: 0x4CD964)//UIColor(hex: 0xFFCC00)
-            case .countryPicker, .phoneCodePicker, .currencyPicker: return UIColor(hex: 0xFF5722)
-            case .horizontalImagePicker, .verticalImagePicker: return UIColor(hex: 0xFF2DC6)
-            case .colorPicker: return nil//return UIColor(hex: 0x5AC8FA)
-            
-            case .photoLibraryPicker: return .gray//UIColor(hex: 0x5AC8FA)
+            case .simple, .simpleWithImages:
+                return UIColor(hex: 0x007AFF)
+            case .oneTextField, .twoTextFields, .textViewer:
+                return UIColor(hex: 0x5AC8FA)
+            case .dataPicker, .pickerView, .contactsPicker:
+                return UIColor(hex: 0x4CD964)
+            case .countryPicker, .phoneCodePicker, .currencyPicker:
+                return UIColor(hex: 0xFF5722)
+            case .horizontalImagePicker, .verticalImagePicker:
+                return UIColor(hex: 0xFF2DC6)
+            case .colorPicker:
+                return nil
+            case .photoLibraryPicker:
+                return UIColor(hex: 0x007AFF)
             }
         }
     }
     
-    fileprivate lazy var alerts: [AlertType] = [.simple, .simpleWithImages, .oneTextField, .twoTextFields, .dataPicker, .pickerView, .countryPicker, .phoneCodePicker, .currencyPicker, .horizontalImagePicker, .verticalImagePicker, .colorPicker, .textViewer, .markdownViewer]
+    fileprivate lazy var alerts: [AlertType] = [.simple, .simpleWithImages, .oneTextField, .twoTextFields, .dataPicker, .pickerView, .countryPicker, .phoneCodePicker, .currencyPicker, .horizontalImagePicker, .verticalImagePicker, .colorPicker, .textViewer, .contactsPicker, .photoLibraryPicker]
     
     // MARK: UI Metrics
     
@@ -156,276 +162,229 @@ class ViewController: UIViewController {
         navigationItem.titleView = segments
         alertStyle = .actionSheet
         segments.selectedSegmentIndex = 1
-        
-        updateDataSource()
     }
     
-    func updateDataSource() {
-        dataSource = alerts.map { type in
+    func show(alert type: AlertType) {
+        switch type {
             
-            let config: CellConfig = { [unowned self] cell in
-
-                cell?.imageView?.image = type.image
-                cell?.textLabel?.text = type.rawValue
-                cell?.detailTextLabel?.text = type.description
-                cell?.detailTextLabel?.textColor = .darkGray
-                
-                cell?.imageView?.tintColor = type.color
-            }
+        case .simple:
+            Log("start --- ")
+            let alert = UIAlertController(style: self.alertStyle, title: "Simple Alert", message: "3 kinds of actions")
+            alert.addAction(title: "Default", style: .default)
+            alert.addAction(title: "Cancel", style: .cancel)
+            alert.addAction(title: "Destructive", style: .destructive)
+            alert.show()
+            Log("stop --- ")
+        case .simpleWithImages:
+            let alert = UIAlertController(style: self.alertStyle)
+            alert.set(title: "Simple Alert", font: .systemFont(ofSize: 20), color: UIColor(hex: 0xFF2D55))
+            alert.set(message: "3 kinds of actions with images", font: .systemFont(ofSize: 14), color: UIColor(hex: 0xFF9500))
+            alert.addAction(image: #imageLiteral(resourceName: "clip"), title: "Attache File", color: UIColor(hex: 0xFF2DC6), style: .default)
+            alert.addAction(title: "Cancel", style: .cancel) //.cancel action will always be at the end
+            alert.addAction(image: #imageLiteral(resourceName: "login"), title: "Login", style: .destructive, isEnabled: false)
+            alert.show()
             
-            let action: CellConfig = { [unowned self] cell in
-                switch type {
-                    
-                case .simple:
-                    Log("start --- ")
-                    let alert = UIAlertController(style: self.alertStyle, title: "Simple Alert", message: "3 kinds of actions")
-                    alert.addAction(title: "Default", style: .default)
-                    alert.addAction(title: "Cancel", style: .cancel)
-                    alert.addAction(title: "Destructive", style: .destructive)
-                    alert.show()
-                    Log("stop --- ")
-                case .simpleWithImages:
-                    let alert = UIAlertController(style: self.alertStyle)
-                    alert.set(title: "Simple Alert", font: .systemFont(ofSize: 20), color: UIColor(hex: 0xFF2D55))
-                    alert.set(message: "3 kinds of actions with images", font: .systemFont(ofSize: 14), color: UIColor(hex: 0xFF9500))
-                    alert.addAction(image: #imageLiteral(resourceName: "clip"), title: "Attache File", color: UIColor(hex: 0xFF2DC6), style: .default)
-                    alert.addAction(title: "Cancel", style: .cancel) //.cancel action will always be at the end
-                    alert.addAction(image: #imageLiteral(resourceName: "login"), title: "Login", style: .destructive, isEnabled: false)
-                    alert.show()
-                    
-                case .oneTextField:
-                    let alert = UIAlertController(style: self.alertStyle, title: "TextField", message: "Secure Entry")
-                    
-                    let textField: TextField.Config = { textField in
-                        textField.left(image: #imageLiteral(resourceName: "pen"), color: .black)
-                        textField.leftViewPadding = 12
-                        textField.becomeFirstResponder()
-                        textField.borderWidth = 1
-                        textField.cornerRadius = 8
-                        textField.borderColor = UIColor.lightGray.withAlphaComponent(0.5)
-                        textField.backgroundColor = nil
-                        textField.textColor = .black
-                        textField.placeholder = "Type something"
-                        textField.keyboardAppearance = .default
-                        textField.keyboardType = .default
-                        //textField.isSecureTextEntry = true
-                        textField.returnKeyType = .done
-                        textField.action { [unowned self] textField in
-                            Log("textField = \(String(describing: textField.text))")
-                        }
-                    }
-                    
-                    alert.addOneTextField(configuration: textField)
-                    
-                    alert.addAction(title: "OK", style: .cancel)
-                    alert.show()
-                    
-                case .twoTextFields:
-                    let alert = UIAlertController(style: self.alertStyle)
-                    
-                    let textFieldOne: TextField.Config = { textField in
-                        textField.left(image: #imageLiteral(resourceName: "user"), color: UIColor(hex: 0x007AFF))
-                        textField.leftViewPadding = 16
-                        textField.leftTextPadding = 12
-                        textField.becomeFirstResponder()
-                        textField.backgroundColor = nil
-                        textField.textColor = .black
-                        textField.placeholder = "Name"
-                        textField.clearButtonMode = .whileEditing
-                        textField.autocapitalizationType = .none
-                        textField.keyboardAppearance = .default
-                        textField.keyboardType = .default
-                        textField.returnKeyType = .continue
-                        textField.action { [unowned self] textField in
-                            Log("textField = \(String(describing: textField.text))")
-                        }
-                    }
-                    
-                    let textFieldTwo: TextField.Config = { textField in
-                        textField.left(image: #imageLiteral(resourceName: "padlock"), color: UIColor(hex: 0x007AFF))
-                        textField.leftViewPadding = 16
-                        textField.leftTextPadding = 12
-                        textField.borderWidth = 1
-                        textField.borderColor = UIColor.lightGray.withAlphaComponent(0.5)
-                        textField.backgroundColor = nil
-                        textField.textColor = .black
-                        textField.placeholder = "Password"
-                        textField.clearsOnBeginEditing = true
-                        textField.autocapitalizationType = .none
-                        textField.keyboardAppearance = .default
-                        textField.keyboardType = .default
-                        textField.isSecureTextEntry = true
-                        textField.returnKeyType = .done
-                        textField.action { [unowned self] textField in
-                            Log("textField = \(String(describing: textField.text))")
-                        }
-                    }
-                    
-                    alert.addTwoTextFields(
-                        height: self.alertStyle == .alert ? 44 : 58,
-                        hInset: self.alertStyle == .alert ? 12 : 0,
-                        vInset: self.alertStyle == .alert ? 12 : 0,
-                        textFieldOne: textFieldOne,
-                        textFieldTwo: textFieldTwo)
-                    
-                    alert.addAction(title: "Sign in", style: .cancel)
-                    alert.show()
-                    
-                case .dataPicker:
-                    let alert = UIAlertController(style: self.alertStyle, title: "Date Picker", message: "Select Date")
-                    alert.addDatePicker(mode: .dateAndTime, date: Date(), minimumDate: nil, maximumDate: nil) { [unowned self] new in
-                        cell?.detailTextLabel?.text = new.dateTimeString(ofStyle: .long)
-                    }
-                    alert.addAction(title: "Done", style: .cancel)
-                    alert.show()
-                    
-                case .pickerView:
-                    let alert = UIAlertController(style: self.alertStyle, title: "Picker View", message: "Preferred Content Height")
-                    
-                    let frameSizes: [CGFloat] = (150...300).map { CGFloat($0) }
-                    let pickerViewValues: [[String]] = [frameSizes.map { Int($0).description }]
-                    let pickerViewSelectedValue: PickerViewViewController.Index = (column: 0, row: frameSizes.index(of: 216) ?? 0)
-                    
-                    alert.addPickerView(values: pickerViewValues, initialSelection: pickerViewSelectedValue) { [unowned self] vc, picker, index, values in
-                        
-                        DispatchQueue.main.async {
-                            UIView.animate(withDuration: 1) {
-                                vc.preferredContentSize.height = frameSizes[index.row]
-                            }
-                        }
-                    }
-                    alert.addAction(title: "Done", style: .cancel)
-                    alert.show()
-                    
-                case .countryPicker:
-                    let alert = UIAlertController(style: self.alertStyle, message: "Select Countries")
-                    alert.addLocalePicker(type: .country) { [unowned self] info in
-                        Log(info)
-                    }
-                    alert.addAction(title: "OK", style: .cancel)
-                    alert.show()
-                
-                case .phoneCodePicker:
-                    let alert = UIAlertController(style: self.alertStyle, title: "Select Phone Code")
-                    alert.addLocalePicker(type: .phoneCode) { [unowned self] info in
-                        Log(info)
-                    }
-                    alert.addAction(title: "OK", style: .cancel)
-                    alert.show()
-                    
-                case .currencyPicker:
-                    let alert = UIAlertController(style: self.alertStyle, title: "Currencies", message: "Select one")
-                    alert.addLocalePicker(type: .currency) { [unowned self] info in
-                        alert.title = info?.currencyCode
-                        alert.message = "is selected"
-                    }
-                    alert.addAction(title: "OK", style: .cancel)
-                    alert.show()
-                    
-                case .horizontalImagePicker:
-                    let alert = UIAlertController(style: self.alertStyle)
-                    alert.addImagePicker(
-                        flow: .horizontal,
-                        paging: true,
-                        images: self.photos,
-                        selection: .single(action: { [unowned self] image in
-                            Log(image)
-                        }))
-                    alert.addAction(title: "OK", style: .cancel)
-                    alert.show()
-                    
-                case .verticalImagePicker:
-                    let alert = UIAlertController(style: self.alertStyle)
-                    alert.addImagePicker(
-                        flow: .vertical,
-                        paging: false,
-                        height: UIScreen.main.bounds.height,
-                        images: self.photos,
-                        selection: .multiple(action: { [unowned self] images in
-                            Log(images)
-                        }))
-                    alert.addAction(title: "OK", style: .cancel)
-                    alert.show()
-                    
-                case .colorPicker:
-                    var color: UIColor = UIColor(hex: 0xFF2DC6)
-                    let alert = UIAlertController(style: self.alertStyle)
-                    alert.set(title: color.hexString, font: .systemFont(ofSize: 17), color: color)
-                    alert.addColorPicker(color: color) { [unowned self] new in
-                        color = new
-                        alert.set(title: color.hexString, font: .systemFont(ofSize: 17), color: color)
-                    }
-                    alert.addAction(title: "Done", style: .cancel)
-                    alert.show()
-                
-                case .textViewer:
-                    let alert = UIAlertController(style: self.alertStyle)
-                    alert.set(title: "U.S. Returns & Refunds Policy", font: .systemFont(ofSize: 17), color: .orange)
-                    let config: TextViewerViewController.Config = { [unowned self] textView in
-                        textView.text = returnPolicy
-                        textView.isEditable = false
-                        textView.isSelectable = true
-                        textView.backgroundColor = nil
-                        textView.font = .systemFont(ofSize: 15)
-                        textView.textColor = .orange
-                    }
-                    alert.addTextViewer(config: config) { [unowned self] new in
-                        Log(new)
-                    }
-                    alert.addAction(title: "Done", color: .orange, style: .cancel)
-                    alert.show()
-                    
-                case .markdownViewer:
-                    let alert = UIAlertController(style: self.alertStyle)
-                    
-                    alert.addMarkdownViewer { [unowned self] view in
-                        
-                        /*
-                        let path = Bundle.main.path(forResource: "sample", ofType: "md")!
-                        
-                        let url = URL(fileURLWithPath: path)
-                        let markdown = try! String(contentsOf: url, encoding: String.Encoding.utf8)
-                        
-                        DispatchQueue.main.async {
-                            view.load(markdown: markdown)
-                            Log("markdown did load")
-                        }
-                        */
-                        
-                        view.onTouchLink = { [weak self] request in
-                            guard let url = request.url else { return false }
-                            
-                            if url.scheme == "file" {
-                                return true
-                            } else if url.scheme == "https" {
-                                alert.dismiss(animated: true, completion: nil)
-                                let safari = SFSafariViewController(url: url)
-                                self?.present(safari, animated: true, completion: nil)
-                                return false
-                            } else {
-                                return false
-                            }
-                        }
-                        
-                        let session = URLSession(configuration: .default)
-                        let url = URL(string: "https://raw.githubusercontent.com/matteocrippa/awesome-swift/master/README.md")!
-                        let task = session.dataTask(with: url) { [weak self] data, _, _ in
-                            let str = String(data: data!, encoding: String.Encoding.utf8)
-                            DispatchQueue.main.async {
-                                view.load(markdown: str)
-                            }
-                        }
-                        task.resume()
-                        
-                    }
-                    alert.addAction(title: "OK", color: .black, style: .cancel)
-                    alert.show()
-                    
-                case .photoLibraryPicker:
-                    break
+        case .oneTextField:
+            let alert = UIAlertController(style: self.alertStyle, title: "TextField", message: "Secure Entry")
+            
+            let textField: TextField.Config = { textField in
+                textField.left(image: #imageLiteral(resourceName: "pen"), color: .black)
+                textField.leftViewPadding = 12
+                textField.becomeFirstResponder()
+                textField.borderWidth = 1
+                textField.cornerRadius = 8
+                textField.borderColor = UIColor.lightGray.withAlphaComponent(0.5)
+                textField.backgroundColor = nil
+                textField.textColor = .black
+                textField.placeholder = "Type something"
+                textField.keyboardAppearance = .default
+                textField.keyboardType = .default
+                //textField.isSecureTextEntry = true
+                textField.returnKeyType = .done
+                textField.action { textField in
+                    Log("textField = \(String(describing: textField.text))")
                 }
             }
-            return CellData(config: config, action: action)
+            
+            alert.addOneTextField(configuration: textField)
+            
+            alert.addAction(title: "OK", style: .cancel)
+            alert.show()
+            
+        case .twoTextFields:
+            let alert = UIAlertController(style: self.alertStyle)
+            
+            let textFieldOne: TextField.Config = { textField in
+                textField.left(image: #imageLiteral(resourceName: "user"), color: UIColor(hex: 0x007AFF))
+                textField.leftViewPadding = 16
+                textField.leftTextPadding = 12
+                textField.becomeFirstResponder()
+                textField.backgroundColor = nil
+                textField.textColor = .black
+                textField.placeholder = "Name"
+                textField.clearButtonMode = .whileEditing
+                textField.autocapitalizationType = .none
+                textField.keyboardAppearance = .default
+                textField.keyboardType = .default
+                textField.returnKeyType = .continue
+                textField.action { textField in
+                    Log("textField = \(String(describing: textField.text))")
+                }
+            }
+            
+            let textFieldTwo: TextField.Config = { textField in
+                textField.left(image: #imageLiteral(resourceName: "padlock"), color: UIColor(hex: 0x007AFF))
+                textField.leftViewPadding = 16
+                textField.leftTextPadding = 12
+                textField.borderWidth = 1
+                textField.borderColor = UIColor.lightGray.withAlphaComponent(0.5)
+                textField.backgroundColor = nil
+                textField.textColor = .black
+                textField.placeholder = "Password"
+                textField.clearsOnBeginEditing = true
+                textField.autocapitalizationType = .none
+                textField.keyboardAppearance = .default
+                textField.keyboardType = .default
+                textField.isSecureTextEntry = true
+                textField.returnKeyType = .done
+                textField.action { textField in
+                    Log("textField = \(String(describing: textField.text))")
+                }
+            }
+            
+            alert.addTwoTextFields(
+                height: self.alertStyle == .alert ? 44 : 58,
+                hInset: self.alertStyle == .alert ? 12 : 0,
+                vInset: self.alertStyle == .alert ? 12 : 0,
+                textFieldOne: textFieldOne,
+                textFieldTwo: textFieldTwo)
+            
+            alert.addAction(title: "Sign in", style: .cancel)
+            alert.show()
+            
+        case .dataPicker:
+            let alert = UIAlertController(style: self.alertStyle, title: "Date Picker", message: "Select Date")
+            alert.addDatePicker(mode: .dateAndTime, date: Date(), minimumDate: nil, maximumDate: nil) { date in
+                Log(date)
+            }
+            alert.addAction(title: "Done", style: .cancel)
+            alert.show()
+            
+        case .pickerView:
+            let alert = UIAlertController(style: self.alertStyle, title: "Picker View", message: "Preferred Content Height")
+            
+            let frameSizes: [CGFloat] = (150...300).map { CGFloat($0) }
+            let pickerViewValues: [[String]] = [frameSizes.map { Int($0).description }]
+            let pickerViewSelectedValue: PickerViewViewController.Index = (column: 0, row: frameSizes.index(of: 216) ?? 0)
+            
+            alert.addPickerView(values: pickerViewValues, initialSelection: pickerViewSelectedValue) { vc, picker, index, values in
+                
+                DispatchQueue.main.async {
+                    UIView.animate(withDuration: 1) {
+                        vc.preferredContentSize.height = frameSizes[index.row]
+                    }
+                }
+            }
+            alert.addAction(title: "Done", style: .cancel)
+            alert.show()
+            
+        case .countryPicker:
+            let alert = UIAlertController(style: self.alertStyle, message: "Select Countries")
+            alert.addLocalePicker(type: .country) { info in
+                Log(info)
+            }
+            alert.addAction(title: "OK", style: .cancel)
+            alert.show()
+            
+        case .phoneCodePicker:
+            let alert = UIAlertController(style: self.alertStyle, title: "Select Phone Code")
+            alert.addLocalePicker(type: .phoneCode) { info in
+                Log(info)
+            }
+            alert.addAction(title: "OK", style: .cancel)
+            alert.show()
+            
+        case .currencyPicker:
+            let alert = UIAlertController(style: self.alertStyle, title: "Currencies", message: "Select one")
+            alert.addLocalePicker(type: .currency) { info in
+                alert.title = info?.currencyCode
+                alert.message = "is selected"
+            }
+            alert.addAction(title: "OK", style: .cancel)
+            alert.show()
+            
+        case .horizontalImagePicker:
+            let alert = UIAlertController(style: self.alertStyle)
+            alert.addImagePicker(
+                flow: .horizontal,
+                paging: true,
+                images: self.photos,
+                selection: .single(action: { image in
+                    Log(image)
+                }))
+            alert.addAction(title: "OK", style: .cancel)
+            alert.show()
+            
+        case .verticalImagePicker:
+            let alert = UIAlertController(style: self.alertStyle)
+            alert.addImagePicker(
+                flow: .vertical,
+                paging: false,
+                height: UIScreen.main.bounds.height,
+                images: self.photos,
+                selection: .multiple(action: { images in
+                    Log(images)
+                }))
+            alert.addAction(title: "OK", style: .cancel)
+            alert.show()
+            
+        case .colorPicker:
+            var color: UIColor = UIColor(hex: 0xFF2DC6)
+            let alert = UIAlertController(style: self.alertStyle)
+            alert.set(title: color.hexString, font: .systemFont(ofSize: 17), color: color)
+            alert.addColorPicker(color: color) { new in
+                color = new
+                alert.set(title: color.hexString, font: .systemFont(ofSize: 17), color: color)
+            }
+            alert.addAction(title: "Done", style: .cancel)
+            alert.show()
+            
+        case .textViewer:
+            let alert = UIAlertController(style: self.alertStyle)
+            
+            let text: [TextViewerViewController.AttributedText] = [
+                .normal(""),
+                .header1("U.S. Returns & Refunds Policy."),
+                .header2("Standard Return Policy."),
+                .normal("There are a few important things to keep in mind when returning a product you purchased online from Apple:"),
+                .list("You have 14 calendar days to return an item from the date you received it."),
+                .list("Only items that have been purchased directly from Apple, either online or at an Apple Retail Store, can be returned to Apple. Apple products purchased through other retailers must be returned in accordance with their respective returns and refunds policy."),
+                .list("Please ensure that the item you're returning is repackaged with all the cords, adapters and documentation that were included when you received it."),
+                .normal("There are some items, however, that are ineligible for return, including:"),
+                .list("Opened software"),
+                .list("Electronic Software Downloads"),
+                .list("Software Up-to-Date Program Products (software upgrades)"),
+                .list("Apple Store Gift Cards"),
+                .list("Apple Developer products (membership, technical support incidents, WWDC tickets)"),
+                .list("Apple Print Products"),
+                .normal("*You can return software, provided that it has not been installed on any computer. Software that contains a printed software license may not be returned if the seal or sticker on the software media packaging is broken.")]
+            alert.addTextViewer(text: .attributedText(text))
+            alert.addAction(title: "OK", color: .black, style: .cancel)
+            alert.show()
+            
+        case .contactsPicker:
+            let alert = UIAlertController(style: .actionSheet)
+            alert.addContactsPicker(selection: .showOrCall)
+            alert.addAction(title: "Add")
+            alert.show()
+            
+        case .photoLibraryPicker:
+            let alert = UIAlertController(style: .actionSheet)
+            alert.addPhotoLibraryPicker(selection: .multiple(action: { assets in
+                //Log(assets)
+            }))
+            alert.addAction(title: "Cancel", style: .cancel)
+            alert.show()
         }
     }
 }
@@ -436,8 +395,7 @@ extension ViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         Log("selected alert - \(alerts[indexPath.section].rawValue)")
-        let cell = tableView.cellForRow(at: indexPath)
-        self.dataSource[indexPath.section].action?(cell)
+        show(alert: alerts[indexPath.section])
     }
 }
 
@@ -446,7 +404,7 @@ extension ViewController: UITableViewDelegate {
 extension ViewController: UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return dataSource.count
+        return alerts.count
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -454,8 +412,13 @@ extension ViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let alert = alerts[indexPath.section]
         let cell = tableView.dequeueReusableCell(withIdentifier: MainTableViewCell.identifier) as! MainTableViewCell
-        dataSource[indexPath.section].config?(cell)
+        cell.imageView?.image = alert.image
+        cell.textLabel?.text = alert.rawValue
+        cell.detailTextLabel?.text = alert.description
+        cell.detailTextLabel?.textColor = .darkGray
+        cell.imageView?.tintColor = alert.color
         return cell
     }
 }
@@ -466,6 +429,15 @@ final class MainTableViewCell: UITableViewCell {
     
     static let identifier = String(describing: MainTableViewCell.self)
     
+    fileprivate lazy var backView: UIView = {
+        $0.backgroundColor = .white
+        return $0
+    }(UIView())
+    
+    fileprivate var inset: CGFloat {
+        return 20 + layoutMargins.right + layoutMargins.left
+    }
+    
     fileprivate var originalWidth: CGFloat?
     
     // MARK: Initialize
@@ -473,9 +445,7 @@ final class MainTableViewCell: UITableViewCell {
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: .subtitle, reuseIdentifier: reuseIdentifier)
         selectionStyle = .none
-        maskToBounds = false
-        backgroundColor = .white
-        cornerRadius = 12
+        contentView.insertSubview(backView, at: 0)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -483,23 +453,30 @@ final class MainTableViewCell: UITableViewCell {
     }
     
     override func layoutSubviews() {
-        // Set the width of the cell
-        if originalWidth == nil {
-            originalWidth = size.width
-        }
-        bounds = CGRect(x: bounds.origin.x, y: bounds.origin.y, width: (originalWidth ?? size.width) - 40, height: bounds.size.height)
+        if originalWidth == nil { originalWidth = size.width }
+        bounds = CGRect(x: bounds.origin.x, y: bounds.origin.y, width: (originalWidth ?? size.width) - inset, height: size.height)
         super.layoutSubviews()
+        //Log("layoutMargins = \(layoutMargins)")
+        //Log("styling ")
+        let margin: CGFloat = 1.5 * (layoutMargins.left + layoutMargins.right)
+        backView.frame = CGRect(
+            x: bounds.origin.x + (UIDevice.current.userInterfaceIdiom == .pad ? margin : 0),
+            y: bounds.origin.y,
+            width: bounds.width - (UIDevice.current.userInterfaceIdiom == .pad ? 2 * margin : 0),
+            height: bounds.height)
+        style(view: backView)
     }
     
-    override var bounds: CGRect {
-        didSet {
-            shadowColor = .black
-            shadowOffset = CGSize(width: 2, height: 4)
-            shadowRadius = 8
-            shadowOpacity = 0.2
-            shadowPath = UIBezierPath(roundedRect: bounds, byRoundingCorners: .allCorners, cornerRadii: CGSize(width: 8, height: 8)).cgPath
-            shadowShouldRasterize = true
-            shadowRasterizationScale = UIScreen.main.scale
-        }
+    func style(view: UIView) {
+        view.maskToBounds = false
+        view.backgroundColor = .white
+        view.cornerRadius = 12
+        view.shadowColor = .black
+        view.shadowOffset = CGSize(width: 2, height: 4)
+        view.shadowRadius = 8
+        view.shadowOpacity = 0.2
+        view.shadowPath = UIBezierPath(roundedRect: view.bounds, byRoundingCorners: .allCorners, cornerRadii: CGSize(width: 12, height: 12)).cgPath
+        view.shadowShouldRasterize = true
+        view.shadowRasterizationScale = UIScreen.main.scale
     }
 }

@@ -2,42 +2,85 @@ import UIKit
 
 extension UIAlertController {
     
-    /// Add a textViewer
+    /// Add a Text Viewer
     ///
     /// - Parameters:
-    ///   - mode: date picker mode
+    ///   - text: text kind
     
-    func addTextViewer(config: TextViewerViewController.Config? = nil, action: TextViewerViewController.Action? = nil) {
-        let textViewer = TextViewerViewController(config: config, action: action)
+    func addTextViewer(text: TextViewerViewController.Kind) {
+        let textViewer = TextViewerViewController(text: text)
         set(vc: textViewer)
     }
 }
 
 final class TextViewerViewController: UIViewController {
     
-    public typealias Config = (UITextView) -> Swift.Void
-    public typealias Action = (String?) -> Swift.Void
+    enum Kind {
+        
+        case text(String?)
+        case attributedText([AttributedText])
+    }
     
-    fileprivate lazy var textView: UITextView = UITextView()
-    fileprivate var action: Action?
+    public enum AttributedText {
+        
+        case header1(String)
+        case header2(String)
+        case normal(String)
+        case list(String)
+        
+        var text: NSMutableAttributedString {
+            let attributedString: NSMutableAttributedString
+            switch self {
+            case .header1(let value):
+                let attributes: [NSAttributedStringKey: Any] = [.font: UIFont.boldSystemFont(ofSize: 20), .foregroundColor: UIColor.black]
+                attributedString = NSMutableAttributedString(string: value, attributes: attributes)
+            case .header2(let value):
+                let attributes: [NSAttributedStringKey: Any] = [.font: UIFont.boldSystemFont(ofSize: 18), .foregroundColor: UIColor.black]
+                attributedString = NSMutableAttributedString(string: value, attributes: attributes)
+            case .normal(let value):
+                let attributes: [NSAttributedStringKey: Any] = [.font: UIFont.systemFont(ofSize: 15), .foregroundColor: UIColor.black]
+                attributedString = NSMutableAttributedString(string: value, attributes: attributes)
+            case .list(let value):
+                let attributes: [NSAttributedStringKey: Any] = [.font: UIFont.systemFont(ofSize: 15), .foregroundColor: UIColor.black]
+                attributedString = NSMutableAttributedString(string: "∙ " + value, attributes: attributes)
+            }
+            let paragraphStyle = NSMutableParagraphStyle()
+            paragraphStyle.lineSpacing = 2
+            paragraphStyle.lineHeightMultiple = 1
+            paragraphStyle.paragraphSpacing = 10
+
+            attributedString.addAttribute(.paragraphStyle, value: paragraphStyle, range:NSMakeRange(0, attributedString.length))
+            return attributedString
+        }
+    }
     
-    struct ui {
+    fileprivate var text: [AttributedText] = []
+    
+    fileprivate lazy var textView: UITextView = {
+        $0.isEditable = false
+        $0.isSelectable = true
+        $0.backgroundColor = nil
+        return $0
+    }(UITextView())
+    
+    struct UI {
         static let height: CGFloat = UIScreen.main.bounds.height * 0.8
         static let vInset: CGFloat = 16
+        static let hInset: CGFloat = 16
     }
     
     
-    init(config configuration: Config? = nil, action: Action? = nil) {
+    init(text kind: Kind) {
         super.init(nibName: nil, bundle: nil)
         
-        configuration?(textView)
-        preferredContentSize.height = ui.height
-        
-        textView.textContainerInset = UIEdgeInsetsMake(12, 16, 12, 16)
-        //textView.becomeFirstResponder()
-        //textView.selectedTextRange = textView.textRangeFromPosition(textView.beginningOfDocument, toPosition: textView.beginningOfDocument)
-        //self.automaticallyAdjustsScrollViewInsets = false
-        //textView.contentInsetAdjustmentBehavior = .never
+        switch kind {
+        case .text(let text):
+            textView.text = text
+        case .attributedText(let text):
+            textView.attributedText = text.map { $0.text }.joined(separator: "\n")
+        }
+        textView.textContainerInset = UIEdgeInsetsMake(UI.hInset, UI.vInset, UI.hInset, UI.vInset)
+        //preferredContentSize.height = self.textView.contentSize.height
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -55,9 +98,19 @@ final class TextViewerViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            preferredContentSize.width = UIScreen.main.bounds.width * 0.618
+        }
     }
-}
-
-var returnPolicy: String {
-    return "Standard Return Policy.\nThere are a few important things to keep in mind when returning a product you purchased online from Apple:\nYou have 14 calendar days to return an item from the date you received it.\nOnly items that have been purchased directly from Apple, either online or at an Apple Retail Store, can be returned to Apple. Apple products purchased through other retailers must be returned in accordance with their respective returns and refunds policy.\nPlease ensure that the item you're returning is repackaged with all the cords, adapters and documentation that were included when you received it.\nThere are some items, however, that are ineligible for return, including:\nOpened software*\nElectronic Software Downloads\nSoftware Up-to-Date Program Products (software upgrades)\nApple Store Gift Cards\nApple Developer products (membership, technical support incidents, WWDC tickets)\nApple Print Products\n*You can return software, provided that it has not been installed on any computer. Software that contains a printed software license may not be returned if the seal or sticker on the software media packaging is broken.\n\niPhone and iPad Returns — Wireless Service Cancellation\nWireless carriers have different service-cancellation policies. Returning your iPhone or iPad may not automatically cancel or reset your wireless account; you are responsible for your wireless service agreement and for any applicable fees associated with your wireless account. Please contact your provider for more information."
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        textView.scrollToTop()
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        preferredContentSize.height = textView.contentSize.height
+        
+    }
 }
