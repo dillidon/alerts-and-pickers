@@ -19,6 +19,7 @@ class ViewController: UIViewController {
         case verticalImagePicker = "Vertical Image Picker"
         case colorPicker = "Color Picker"
         case photoLibraryPicker = "Photo Library Picker"
+        case searchableList = "Searchable List Picker"
         
         var description: String {
             switch self {
@@ -35,6 +36,7 @@ class ViewController: UIViewController {
             case .verticalImagePicker: return "CollectionView"
             case .colorPicker: return "Storyboard & Autolayout"
             case .photoLibraryPicker: return "Like in Telegram"
+            case .searchableList: return "Select from list"
             }
         }
         
@@ -53,6 +55,7 @@ class ViewController: UIViewController {
             case .verticalImagePicker: return #imageLiteral(resourceName: "four_rect")
             case .colorPicker: return #imageLiteral(resourceName: "colors")
             case .photoLibraryPicker: return #imageLiteral(resourceName: "library")
+            case .searchableList: return UIImage()  // TEMP
             }
         }
         
@@ -65,11 +68,12 @@ class ViewController: UIViewController {
             case .horizontalImagePicker, .verticalImagePicker: return UIColor(hex: 0xFF2DC6)
             case .colorPicker: return nil//return UIColor(hex: 0x5AC8FA)
             case .photoLibraryPicker: return .gray//UIColor(hex: 0x5AC8FA)
+            case .searchableList: return .green
             }
         }
     }
     
-    fileprivate lazy var alerts: [AlertType] = [.simple, .simpleWithImages, .oneTextField, .twoTextFields, .dataPicker, .pickerView, .countryPicker, .phoneCodePicker, .currencyPicker, .horizontalImagePicker, .verticalImagePicker, .colorPicker]
+    fileprivate lazy var alerts: [AlertType] = [.simple, .simpleWithImages, .oneTextField, .twoTextFields, .dataPicker, .pickerView, .countryPicker, .phoneCodePicker, .currencyPicker, .horizontalImagePicker, .verticalImagePicker, .colorPicker, .searchableList]
     
     // MARK: UI Metrics
     
@@ -352,6 +356,27 @@ class ViewController: UIViewController {
                     
                 case .photoLibraryPicker:
                     break
+                    
+                case .searchableList:
+                    let alert = UIAlertController(style: self.alertStyle, title: "Items", message: "Select one")
+                    
+                    // NOTE Sample data
+                    
+                    var list: [String] = []
+                    
+                    for index in 1...20 {
+                        list.append("Item \(index)")
+                    }
+                    
+                    alert.addSearchableList(dataSource: list, action: { (item) in
+                        guard let selectedItem = item else {
+                            return
+                        }
+                        
+                        alert.message = "\(selectedItem as! String) selected"
+                    })
+                    alert.addAction(title: "OK", style: .cancel)
+                    alert.show()
                 }
             }
             return CellData(config: config, action: action)
