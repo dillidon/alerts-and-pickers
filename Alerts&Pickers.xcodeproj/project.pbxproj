@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A98F6B072019A33000319929 /* SearchableListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98F6B062019A33000319929 /* SearchableListViewController.swift */; };
 		FA3BB2892008B45600E06F8F /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = FA3BB2882008B45600E06F8F /* README.md */; };
 		FA3BB2AC2008B46800E06F8F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FA3BB28B2008B46500E06F8F /* Assets.xcassets */; };
 		FA3BB2AD2008B46800E06F8F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FA3BB28C2008B46500E06F8F /* LaunchScreen.storyboard */; };
@@ -43,6 +44,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A98F6B062019A33000319929 /* SearchableListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchableListViewController.swift; sourceTree = "<group>"; };
 		FA3BB2732008B41B00E06F8F /* Alerts&Pickers.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Alerts&Pickers.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA3BB2822008B41B00E06F8F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FA3BB2882008B45600E06F8F /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
@@ -164,6 +166,7 @@
 				FA3BB2A72008B46800E06F8F /* TwoTextFieldsViewController.swift */,
 				FA3BB2A82008B46800E06F8F /* OneTextFieldViewController.swift */,
 				FABFAA67200C963F00961895 /* ColorPickerViewController.swift */,
+				A98F6B062019A33000319929 /* SearchableListViewController.swift */,
 			);
 			path = Pickers;
 			sourceTree = "<group>";
@@ -281,6 +284,7 @@
 				FA3BB2B02008B46800E06F8F /* SegmentedControl.swift in Sources */,
 				FA3BB2B32008B46800E06F8F /* UISegmentedControl+Extensions.swift in Sources */,
 				FA3BB2C52008B46900E06F8F /* OneTextFieldViewController.swift in Sources */,
+				A98F6B072019A33000319929 /* SearchableListViewController.swift in Sources */,
 				FA3BB2BE2008B46900E06F8F /* UITextField+Extensions.swift in Sources */,
 				FA3BB2B62008B46800E06F8F /* String+Extensions.swift in Sources */,
 				FA3BB2B52008B46800E06F8F /* Date+Extension.swift in Sources */,
