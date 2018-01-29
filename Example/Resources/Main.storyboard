@@ -33,9 +33,9 @@
                                         </constraints>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                                <real key="value" value="20"/>
+                                                <real key="value" value="24"/>
                                             </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="boolean" keyPath="circleCorner" value="YES"/>
+                                            <userDefinedRuntimeAttribute type="boolean" keyPath="circleCorner" value="NO"/>
                                             <userDefinedRuntimeAttribute type="size" keyPath="shadowOffset">
                                                 <size key="value" width="0.0" height="6"/>
                                             </userDefinedRuntimeAttribute>
@@ -52,7 +52,7 @@
                                         <rect key="frame" x="0.0" y="258" width="311" height="148"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0tN-R9-wtT" customClass="GradientSlider" customModule="Alerts_Pickers" customModuleProvider="target">
-                                                <rect key="frame" x="-2" y="-4" width="315" height="44"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="311" height="36"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="36" id="Q8e-SK-Zzo"/>
                                                 </constraints>
@@ -72,7 +72,7 @@
                                                 </userDefinedRuntimeAttributes>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gc1-Bj-h3h" customClass="GradientSlider" customModule="Alerts_Pickers" customModuleProvider="target">
-                                                <rect key="frame" x="-2" y="52" width="315" height="44"/>
+                                                <rect key="frame" x="0.0" y="56" width="311" height="36"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="36" id="5Eh-kD-PEa"/>
                                                 </constraints>
@@ -93,7 +93,7 @@
                                                 </userDefinedRuntimeAttributes>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ES1-8x-tqc" customClass="GradientSlider" customModule="Alerts_Pickers" customModuleProvider="target">
-                                                <rect key="frame" x="-2" y="108" width="315" height="44"/>
+                                                <rect key="frame" x="0.0" y="112" width="311" height="36"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="36" id="T2U-9b-SvG"/>
                                                 </constraints>

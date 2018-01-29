@@ -24,8 +24,8 @@ extension UIColor {
     }
     
     /// Color to Image
-    func toImage() -> UIImage {
-        let rect = CGRect(x: 0, y: 0, width: 1, height: 1)
+    func toImage(size: CGSize = CGSize(width: 1, height: 1)) -> UIImage {
+        let rect:CGRect = CGRect(origin: .zero, size: size)
         UIGraphicsBeginImageContextWithOptions(rect.size, true, 0)
         self.setFill()
         UIRectFill(rect)

@@ -125,7 +125,6 @@ public struct Contacts {
         } catch {
             completionHandler(GroupedByAlphabetsFetchResults.error(error: error))
         }
-        
         completionHandler(GroupedByAlphabetsFetchResults.success(response: orderedContacts))
      }
     
@@ -178,6 +177,7 @@ public struct Contacts {
         
         do {
             contacts = try contactStore.unifiedContacts(matching: predicate, keysToFetch: [CNContactVCardSerialization.descriptorForRequiredKeys()])
+            contacts = contacts.sorted { $0.givenName < $1.givenName }
             completionHandler(FetchResults.success(response: contacts))
         } catch {
             completionHandler(FetchResults.error(error: error))

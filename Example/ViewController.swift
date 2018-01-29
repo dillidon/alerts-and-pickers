@@ -1,5 +1,6 @@
 import UIKit
 import SafariServices
+import Photos
 
 class ViewController: UIViewController {
     
@@ -16,12 +17,13 @@ class ViewController: UIViewController {
         case countryPicker = "Country Picker"
         case phoneCodePicker = "Phone Code Picker"
         case currencyPicker = "Currency Picker"
-        case horizontalImagePicker = "Horizontal Image Picker"
-        case verticalImagePicker = "Vertical Image Picker"
+        case imagePicker = "Image Picker"
+        case photoLibraryPicker = "Photo Library Picker"
         case colorPicker = "Color Picker"
         case textViewer = "Text Viewer"
         case contactsPicker = "Contacts Picker"
-        case photoLibraryPicker = "Photo Library Picker"
+        case locationPicker = "Location Picker"
+        case telegramPicker = "Telegram Picker"
         
         var description: String {
             switch self {
@@ -34,12 +36,13 @@ class ViewController: UIViewController {
             case .countryPicker: return "TableView"
             case .phoneCodePicker: return "TableView"
             case .currencyPicker: return "TableView"
-            case .horizontalImagePicker: return "CollectionView"
-            case .verticalImagePicker: return "CollectionView"
+            case .imagePicker: return "CollectionView, horizontal flow"
+            case .photoLibraryPicker: return "Select photos from Photo Library"
             case .colorPicker: return "Storyboard & Autolayout"
-            case .textViewer: return "UITextView, not editable"
+            case .textViewer: return "TextView, not editable"
             case .contactsPicker: return "With SearchController"
-            case .photoLibraryPicker: return "Like in Telegram"
+            case .locationPicker: return "MapView With SearchController"
+            case .telegramPicker: return "Similar to the Telegram"
             }
         }
         
@@ -54,42 +57,43 @@ class ViewController: UIViewController {
             case .countryPicker: return #imageLiteral(resourceName: "globe")
             case .phoneCodePicker: return #imageLiteral(resourceName: "telephone")
             case .currencyPicker: return #imageLiteral(resourceName: "currency")
-            case .horizontalImagePicker: return #imageLiteral(resourceName: "listings")
-            case .verticalImagePicker: return #imageLiteral(resourceName: "four_rect")
+            case .imagePicker: return #imageLiteral(resourceName: "listings")
+            case .photoLibraryPicker: return #imageLiteral(resourceName: "four_rect")
             case .colorPicker: return #imageLiteral(resourceName: "colors")
             case .textViewer: return #imageLiteral(resourceName: "title")
             case .contactsPicker: return #imageLiteral(resourceName: "user")
-            case .photoLibraryPicker: return #imageLiteral(resourceName: "library")
+            case .locationPicker: return #imageLiteral(resourceName: "planet")
+            case .telegramPicker: return #imageLiteral(resourceName: "library")
             }
         }
         
         var color: UIColor? {
             switch self {
-            case .simple, .simpleWithImages:
+            case .simple, .simpleWithImages, .telegramPicker:
                 return UIColor(hex: 0x007AFF)
-            case .oneTextField, .twoTextFields, .textViewer:
+            case .oneTextField, .twoTextFields:
                 return UIColor(hex: 0x5AC8FA)
-            case .dataPicker, .pickerView, .contactsPicker:
+            case .dataPicker, .pickerView, .contactsPicker, .locationPicker:
                 return UIColor(hex: 0x4CD964)
-            case .countryPicker, .phoneCodePicker, .currencyPicker:
+            case .countryPicker, .phoneCodePicker, .currencyPicker, .textViewer:
                 return UIColor(hex: 0xFF5722)
-            case .horizontalImagePicker, .verticalImagePicker:
+            case .imagePicker, .photoLibraryPicker:
                 return UIColor(hex: 0xFF2DC6)
             case .colorPicker:
                 return nil
-            case .photoLibraryPicker:
-                return UIColor(hex: 0x007AFF)
             }
         }
     }
     
-    fileprivate lazy var alerts: [AlertType] = [.simple, .simpleWithImages, .oneTextField, .twoTextFields, .dataPicker, .pickerView, .countryPicker, .phoneCodePicker, .currencyPicker, .horizontalImagePicker, .verticalImagePicker, .colorPicker, .textViewer, .contactsPicker, .photoLibraryPicker]
+    fileprivate lazy var alerts: [AlertType] = [.simple, .simpleWithImages, .oneTextField, .twoTextFields, .dataPicker, .pickerView, .countryPicker, .phoneCodePicker, .currencyPicker, .imagePicker, .photoLibraryPicker, .colorPicker, .textViewer, .contactsPicker, .locationPicker, .telegramPicker]
     
     // MARK: UI Metrics
     
     struct UI {
-        static let cellIdentifier: String = UUID().uuidString
-        static let rowHeight: CGFloat = 50
+        static let itemHeight: CGFloat = UIDevice.current.userInterfaceIdiom == .pad ? 88 : 65
+        static let lineSpacing: CGFloat = UIDevice.current.userInterfaceIdiom == .pad ? 24 : 16
+        static let xInset: CGFloat = UIDevice.current.userInterfaceIdiom == .pad ? 40 : 20
+        static let topInset: CGFloat = UIDevice.current.userInterfaceIdiom == .pad ? 28 : 12
     }
     
     
@@ -110,24 +114,35 @@ class ViewController: UIViewController {
         return $0
     }(SegmentedControl())
     
-    fileprivate lazy var tableView: UITableView = {
+    fileprivate lazy var collectionView: UICollectionView = { [unowned self] in
         $0.dataSource = self
         $0.delegate = self
+        $0.register(TypeOneCell.self, forCellWithReuseIdentifier: TypeOneCell.identifier)
+        $0.showsVerticalScrollIndicator = false
+        $0.showsHorizontalScrollIndicator = false
+        $0.decelerationRate = UIScrollViewDecelerationRateFast
+        //$0.contentInsetAdjustmentBehavior = .never
+        $0.bounces = true
         $0.backgroundColor = .white
-        $0.rowHeight = 56
-        $0.sectionHeaderHeight = 20
-        $0.sectionFooterHeight = 0
-        $0.separatorColor = .clear
-        $0.separatorInset = .zero
-        $0.register(MainTableViewCell.self, forCellReuseIdentifier: MainTableViewCell.identifier)
+        //$0.maskToBounds = false
+        //$0.clipsToBounds = false
+        $0.contentInset.bottom = UI.itemHeight
         return $0
-    }(UITableView(frame: .zero, style: .grouped))
+        }(UICollectionView(frame: .zero, collectionViewLayout: layout))
     
-    fileprivate var dataSource: [CellData] = []
+    fileprivate lazy var layout: VerticalScrollFlowLayout = {
+        $0.minimumLineSpacing = UI.lineSpacing
+        $0.sectionInset = UIEdgeInsets(top: UI.topInset, left: 0, bottom: 0, right: 0)
+        $0.itemSize = itemSize
+        
+        return $0
+    }(VerticalScrollFlowLayout())
     
-    fileprivate var photos: [UIImage] {
-        return [#imageLiteral(resourceName: "interior_design_1"), #imageLiteral(resourceName: "interior_design_2"), #imageLiteral(resourceName: "interior_design_3"), #imageLiteral(resourceName: "interior_design_4"), #imageLiteral(resourceName: "interior_design_5"), #imageLiteral(resourceName: "interior_design_8"), #imageLiteral(resourceName: "interior_design_9"), #imageLiteral(resourceName: "interior_design_10"), #imageLiteral(resourceName: "interior_design_11"), #imageLiteral(resourceName: "interior_design_12"), #imageLiteral(resourceName: "interior_design_13"), #imageLiteral(resourceName: "interior_design_14"), #imageLiteral(resourceName: "interior_design_15"), #imageLiteral(resourceName: "interior_design_16"), #imageLiteral(resourceName: "interior_design_17"), #imageLiteral(resourceName: "interior_design_18"), #imageLiteral(resourceName: "interior_design_19"), #imageLiteral(resourceName: "interior_design_20"), #imageLiteral(resourceName: "interior_design_21"), #imageLiteral(resourceName: "interior_design_22"), #imageLiteral(resourceName: "interior_design_23"), #imageLiteral(resourceName: "interior_design_24"), #imageLiteral(resourceName: "interior_design_25"), #imageLiteral(resourceName: "interior_design_26"), #imageLiteral(resourceName: "interior_design_27"), #imageLiteral(resourceName: "interior_design_28"), #imageLiteral(resourceName: "interior_design_29"), #imageLiteral(resourceName: "interior_design_30"), #imageLiteral(resourceName: "interior_design_31"), #imageLiteral(resourceName: "interior_design_32"), #imageLiteral(resourceName: "interior_design_33"), #imageLiteral(resourceName: "interior_design_34"), #imageLiteral(resourceName: "interior_design_35"), #imageLiteral(resourceName: "interior_design_36"), #imageLiteral(resourceName: "interior_design_37"), #imageLiteral(resourceName: "interior_design_38"), #imageLiteral(resourceName: "interior_design_39")]
+    fileprivate var itemSize: CGSize {
+        let width = UIScreen.main.bounds.width - 2 * UI.xInset
+        return CGSize(width: width, height: UI.itemHeight)
     }
+    
     // MARK: Initialize
     
     required init() {
@@ -141,7 +156,7 @@ class ViewController: UIViewController {
     // MARK: ViewController LifeCycle
     
     override func loadView() {
-        view = tableView
+        view = collectionView
     }
     
     override func viewDidLoad() {
@@ -156,8 +171,12 @@ class ViewController: UIViewController {
         
         if #available(iOS 11.0, *) {
             navigationController?.navigationBar.prefersLargeTitles = true
-            navigationItem.largeTitleDisplayMode = .always
+            //navigationItem.largeTitleDisplayMode = .always
         }
+        
+        layout.itemSize = itemSize
+        collectionView.collectionViewLayout.invalidateLayout()
+        collectionView.reloadData()
         
         navigationItem.titleView = segments
         alertStyle = .actionSheet
@@ -168,13 +187,12 @@ class ViewController: UIViewController {
         switch type {
             
         case .simple:
-            Log("start --- ")
             let alert = UIAlertController(style: self.alertStyle, title: "Simple Alert", message: "3 kinds of actions")
             alert.addAction(title: "Default", style: .default)
             alert.addAction(title: "Cancel", style: .cancel)
             alert.addAction(title: "Destructive", style: .destructive)
             alert.show()
-            Log("stop --- ")
+            
         case .simpleWithImages:
             let alert = UIAlertController(style: self.alertStyle)
             alert.set(title: "Simple Alert", font: .systemFont(ofSize: 20), color: UIColor(hex: 0xFF2D55))
@@ -289,54 +307,91 @@ class ViewController: UIViewController {
             alert.show()
             
         case .countryPicker:
-            let alert = UIAlertController(style: self.alertStyle, message: "Select Countries")
-            alert.addLocalePicker(type: .country) { info in
+            var info: LocaleInfo?
+            
+            let addCountry: UIAlertAction = UIAlertAction(title: "Add Country", style: .default) { action in
                 Log(info)
             }
-            alert.addAction(title: "OK", style: .cancel)
+            addCountry.isEnabled = false
+            
+            let alert = UIAlertController(style: self.alertStyle)
+            alert.addLocalePicker(type: .country) { new in
+                info = new
+                addCountry.isEnabled = info != nil
+            }
+            alert.addAction(addCountry)
+            alert.addAction(title: "Cancel", color: .black, style: .cancel)
             alert.show()
             
         case .phoneCodePicker:
-            let alert = UIAlertController(style: self.alertStyle, title: "Select Phone Code")
-            alert.addLocalePicker(type: .phoneCode) { info in
+            var info: LocaleInfo?
+            
+            let addPhoneCode: UIAlertAction = UIAlertAction(title: "Add Country", style: .default) { action in
                 Log(info)
             }
-            alert.addAction(title: "OK", style: .cancel)
+            addPhoneCode.isEnabled = false
+            
+            let alert = UIAlertController(style: self.alertStyle)
+            alert.addLocalePicker(type: .phoneCode) { new in
+                info = new
+                addPhoneCode.isEnabled = info != nil
+            }
+            alert.addAction(addPhoneCode)
+            alert.addAction(title: "Cancel", color: .black, style: .cancel)
             alert.show()
             
         case .currencyPicker:
-            let alert = UIAlertController(style: self.alertStyle, title: "Currencies", message: "Select one")
-            alert.addLocalePicker(type: .currency) { info in
-                alert.title = info?.currencyCode
-                alert.message = "is selected"
+            var info: LocaleInfo?
+            
+            let addCurrency: UIAlertAction = UIAlertAction(title: "Add Country", style: .default) { action in
+                Log(info)
             }
-            alert.addAction(title: "OK", style: .cancel)
+            addCurrency.isEnabled = false
+            
+            let alert = UIAlertController(style: self.alertStyle)
+            alert.addLocalePicker(type: .currency) { new in
+                info = new
+                addCurrency.isEnabled = info != nil
+            }
+            alert.addAction(addCurrency)
+            alert.addAction(title: "Cancel", color: .black, style: .cancel)
             alert.show()
             
-        case .horizontalImagePicker:
+        case .imagePicker:
+            let photos: [UIImage] = [#imageLiteral(resourceName: "interior_design_1"), #imageLiteral(resourceName: "interior_design_2"), #imageLiteral(resourceName: "interior_design_3"), #imageLiteral(resourceName: "interior_design_4"), #imageLiteral(resourceName: "interior_design_5"), #imageLiteral(resourceName: "interior_design_8"), #imageLiteral(resourceName: "interior_design_9"), #imageLiteral(resourceName: "interior_design_10"), #imageLiteral(resourceName: "interior_design_11"), #imageLiteral(resourceName: "interior_design_12"), #imageLiteral(resourceName: "interior_design_13"), #imageLiteral(resourceName: "interior_design_14"), #imageLiteral(resourceName: "interior_design_15"), #imageLiteral(resourceName: "interior_design_16"), #imageLiteral(resourceName: "interior_design_17"), #imageLiteral(resourceName: "interior_design_18"), #imageLiteral(resourceName: "interior_design_19"), #imageLiteral(resourceName: "interior_design_20"), #imageLiteral(resourceName: "interior_design_21"), #imageLiteral(resourceName: "interior_design_22"), #imageLiteral(resourceName: "interior_design_23"), #imageLiteral(resourceName: "interior_design_24"), #imageLiteral(resourceName: "interior_design_25"), #imageLiteral(resourceName: "interior_design_26"), #imageLiteral(resourceName: "interior_design_27"), #imageLiteral(resourceName: "interior_design_28"), #imageLiteral(resourceName: "interior_design_29"), #imageLiteral(resourceName: "interior_design_30"), #imageLiteral(resourceName: "interior_design_31"), #imageLiteral(resourceName: "interior_design_32"), #imageLiteral(resourceName: "interior_design_33"), #imageLiteral(resourceName: "interior_design_34"), #imageLiteral(resourceName: "interior_design_35"), #imageLiteral(resourceName: "interior_design_36"), #imageLiteral(resourceName: "interior_design_37"), #imageLiteral(resourceName: "interior_design_38"), #imageLiteral(resourceName: "interior_design_39")]
+            
             let alert = UIAlertController(style: self.alertStyle)
             alert.addImagePicker(
-                flow: .horizontal,
-                paging: true,
-                images: self.photos,
+                flow: .vertical,
+                paging: false,
+                images: photos,
                 selection: .single(action: { image in
                     Log(image)
                 }))
             alert.addAction(title: "OK", style: .cancel)
             alert.show()
             
-        case .verticalImagePicker:
+        case .photoLibraryPicker:
+            var assets: [PHAsset] = []
+            
+            let addPhotos: UIAlertAction = UIAlertAction(title: "Add", style: .default) { action in
+                Log(assets)
+            }
+            addPhotos.isEnabled = false
+            
             let alert = UIAlertController(style: self.alertStyle)
-            alert.addImagePicker(
+            alert.addPhotoLibraryPicker(
                 flow: .vertical,
                 paging: false,
-                height: UIScreen.main.bounds.height,
-                images: self.photos,
-                selection: .multiple(action: { images in
-                    Log(images)
+                selection: .multiple(action: { new in
+                    addPhotos.isEnabled = new.count > 0
+                    assets = new
+                    Log(assets)
                 }))
-            alert.addAction(title: "OK", style: .cancel)
+            alert.addAction(addPhotos)
+            alert.addAction(title: "Cancel", style: .cancel)
             alert.show()
+            
             
         case .colorPicker:
             var color: UIColor = UIColor(hex: 0xFF2DC6)
@@ -352,7 +407,7 @@ class ViewController: UIViewController {
         case .textViewer:
             let alert = UIAlertController(style: self.alertStyle)
             
-            let text: [TextViewerViewController.AttributedText] = [
+            let text: [AttributedTextBlock] = [
                 .normal(""),
                 .header1("U.S. Returns & Refunds Policy."),
                 .header2("Standard Return Policy."),
@@ -373,15 +428,36 @@ class ViewController: UIViewController {
             alert.show()
             
         case .contactsPicker:
-            let alert = UIAlertController(style: .actionSheet)
-            alert.addContactsPicker(selection: .showOrCall)
-            alert.addAction(title: "Add")
+            var contact: Contact?
+            
+            let addContact: UIAlertAction = UIAlertAction(title: "Add Contact", style: .default) { action in
+                Log(contact)
+            }
+            addContact.isEnabled = false
+            
+            let alert = UIAlertController(style: self.alertStyle)
+            
+            alert.addContactsPicker { new in
+                addContact.isEnabled = new != nil
+                contact = new
+            }
+            
+            alert.addAction(addContact)
+            alert.addAction(title: "Cancel", style: .cancel)
             alert.show()
             
-        case .photoLibraryPicker:
+        case .locationPicker:
+            let alert = UIAlertController(style: self.alertStyle)
+            alert.addLocationPicker { location in
+                Log(location)
+            }
+            alert.addAction(title: "Cancel", style: .cancel)
+            alert.show()
+            
+        case .telegramPicker:
             let alert = UIAlertController(style: .actionSheet)
-            alert.addPhotoLibraryPicker(selection: .multiple(action: { assets in
-                //Log(assets)
+            alert.addTelegramPicker(selection: .multiple(action: { assets in
+                Log(assets)
             }))
             alert.addAction(title: "Cancel", style: .cancel)
             alert.show()
@@ -389,94 +465,39 @@ class ViewController: UIViewController {
     }
 }
 
-// MARK: - TableViewDelegate
+// MARK: - CollectionViewDelegate
 
-extension ViewController: UITableViewDelegate {
+extension ViewController: UICollectionViewDelegate {
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        Log("selected alert - \(alerts[indexPath.section].rawValue)")
-        show(alert: alerts[indexPath.section])
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        Log("selected alert - \(alerts[indexPath.item].rawValue)")
+        show(alert: alerts[indexPath.item])
     }
 }
 
-// MARK: - TableViewDataSource
+// MARK: - CollectionViewDataSource
 
-extension ViewController: UITableViewDataSource {
+extension ViewController: UICollectionViewDataSource {
     
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return alerts.count
-    }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let alert = alerts[indexPath.section]
-        let cell = tableView.dequeueReusableCell(withIdentifier: MainTableViewCell.identifier) as! MainTableViewCell
-        cell.imageView?.image = alert.image
-        cell.textLabel?.text = alert.rawValue
-        cell.detailTextLabel?.text = alert.description
-        cell.detailTextLabel?.textColor = .darkGray
-        cell.imageView?.tintColor = alert.color
-        return cell
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return alerts.count
     }
-}
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let item = collectionView.dequeueReusableCell(withReuseIdentifier: TypeOneCell.identifier, for: indexPath) as? TypeOneCell else { return UICollectionViewCell() }
+        
+        let alert = alerts[indexPath.item]
 
-final class MainTableViewCell: UITableViewCell {
-    
-    // MARK: Properties
-    
-    static let identifier = String(describing: MainTableViewCell.self)
-    
-    fileprivate lazy var backView: UIView = {
-        $0.backgroundColor = .white
-        return $0
-    }(UIView())
-    
-    fileprivate var inset: CGFloat {
-        return 20 + layoutMargins.right + layoutMargins.left
-    }
-    
-    fileprivate var originalWidth: CGFloat?
-    
-    // MARK: Initialize
-    
-    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
-        super.init(style: .subtitle, reuseIdentifier: reuseIdentifier)
-        selectionStyle = .none
-        contentView.insertSubview(backView, at: 0)
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    override func layoutSubviews() {
-        if originalWidth == nil { originalWidth = size.width }
-        bounds = CGRect(x: bounds.origin.x, y: bounds.origin.y, width: (originalWidth ?? size.width) - inset, height: size.height)
-        super.layoutSubviews()
-        //Log("layoutMargins = \(layoutMargins)")
-        //Log("styling ")
-        let margin: CGFloat = 1.5 * (layoutMargins.left + layoutMargins.right)
-        backView.frame = CGRect(
-            x: bounds.origin.x + (UIDevice.current.userInterfaceIdiom == .pad ? margin : 0),
-            y: bounds.origin.y,
-            width: bounds.width - (UIDevice.current.userInterfaceIdiom == .pad ? 2 * margin : 0),
-            height: bounds.height)
-        style(view: backView)
-    }
-    
-    func style(view: UIView) {
-        view.maskToBounds = false
-        view.backgroundColor = .white
-        view.cornerRadius = 12
-        view.shadowColor = .black
-        view.shadowOffset = CGSize(width: 2, height: 4)
-        view.shadowRadius = 8
-        view.shadowOpacity = 0.2
-        view.shadowPath = UIBezierPath(roundedRect: view.bounds, byRoundingCorners: .allCorners, cornerRadii: CGSize(width: 12, height: 12)).cgPath
-        view.shadowShouldRasterize = true
-        view.shadowRasterizationScale = UIScreen.main.scale
+        item.imageView.image = alert.image
+        item.imageView.tintColor = alert.color
+        item.title.text = alert.rawValue
+        item.subtitle.text = alert.description
+        item.subtitle.textColor = .darkGray
+        
+        return item
     }
 }
