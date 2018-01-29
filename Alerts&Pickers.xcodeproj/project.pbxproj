@@ -63,7 +63,6 @@
 		FAAB5C8E201BCB2500CCE04D /* PhoneCodeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAAB5C8D201BCB2500CCE04D /* PhoneCodeCell.swift */; };
 		FAAB5C9D201BD1F700CCE04D /* TypeOneCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAAB5C9C201BD1F700CCE04D /* TypeOneCell.swift */; };
 		FAAB5CA0201BD4B000CCE04D /* ItemWithImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAAB5C9F201BD4B000CCE04D /* ItemWithImage.swift */; };
-		FAAB5CA2201BD53300CCE04D /* MainCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAAB5CA1201BD53300CCE04D /* MainCell.swift */; };
 		FAAB5CA4201DEE0B00CCE04D /* UIApplication+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAAB5CA3201DEE0B00CCE04D /* UIApplication+Extensions.swift */; };
 		FAAB5CA6201DEE9C00CCE04D /* UIViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAAB5CA5201DEE9C00CCE04D /* UIViewController+Extensions.swift */; };
 		FAAB5CA8201F74B700CCE04D /* AttributedTextBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAAB5CA7201F74B700CCE04D /* AttributedTextBlock.swift */; };
@@ -132,7 +131,6 @@
 		FAAB5C8D201BCB2500CCE04D /* PhoneCodeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneCodeCell.swift; sourceTree = "<group>"; };
 		FAAB5C9C201BD1F700CCE04D /* TypeOneCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeOneCell.swift; sourceTree = "<group>"; };
 		FAAB5C9F201BD4B000CCE04D /* ItemWithImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemWithImage.swift; sourceTree = "<group>"; };
-		FAAB5CA1201BD53300CCE04D /* MainCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCell.swift; sourceTree = "<group>"; };
 		FAAB5CA3201DEE0B00CCE04D /* UIApplication+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+Extensions.swift"; sourceTree = "<group>"; };
 		FAAB5CA5201DEE9C00CCE04D /* UIViewController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extensions.swift"; sourceTree = "<group>"; };
 		FAAB5CA7201F74B700CCE04D /* AttributedTextBlock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttributedTextBlock.swift; sourceTree = "<group>"; };
@@ -240,6 +238,7 @@
 		FA3BB2A92008B46800E06F8F /* Example */ = {
 			isa = PBXGroup;
 			children = (
+				FA6E98C52017ABC400008C0C /* FlowLayouts */,
 				FAAB5C9B201BD1B200CCE04D /* Views */,
 				FA3BB28A2008B46500E06F8F /* Resources */,
 				FA3BB2AA2008B46800E06F8F /* ViewController.swift */,
@@ -251,7 +250,6 @@
 		FA3BB2CB2008B87A00E06F8F /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				FA6E98C52017ABC400008C0C /* FlowLayouts */,
 				FA826F83200E8B6200ECC926 /* Viewers */,
 				FA3BB2932008B46600E06F8F /* Extensions */,
 				FA3BB2A12008B46800E06F8F /* Pickers */,
@@ -468,7 +466,6 @@
 			isa = PBXGroup;
 			children = (
 				FAAB5C9C201BD1F700CCE04D /* TypeOneCell.swift */,
-				FAAB5CA1201BD53300CCE04D /* MainCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -593,7 +590,6 @@
 				FA7CE6DB2014AC4C00FB3E72 /* UIImageView+Extensions.swift in Sources */,
 				FA3BB2C62008B46900E06F8F /* ViewController.swift in Sources */,
 				FA3BB2B92008B46900E06F8F /* UIImage+Extensions.swift in Sources */,
-				FAAB5CA2201BD53300CCE04D /* MainCell.swift in Sources */,
 				FA3BB2C32008B46900E06F8F /* LocalePickerViewController.swift in Sources */,
 				FA3BB2C42008B46900E06F8F /* TwoTextFieldsViewController.swift in Sources */,
 				FA3BB2B02008B46800E06F8F /* SegmentedControl.swift in Sources */,
