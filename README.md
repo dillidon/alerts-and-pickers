@@ -13,12 +13,12 @@
 
 # Alerts & Pickers
 
-Advanced usage of native UIAlertController with TextField, DatePicker, PickerView, TableView and CollectionView.
+Advanced usage of native UIAlertController with TextField, TextView, DatePicker, PickerView, TableView, CollectionView and MapView.
 
 
 
 ### Features
-- [x] Custom pickers based on UITextField, UIDatePicker, UIPickerView, UITableView and UICollectionView.
+- [x] Custom pickers based on UITextField, UITextView, UIDatePicker, UIPickerView, UITableView, UICollectionView and MKMapView.
 - [x] Example using a Storyboard.
 - [x] Easy contentViewController placement.
 - [x] Attributed title label and message label.
@@ -245,8 +245,6 @@ alert.show()
 
 ## Locale Pickers
 
-Is based on `UITableView` with `UIActivityIndicatorView`.
-
 * #### Country Picker
 
 <div align = "center">
@@ -299,8 +297,6 @@ alert.show()
 
 ## Image Picker
 
-Is based on `UICollectionView` with horizontal or vertical flow.
-
 <div align = "center">
 <img src="Assets/gifs/actionSheet-imagePicker-h.gif" width="350" />
 <img src="Assets/gifs/actionSheet-imagePicker-v.gif" width="350" />
@@ -341,11 +337,8 @@ alert.show()
 
 ## PhotoLibrary Picker
 
-Is based on `UICollectionView` with horizontal or vertical flow.
-
 <div align = "center">
-<img src="Assets/gifs/actionSheet-imagePicker-h.gif" width="350" />
-<img src="Assets/gifs/actionSheet-imagePicker-v.gif" width="350" />
+<img src="Assets/gifs/actionSheet-photoLibraryPicker.gif" width="350" />
 </div>
 
 ```swift
@@ -380,11 +373,9 @@ alert.show()
 
 ## Contacts Picker
 
-Is based on `UITableView` with `UISearchController`.
-
 <div align = "center">
-<img src="Assets/gifs/actionSheet-imagePicker-h.gif" width="350" />
-<img src="Assets/gifs/actionSheet-imagePicker-v.gif" width="350" />
+<img src="Assets/gifs/actionSheet-contactsPicker.gif" width="350" />
+<img src="Assets/gifs/alert-contactsPicker.gif" width="350" />
 </div>
 
 ```swift
@@ -398,11 +389,8 @@ alert.show()
 
 ## Location Picker
 
-Is based on `MKMapView` with `UISearchController`.
-
 <div align = "center">
-<img src="Assets/gifs/actionSheet-imagePicker-h.gif" width="350" />
-<img src="Assets/gifs/actionSheet-imagePicker-v.gif" width="350" />
+<img src="Assets/gifs/actionSheet-locationPicker.gif" width="350" />
 </div>
 
 ```swift
@@ -416,11 +404,8 @@ alert.show()
 
 ## Telegram Picker
 
-Is based on `UITableView` with `UICollectionView` as header view.
-
 <div align = "center">
-<img src="Assets/gifs/actionSheet-imagePicker-h.gif" width="350" />
-<img src="Assets/gifs/actionSheet-imagePicker-v.gif" width="350" />
+<img src="Assets/gifs/actionSheet-telegramPicker.gif" width="350" />
 </div>
 
 ```swift
@@ -441,11 +426,9 @@ alert.show()
 
 ## TextViewer
 
-Is based on UITextView.
-
 <div align = "center">
-<img src="Assets/gifs/actionSheet-colorPicker.gif" width="350" />
-<img src="Assets/gifs/alert-colorPicker.gif" width="350" />
+<img src="Assets/gifs/actionSheet-textViewer.gif" width="350" />
+<img src="Assets/gifs/alert-textViewer.gif" width="350" />
 </div>
 
 ```swift
