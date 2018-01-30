@@ -297,16 +297,16 @@ alert.addAction(title: "OK", style: .cancel)
 alert.show()
 ```
 
-## Image Pickers
+## Image Picker
 
-Is based on `UICollectionView` with `UIActivityIndicatorView`.
-
-* #### Horizontal Image Picker
+Is based on `UICollectionView` with horizontal or vertical flow.
 
 <div align = "center">
 <img src="Assets/gifs/actionSheet-imagePicker-h.gif" width="350" />
-<img src="Assets/gifs/alert-imagePicker-h.gif" width="350" />
+<img src="Assets/gifs/actionSheet-imagePicker-v.gif" width="350" />
 </div>
+
+* Horizontal Image Picker with paging and single selection:
 
 ```swift
 let alert = UIAlertController(style: .actionSheet)
@@ -322,12 +322,7 @@ alert.addAction(title: "OK", style: .cancel)
 alert.show()
 ```
 
-* #### Vertical Image Picker
-
-<div align = "center">
-<img src="Assets/gifs/actionSheet-imagePicker-v.gif" width="350" />
-<img src="Assets/gifs/alert-imagePicker-v.gif" width="350" />
-</div>
+* Vertical Image Picker w/o paging and with multiple selection:
 
 ```swift
 let alert = UIAlertController(style: .actionSheet)
@@ -344,6 +339,27 @@ alert.addAction(title: "OK", style: .cancel)
 alert.show()
 ```
 
+## PhotoLibrary Picker
+
+Is based on `UICollectionView` with horizontal or vertical flow.
+
+<div align = "center">
+<img src="Assets/gifs/actionSheet-imagePicker-h.gif" width="350" />
+<img src="Assets/gifs/actionSheet-imagePicker-v.gif" width="350" />
+</div>
+
+```swift
+let alert = UIAlertController(style: .actionSheet)
+alert.addPhotoLibraryPicker(
+    flow: .horizontal,
+    paging: true,
+    selection: .single(action: { image in
+        // action with selected image
+    }))
+alert.addAction(title: "Cancel", style: .cancel)
+alert.show()
+```
+
 ## ColorPicker
 
 Example how to use UIViewController instantiated from Storyboard with Autolayout as `contentViewController` in the `UIAlertController`.
@@ -354,15 +370,88 @@ Example how to use UIViewController instantiated from Storyboard with Autolayout
 </div>
 
 ```swift
-var color: UIColor = UIColor(hex: 0xFF2DC6)
-
 let alert = UIAlertController(style: .actionSheet)
-alert.set(title: color.hexString, font: .systemFont(ofSize: 17), color: color)
-alert.addColorPicker(color: color) { [unowned self] new in
-    color = new
-    alert.set(title: color.hexString, font: .systemFont(ofSize: 17), color: color)
+alert.addColorPicker(color: color) { color in
+    // action with selected color
 }
 alert.addAction(title: "Done", style: .cancel)
+alert.show()
+```
+
+## Contacts Picker
+
+Is based on `UITableView` with `UISearchController`.
+
+<div align = "center">
+<img src="Assets/gifs/actionSheet-imagePicker-h.gif" width="350" />
+<img src="Assets/gifs/actionSheet-imagePicker-v.gif" width="350" />
+</div>
+
+```swift
+let alert = UIAlertController(style: .actionSheet)
+alert.addContactsPicker { contact in
+    // action with contact
+}
+alert.addAction(title: "Cancel", style: .cancel)
+alert.show()
+```
+
+## Location Picker
+
+Is based on `MKMapView` with `UISearchController`.
+
+<div align = "center">
+<img src="Assets/gifs/actionSheet-imagePicker-h.gif" width="350" />
+<img src="Assets/gifs/actionSheet-imagePicker-v.gif" width="350" />
+</div>
+
+```swift
+let alert = UIAlertController(style: .actionSheet)
+alert.addLocationPicker { location in
+    // action with location
+}
+alert.addAction(title: "Cancel", style: .cancel)
+alert.show()
+```
+
+## Telegram Picker
+
+Is based on `UITableView` with `UICollectionView` as header view.
+
+<div align = "center">
+<img src="Assets/gifs/actionSheet-imagePicker-h.gif" width="350" />
+<img src="Assets/gifs/actionSheet-imagePicker-v.gif" width="350" />
+</div>
+
+```swift
+let alert = UIAlertController(style: .actionSheet)
+alert.addTelegramPicker { result in
+    switch result {
+      case .photo(let assets):
+        // action with assets
+      case .contact(let contact):
+        // action with contact
+      case .location(let location):
+        // action with location
+    }
+}
+alert.addAction(title: "Cancel", style: .cancel)
+alert.show()
+```
+
+## TextViewer
+
+Is based on UITextView.
+
+<div align = "center">
+<img src="Assets/gifs/actionSheet-colorPicker.gif" width="350" />
+<img src="Assets/gifs/alert-colorPicker.gif" width="350" />
+</div>
+
+```swift
+let alert = UIAlertController(style: .actionSheet)
+alert.addTextViewer(text: .attributedText(text))
+alert.addAction(title: "OK", style: .cancel)
 alert.show()
 ```
 
@@ -378,7 +467,7 @@ There are some things to keep in mind when using `.actionSheet` and `.alert` sty
 
 #### Manually
 
-Download and drop `/Extensions`, `/Pickers` and `/Views` folders in your project.
+Download and drop `/Source` folder in your project.
 
 ## Requirements
 

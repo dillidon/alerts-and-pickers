@@ -50,7 +50,7 @@ class TypeOneCell: UICollectionViewCell {
     }
     
     func layout() {
-        let vTextInset: CGFloat = UIDevice.current.userInterfaceIdiom == .pad ? 2 : 1
+        let vTextInset: CGFloat = UIDevice.current.userInterfaceIdiom == .pad ? 4 : 2
         let hTextInset: CGFloat = UIDevice.current.userInterfaceIdiom == .pad ? 12 : 8
         let imageViewHeight: CGFloat = contentView.height - (layoutMargins.top + layoutMargins.bottom)
         imageView.frame = CGRect(x: layoutMargins.left + 4, y: layoutMargins.top, width: imageViewHeight, height: imageViewHeight)
