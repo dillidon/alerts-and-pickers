@@ -17,7 +17,7 @@ class TypeOneCell: UICollectionViewCell {
     }(UILabel())
     
     public lazy var subtitle: UILabel = {
-        $0.font = .systemFont(ofSize: UIDevice.current.userInterfaceIdiom == .pad ? 15 : 14)
+        $0.font = .systemFont(ofSize: UIDevice.current.userInterfaceIdiom == .pad ? 15 : 13)
         $0.textColor = .gray
         $0.numberOfLines = 1
         return $0
@@ -45,15 +45,8 @@ class TypeOneCell: UICollectionViewCell {
     
     override public func layoutSubviews() {
         super.layoutSubviews()
-        Log("layoutMargins = \(layoutMargins), contentView = \(contentView.bounds)")
+        //Log("layoutMargins = \(layoutMargins), contentView = \(contentView.bounds)")
         layout()
-    }
-    
-    override func sizeThatFits(_ size: CGSize) -> CGSize {
-        Log("size = \(size)")
-        contentView.size = size
-        layout()
-        return size
     }
     
     func layout() {
@@ -86,11 +79,4 @@ class TypeOneCell: UICollectionViewCell {
         view.shadowShouldRasterize = true
         view.shadowRasterizationScale = UIScreen.main.scale
     }
-    /*
-    override func apply(_ layoutAttributes: UICollectionViewLayoutAttributes) {
-        super.apply(layoutAttributes)
-        Log("layoutAttributes = \(layoutAttributes)")
-        //layoutIfNeeded()
-    }
-    */
 }

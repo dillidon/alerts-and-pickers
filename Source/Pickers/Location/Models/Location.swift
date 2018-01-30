@@ -1,7 +1,6 @@
 import Foundation
-
 import CoreLocation
-import AddressBookUI
+import Contacts
 
 // class because protocol
 public class Location: NSObject {
@@ -13,17 +12,13 @@ public class Location: NSObject {
 	public let placemark: CLPlacemark
 	
 	public var address: String {
-		// try to build full address first
-		if let addressDic = placemark.addressDictionary {
-			if let lines = addressDic["FormattedAddressLines"] as? [String] {
-				return lines.joined(separator: ", ")
-			} else {
-				// fallback
-				return ABCreateStringWithAddressDictionary(addressDic, true)
-			}
-		} else {
-			return "\(coordinate.latitude), \(coordinate.longitude)"
-		}
+        if let postalAddress = placemark.postalAddress {
+            let formatter = CNPostalAddressFormatter()
+            formatter.style = .mailingAddress
+            return formatter.string(from: postalAddress)
+        } else {
+            return "\(coordinate.latitude), \(coordinate.longitude)"
+        }
 	}
 	
 	public init(name: String?, location: CLLocation? = nil, placemark: CLPlacemark) {
@@ -36,11 +31,12 @@ public class Location: NSObject {
 import MapKit
 
 extension Location: MKAnnotation {
+    
     @objc public var coordinate: CLLocationCoordinate2D {
 		return location.coordinate
 	}
 	
     public var title: String? {
-		return name ?? address
+		return address
 	}
 }

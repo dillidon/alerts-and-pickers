@@ -91,9 +91,9 @@ class ViewController: UIViewController {
     
     struct UI {
         static let itemHeight: CGFloat = UIDevice.current.userInterfaceIdiom == .pad ? 88 : 65
-        static let lineSpacing: CGFloat = UIDevice.current.userInterfaceIdiom == .pad ? 24 : 16
+        static let lineSpacing: CGFloat = UIDevice.current.userInterfaceIdiom == .pad ? 28 : 20
         static let xInset: CGFloat = UIDevice.current.userInterfaceIdiom == .pad ? 40 : 20
-        static let topInset: CGFloat = UIDevice.current.userInterfaceIdiom == .pad ? 28 : 12
+        static let topInset: CGFloat = UIDevice.current.userInterfaceIdiom == .pad ? 40 : 28
     }
     
     
@@ -307,54 +307,21 @@ class ViewController: UIViewController {
             alert.show()
             
         case .countryPicker:
-            var info: LocaleInfo?
-            
-            let addCountry: UIAlertAction = UIAlertAction(title: "Add Country", style: .default) { action in
-                Log(info)
-            }
-            addCountry.isEnabled = false
-            
             let alert = UIAlertController(style: self.alertStyle)
-            alert.addLocalePicker(type: .country) { new in
-                info = new
-                addCountry.isEnabled = info != nil
-            }
-            alert.addAction(addCountry)
-            alert.addAction(title: "Cancel", color: .black, style: .cancel)
+            alert.addLocalePicker(type: .country) { info in Log(info) }
+            alert.addAction(title: "Cancel", style: .cancel)
             alert.show()
             
         case .phoneCodePicker:
-            var info: LocaleInfo?
-            
-            let addPhoneCode: UIAlertAction = UIAlertAction(title: "Add Country", style: .default) { action in
-                Log(info)
-            }
-            addPhoneCode.isEnabled = false
-            
             let alert = UIAlertController(style: self.alertStyle)
-            alert.addLocalePicker(type: .phoneCode) { new in
-                info = new
-                addPhoneCode.isEnabled = info != nil
-            }
-            alert.addAction(addPhoneCode)
-            alert.addAction(title: "Cancel", color: .black, style: .cancel)
+            alert.addLocalePicker(type: .phoneCode) { info in Log(info) }
+            alert.addAction(title: "Cancel", style: .cancel)
             alert.show()
             
         case .currencyPicker:
-            var info: LocaleInfo?
-            
-            let addCurrency: UIAlertAction = UIAlertAction(title: "Add Country", style: .default) { action in
-                Log(info)
-            }
-            addCurrency.isEnabled = false
-            
             let alert = UIAlertController(style: self.alertStyle)
-            alert.addLocalePicker(type: .currency) { new in
-                info = new
-                addCurrency.isEnabled = info != nil
-            }
-            alert.addAction(addCurrency)
-            alert.addAction(title: "Cancel", color: .black, style: .cancel)
+            alert.addLocalePicker(type: .currency) { info in Log(info) }
+            alert.addAction(title: "Cancel", style: .cancel)
             alert.show()
             
         case .imagePicker:
@@ -372,36 +339,17 @@ class ViewController: UIViewController {
             alert.show()
             
         case .photoLibraryPicker:
-            var assets: [PHAsset] = []
-            
-            let addPhotos: UIAlertAction = UIAlertAction(title: "Add", style: .default) { action in
-                Log(assets)
-            }
-            addPhotos.isEnabled = false
-            
             let alert = UIAlertController(style: self.alertStyle)
-            alert.addPhotoLibraryPicker(
-                flow: .vertical,
-                paging: false,
-                selection: .multiple(action: { new in
-                    addPhotos.isEnabled = new.count > 0
-                    assets = new
-                    Log(assets)
-                }))
-            alert.addAction(addPhotos)
+            alert.addPhotoLibraryPicker(flow: .vertical, paging: false,
+                selection: .multiple(action: { assets in Log(assets) }))
             alert.addAction(title: "Cancel", style: .cancel)
             alert.show()
             
             
         case .colorPicker:
-            var color: UIColor = UIColor(hex: 0xFF2DC6)
             let alert = UIAlertController(style: self.alertStyle)
-            alert.set(title: color.hexString, font: .systemFont(ofSize: 17), color: color)
-            alert.addColorPicker(color: color) { new in
-                color = new
-                alert.set(title: color.hexString, font: .systemFont(ofSize: 17), color: color)
-            }
-            alert.addAction(title: "Done", style: .cancel)
+            alert.addColorPicker(color: UIColor(hex: 0xFF2DC6)) { color in Log(color) }
+            alert.addAction(title: "Cancel", style: .cancel)
             alert.show()
             
         case .textViewer:
@@ -424,41 +372,33 @@ class ViewController: UIViewController {
                 .list("Apple Print Products"),
                 .normal("*You can return software, provided that it has not been installed on any computer. Software that contains a printed software license may not be returned if the seal or sticker on the software media packaging is broken.")]
             alert.addTextViewer(text: .attributedText(text))
-            alert.addAction(title: "OK", color: .black, style: .cancel)
+            alert.addAction(title: "OK", style: .cancel)
             alert.show()
             
         case .contactsPicker:
-            var contact: Contact?
-            
-            let addContact: UIAlertAction = UIAlertAction(title: "Add Contact", style: .default) { action in
-                Log(contact)
-            }
-            addContact.isEnabled = false
-            
             let alert = UIAlertController(style: self.alertStyle)
-            
-            alert.addContactsPicker { new in
-                addContact.isEnabled = new != nil
-                contact = new
-            }
-            
-            alert.addAction(addContact)
+            alert.addContactsPicker { contact in Log(contact) }
             alert.addAction(title: "Cancel", style: .cancel)
             alert.show()
             
         case .locationPicker:
             let alert = UIAlertController(style: self.alertStyle)
-            alert.addLocationPicker { location in
-                Log(location)
-            }
+            alert.addLocationPicker { location in Log(location) }
             alert.addAction(title: "Cancel", style: .cancel)
             alert.show()
             
         case .telegramPicker:
             let alert = UIAlertController(style: .actionSheet)
-            alert.addTelegramPicker(selection: .multiple(action: { assets in
-                Log(assets)
-            }))
+            alert.addTelegramPicker { result in
+                switch result {
+                case .photo(let assets):
+                    Log(assets)
+                case .contact(let contact):
+                    Log(contact)
+                case .location(let location):
+                    Log(location)
+                }
+            }
             alert.addAction(title: "Cancel", style: .cancel)
             alert.show()
         }

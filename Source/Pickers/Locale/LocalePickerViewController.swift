@@ -8,9 +8,20 @@ extension UIAlertController {
     ///   - type: country, phoneCode or currency
     ///   - action: for selected locale
     
-    func addLocalePicker(type: LocalePickerViewController.Kind, action: LocalePickerViewController.Action?) {
-        let vc = LocalePickerViewController(type: type, action: action)
+    func addLocalePicker(type: LocalePickerViewController.Kind, selection: @escaping LocalePickerViewController.Selection) {
+        var info: LocaleInfo?
+        let selection: LocalePickerViewController.Selection = selection
+        let buttonSelect: UIAlertAction = UIAlertAction(title: "Select", style: .default) { action in
+            selection(info)
+        }
+        buttonSelect.isEnabled = false
+        
+        let vc = LocalePickerViewController(type: type) { new in
+            info = new
+            buttonSelect.isEnabled = new != nil
+        }
         set(vc: vc)
+        addAction(buttonSelect)
     }
 }
 
@@ -25,7 +36,7 @@ final class LocalePickerViewController: UIViewController {
     
     // MARK: Properties
     
-    public typealias Action = (LocaleInfo?) -> Swift.Void
+    public typealias Selection = (LocaleInfo?) -> Swift.Void
     
     public enum Kind {
         case country
@@ -34,7 +45,7 @@ final class LocalePickerViewController: UIViewController {
     }
     
     fileprivate var type: Kind
-    fileprivate var action: Action?
+    fileprivate var selection: Selection?
     
     fileprivate var orderedInfo = [String: [LocaleInfo]]()
     fileprivate var sortedInfoKeys = [String]()
@@ -45,7 +56,7 @@ final class LocalePickerViewController: UIViewController {
     
     fileprivate lazy var searchView: UIView = UIView()
     
-    fileprivate lazy var searchController: UISearchController = {
+    fileprivate lazy var searchController: UISearchController = { [unowned self] in
         $0.searchResultsUpdater = self
         $0.searchBar.delegate = self
         $0.dimsBackgroundDuringPresentation = false
@@ -77,9 +88,9 @@ final class LocalePickerViewController: UIViewController {
     
     // MARK: Initialize
     
-    required init(type: Kind, action: Action?) {
+    required init(type: Kind, selection: @escaping Selection) {
         self.type = type
-        self.action = action
+        self.selection = selection
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -243,7 +254,6 @@ extension LocalePickerViewController: UISearchResultsUpdating {
         guard let selectedIndexPath = indexPathOfSelectedInfo() else { return }
         Log("selectedIndexPath = \(selectedIndexPath)")
         tableView.selectRow(at: selectedIndexPath, animated: false, scrollPosition: .none)
-        //scrollToRow(at: selectedIndexPath, at: .top , animated: true)
     }
 }
 
@@ -252,19 +262,7 @@ extension LocalePickerViewController: UISearchResultsUpdating {
 extension LocalePickerViewController: UISearchBarDelegate {
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        /*
-        Log("indexPathForSelectedRow = \(String(describing: tableView.indexPathForSelectedRow)), indexPathsForSelectedRows = \(String(describing: tableView.indexPathsForSelectedRows))")
-        
-        searchBarIsActive = false
-        
-        tableView.reloadData()
-        
-        Log("indexPathForSelectedRow = \(String(describing: tableView.indexPathForSelectedRow)), indexPathsForSelectedRows = \(String(describing: tableView.indexPathsForSelectedRows))")
-        
-        if let index = tableView.indexPathForSelectedRow {
-            tableView.scrollToRow(at: index, at: .top , animated: true)
-        }
-        */
+
     }
 }
 
@@ -275,8 +273,7 @@ extension LocalePickerViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let info = info(at: indexPath) else { return }
         selectedInfo = info
-        Log("selectedInfo = \(String(describing: selectedInfo))")
-        action?(selectedInfo)
+        selection?(selectedInfo)
     }
 }
 
@@ -285,7 +282,6 @@ extension LocalePickerViewController: UITableViewDelegate {
 extension LocalePickerViewController: UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        Log("searchController.isActive = \(searchController.isActive)")
         if searchController.isActive { return 1 }
         return sortedInfoKeys.count
     }
@@ -348,7 +344,6 @@ extension LocalePickerViewController: UITableViewDataSource {
         }
         
         if let selected = selectedInfo, selected.country == info.country {
-            Log("indexPath = \(indexPath) is selected - \(selected)")
             cell.isSelected = true
         }
         

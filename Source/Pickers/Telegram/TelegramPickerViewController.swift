@@ -2,6 +2,15 @@ import Foundation
 import UIKit
 import Photos
 
+public typealias TelegramSelection = (TelegramSelectionType) -> ()
+
+public enum TelegramSelectionType {
+    
+    case photo([PHAsset])
+    case location(Location?)
+    case contact(Contact?)
+}
+
 extension UIAlertController {
     
     /// Add Telegram Picker
@@ -9,26 +18,43 @@ extension UIAlertController {
     /// - Parameters:
     ///   - selection: type and action for selection of asset/assets
     
-    func addTelegramPicker(selection: TelegramPickerViewController.Selection) {
+    func addTelegramPicker(selection: @escaping TelegramSelection) {
         let vc = TelegramPickerViewController(selection: selection)
         set(vc: vc)
     }
 }
 
+
+
 final class TelegramPickerViewController: UIViewController {
     
-    enum Selection {
-        case single(action: ((PHAsset?) -> Swift.Void)?)
-        case multiple(action: (([PHAsset]) -> Swift.Void)?)
+    
+    
+    var buttons: [ButtonType] {
+        return selectedAssets.count == 0
+            ? [.photoOrVideo, .location, .contact]
+            : [.sendPhotos]
     }
     
-    public enum ButtonType {
+    enum ButtonType {
         case photoOrVideo
         case file
         case location
         case contact
         case sendPhotos
         case sendAsFile
+    }
+    
+    // MARK: UI
+    
+    struct UI {
+        static let rowHeight: CGFloat = 58
+        static let insets: UIEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
+        static let minimumInteritemSpacing: CGFloat = 6
+        static let minimumLineSpacing: CGFloat = 6
+        static let maxHeight: CGFloat = UIScreen.main.bounds.width / 2
+        static let multiplier: CGFloat = 2
+        static let animationDuration: TimeInterval = 0.3
     }
     
     func title(for button: ButtonType) -> String {
@@ -46,69 +72,6 @@ final class TelegramPickerViewController: UIViewController {
         switch button {
         case .sendPhotos: return UIFont.boldSystemFont(ofSize: 20)
         default: return UIFont.systemFont(ofSize: 20) }
-    }
-    
-    func action(for button: ButtonType) {
-        switch button {
-            
-        case .photoOrVideo:
-            var assets: [PHAsset] = []
-            let addPhotos: UIAlertAction = UIAlertAction(title: "Add", style: .default) { action in
-                Log(assets)
-            }
-            addPhotos.isEnabled = false
-            alertController?.addPhotoLibraryPicker(
-                flow: .vertical,
-                paging: false,
-                selection: .multiple(action: { new in
-                    addPhotos.isEnabled = new.count > 0
-                    assets = new
-                    Log(assets)
-                }))
-            alertController?.addAction(addPhotos)
-
-        case .file:
-            
-            break
-            
-        case .location:
-            alertController?.addLocationPicker { location in
-                Log(location)
-            }
-            
-        case .contact:
-            var contact: Contact?
-            let addContact: UIAlertAction = UIAlertAction(title: "Add Contact", style: .default) { action in
-                Log(contact)
-            }
-            addContact.isEnabled = false
-            alertController?.addContactsPicker { new in
-                addContact.isEnabled = new != nil
-                contact = new
-                Log(contact)
-            }
-            alertController?.addAction(addContact)
-            
-        case .sendPhotos:
-            
-            break
-        
-        case .sendAsFile:
-            
-            break
-        }
-    }
-    
-    // MARK: UI Metrics
-    
-    struct UI {
-        static let rowHeight: CGFloat = 58
-        static let insets: UIEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
-        static let minimumInteritemSpacing: CGFloat = 6
-        static let minimumLineSpacing: CGFloat = 6
-        static let maxHeight: CGFloat = UIScreen.main.bounds.width / 2
-        static let multiplier: CGFloat = 2
-        static let animationDuration: TimeInterval = 0.3
     }
     
     var preferredHeight: CGFloat {
@@ -136,6 +99,7 @@ final class TelegramPickerViewController: UIViewController {
     fileprivate lazy var collectionView: UICollectionView = { [unowned self] in
         $0.dataSource = self
         $0.delegate = self
+        $0.allowsMultipleSelection = true
         $0.showsVerticalScrollIndicator = false
         $0.showsHorizontalScrollIndicator = false
         $0.decelerationRate = UIScrollViewDecelerationRateFast
@@ -155,8 +119,6 @@ final class TelegramPickerViewController: UIViewController {
         return $0
         }(PhotoLayout())
     
-    //fileprivate var layoutState: PhotoLayoutState = .square
-    
     fileprivate lazy var tableView: UITableView = { [unowned self] in
         $0.dataSource = self
         $0.delegate = self
@@ -172,32 +134,16 @@ final class TelegramPickerViewController: UIViewController {
         return $0
         }(UITableView(frame: .zero, style: .plain))
     
-    fileprivate lazy var assets = [PHAsset]()
-    fileprivate lazy var selectedAssets = [PHAsset]()
+    lazy var assets = [PHAsset]()
+    lazy var selectedAssets = [PHAsset]()
     
-    fileprivate var selection: Selection
-    
-    fileprivate var buttons: [ButtonType] {
-        return selectedAssets.count == 0
-            ? [.photoOrVideo, .file, .location, .contact]
-            : [.sendPhotos, .sendAsFile]
-    }
-    
-    fileprivate lazy var indicatorView: UIActivityIndicatorView = {
-        $0.color = .lightGray
-        return $0
-    }(UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge))
+    var selection: TelegramSelection?
     
     // MARK: Initialize
     
-    required public init(selection: Selection) {
+    required init(selection: @escaping TelegramSelection) {
         self.selection = selection
         super.init(nibName: nil, bundle: nil)
-        
-        switch selection {
-        case .single(_): collectionView.allowsSelection = true
-        case .multiple(_): collectionView.allowsMultipleSelection = true
-        }
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -214,7 +160,6 @@ final class TelegramPickerViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.addSubview(indicatorView)
         
         if UIDevice.current.userInterfaceIdiom == .pad {
             preferredContentSize.width = UIScreen.main.bounds.width * 0.5
@@ -225,29 +170,23 @@ final class TelegramPickerViewController: UIViewController {
         
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        indicatorView.center = view.center
         layoutSubviews()
     }
     
-    fileprivate func layoutSubviews() {
+    func layoutSubviews() {
         tableView.tableHeaderView?.height = preferredHeight
         preferredContentSize.height = tableView.contentSize.height
     }
     
     func updatePhotos() {
-        indicatorView.startAnimating()
-        
-        DispatchQueue.global(qos: .userInteractive).async {
-            self.checkStatus { [unowned self] assets in
-               
-                self.assets.removeAll()
-                self.assets.append(contentsOf: assets)
-                
-                DispatchQueue.main.async {
-                    self.indicatorView.stopAnimating()
-                    self.tableView.reloadData()
-                    self.collectionView.reloadData()
-                }
+        checkStatus { [unowned self] assets in
+            
+            self.assets.removeAll()
+            self.assets.append(contentsOf: assets)
+            
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+                self.collectionView.reloadData()
             }
         }
     }
@@ -305,30 +244,55 @@ final class TelegramPickerViewController: UIViewController {
     func action(withAsset asset: PHAsset, at indexPath: IndexPath) {
         let previousCount = selectedAssets.count
         
-        switch selection {
-        
-        case .single(let action):
-            selectedAssets = [asset]
-            action?(asset)
-        
-        case .multiple(let action):
-            selectedAssets.contains(asset)
-                ? selectedAssets.remove(asset)
-                : selectedAssets.append(asset)
-            action?(selectedAssets)
-        }
+        selectedAssets.contains(asset)
+            ? selectedAssets.remove(asset)
+            : selectedAssets.append(asset)
+        selection?(TelegramSelectionType.photo(selectedAssets))
         
         let currentCount = selectedAssets.count
 
         if (previousCount == 0 && currentCount > 0) || (previousCount > 0 && currentCount == 0) {
-            UIView.animate(withDuration: 0.4, animations: {
+            UIView.animate(withDuration: 0.25, animations: {
                 self.layout.invalidateLayout()
-            }) { finished in
-                guard finished else { return }
-                self.layoutSubviews()
-            }
+            }) { finished in self.layoutSubviews() }
+        } else {
+            collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
         }
         tableView.reloadData()
+    }
+    
+    func action(for button: ButtonType) {
+        switch button {
+            
+        case .photoOrVideo:
+            alertController?.addPhotoLibraryPicker(flow: .vertical, paging: false,
+                selection: .multiple(action: { assets in
+                    self.selection?(TelegramSelectionType.photo(assets))
+                }))
+            
+        case .file:
+            
+            break
+            
+        case .location:
+            alertController?.addLocationPicker { location in
+                self.selection?(TelegramSelectionType.location(location))
+            }
+            
+        case .contact:
+            alertController?.addContactsPicker { contact in
+                self.selection?(TelegramSelectionType.contact(contact))
+            }
+            
+        case .sendPhotos:
+            alertController?.dismiss(animated: true) { [unowned self] in
+                self.selection?(TelegramSelectionType.photo(self.selectedAssets))
+            }
+            
+        case .sendAsFile:
+            
+            break
+        }
     }
 }
 
@@ -342,9 +306,7 @@ extension TelegramPickerViewController: UICollectionViewDelegate {
     }
     
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
-        switch selection {
-        case .multiple(_): action(withAsset: assets[indexPath.item], at: indexPath)
-        default: break }
+        action(withAsset: assets[indexPath.item], at: indexPath)
     }
 }
 
@@ -390,8 +352,12 @@ extension TelegramPickerViewController: PhotoLayoutDelegate {
 // MARK: - TableViewDelegate
 
 extension TelegramPickerViewController: UITableViewDelegate {
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        action(for: buttons[indexPath.row])
+        Log("indexPath = \(indexPath)")
+        DispatchQueue.main.async {
+            self.action(for: self.buttons[indexPath.row])
+        }
     }
 }
 

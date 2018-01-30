@@ -14,8 +14,6 @@ extension UIAlertController {
     func addLocationPicker(location: Location? = nil, completion: @escaping LocationPickerViewController.CompletionHandler) {
         let vc = LocationPickerViewController()
         vc.location = location
-        vc.useCurrentLocationAsHint = true
-        vc.selectCurrentLocationInitially = true
         vc.completion = completion
         set(vc: vc)
     }
@@ -40,7 +38,7 @@ final class LocationPickerViewController: UIViewController {
 
     /// default: false
     /// Select current location only if `location` property is nil.
-    public var selectCurrentLocationInitially = false
+    public var selectCurrentLocationInitially = true
 	
 	/// see `region` property of `MKLocalSearchRequest`
 	/// default: false
@@ -115,6 +113,8 @@ final class LocationPickerViewController: UIViewController {
         $0.searchBar.placeholder = searchBarPlaceholder
         $0.searchBar.barStyle = .black
         $0.searchBar.searchBarStyle = .minimal
+        $0.searchBar.textField?.textColor = UIColor(hex: 0xf4f4f4)
+        $0.searchBar.textField?.setPlaceHolderTextColor(UIColor(hex: 0xf8f8f8))
         $0.searchBar.textField?.clearButtonMode = .whileEditing
 		return $0
 	}(UISearchController(searchResultsController: results))
@@ -275,6 +275,7 @@ final class LocationPickerViewController: UIViewController {
 }
 
 extension LocationPickerViewController: CLLocationManagerDelegate {
+    
 	public func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
 		guard let location = locations.first else { return }
         currentLocationListeners.forEach { $0.action(location) }

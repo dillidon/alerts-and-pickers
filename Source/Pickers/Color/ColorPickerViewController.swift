@@ -8,19 +8,34 @@ extension UIAlertController {
     ///   - color: input color
     ///   - action: for selected color
     
-    func addColorPicker(color: UIColor = .black, action: ColorPickerViewController.Action?) {
+    func addColorPicker(color: UIColor = .black, selection: ColorPickerViewController.Selection?) {
+        let selection: ColorPickerViewController.Selection? = selection
+        var color: UIColor = color
+        
+        let buttonSelection = UIAlertAction(title: "Select", style: .default) { action in
+            selection?(color)
+        }
+        buttonSelection.isEnabled = false
+        
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         guard let vc = storyboard.instantiateViewController(withIdentifier: "ColorPicker") as? ColorPickerViewController else { return }
         set(vc: vc)
-        vc.set(color: color, action: action)
+        
+        set(title: color.hexString, font: .systemFont(ofSize: 17), color: color)
+        vc.set(color: color) { new in
+            buttonSelection.isEnabled = color != new
+            color = new
+            self.set(title: color.hexString, font: .systemFont(ofSize: 17), color: color)
+        }
+        addAction(buttonSelection)
     }
 }
 
 class ColorPickerViewController: UIViewController {
     
-    typealias Action = (UIColor) -> Swift.Void
+    public typealias Selection = (UIColor) -> Swift.Void
     
-    fileprivate var action: Action?
+    fileprivate var selection: Selection?
     
     @IBOutlet weak var colorView: UIView!
     
@@ -41,7 +56,7 @@ class ColorPickerViewController: UIViewController {
     
     fileprivate var preferredHeight: CGFloat = 0
     
-    func set(color: UIColor, action: Action?) {
+    func set(color: UIColor, selection: Selection?) {
         let components = color.hsbaComponents
         
         hue = components.hue
@@ -66,7 +81,7 @@ class ColorPickerViewController: UIViewController {
         
         updateColorView()
         
-        self.action = action
+        self.selection = selection
     }
     
     override func viewDidLoad() {
@@ -121,20 +136,11 @@ class ColorPickerViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         preferredHeight = mainStackView.frame.maxY
-        Log("preferredHeight = \(preferredHeight)")
-        
-        ///
-        if preferredHeight != 0 {
-            //preferredContentSize.height = preferredHeight + 24
-        }
-        
-        /// 
-        Log("view bounds = \(view.bounds)")
     }
     
     func updateColorView() {
         colorView.backgroundColor = color
-        action?(color)
+        selection?(color)
         Log("set color = \(color.hexString)")
     }
 }

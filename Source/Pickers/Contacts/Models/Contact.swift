@@ -1,7 +1,7 @@
 import UIKit
 import Contacts
 
-struct Contact {
+public struct Contact {
     
     var value: CNContact
     

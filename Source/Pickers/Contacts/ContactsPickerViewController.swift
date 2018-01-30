@@ -9,8 +9,21 @@ extension UIAlertController {
     ///   - selection: action for selection of contact
     
     func addContactsPicker(selection: @escaping ContactsPickerViewController.Selection) {
-        let vc = ContactsPickerViewController(selection: selection)
+        let selection: ContactsPickerViewController.Selection = selection
+        var contact: Contact?
+        
+        let addContact = UIAlertAction(title: "Add Contact", style: .default) { action in
+            selection(contact)
+        }
+        addContact.isEnabled = false
+        
+        let vc = ContactsPickerViewController { new in
+            addContact.isEnabled = new != nil
+            contact = new
+        }
+        
         set(vc: vc)
+        addAction(addContact)
     }
 }
 

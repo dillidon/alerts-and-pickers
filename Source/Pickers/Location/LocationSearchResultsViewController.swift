@@ -18,6 +18,11 @@ final class LocationSearchResultsViewController: UITableViewController {
         tableView.backgroundView = blurEffectView
         tableView.separatorEffect = UIVibrancyEffect(blurEffect: blurEffect)
 	}
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        preferredContentSize.height = tableView.contentSize.height
+    }
 	
 	override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
 		return isShowingHistory ? searchHistoryLabel : nil

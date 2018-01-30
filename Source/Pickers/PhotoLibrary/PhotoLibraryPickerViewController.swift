@@ -12,9 +12,37 @@ extension UIAlertController {
     ///   - images: for content to select
     ///   - selection: type and action for selection of image/images
     
-    func addPhotoLibraryPicker(flow: UICollectionViewScrollDirection, paging: Bool, selection: PhotoLibraryPickerViewController.Selection? = nil) {
+    func addPhotoLibraryPicker(flow: UICollectionViewScrollDirection, paging: Bool, selection: PhotoLibraryPickerViewController.Selection) {
+        let selection: PhotoLibraryPickerViewController.Selection = selection
+        var asset: PHAsset?
+        var assets: [PHAsset] = []
         
-        let vc = PhotoLibraryPickerViewController(flow: flow, paging: paging, selection: selection)
+        let buttonAdd = UIAlertAction(title: "Add", style: .default) { action in
+            switch selection {
+                
+            case .single(let action):
+                action?(asset)
+                
+            case .multiple(let action):
+                action?(assets)
+            }
+        }
+        buttonAdd.isEnabled = false
+        
+        let vc = PhotoLibraryPickerViewController(flow: flow, paging: paging, selection: {
+            switch selection {
+            case .single(_):
+                return .single(action: { new in
+                    buttonAdd.isEnabled = new != nil
+                    asset = new
+                })
+            case .multiple(_):
+                return .multiple(action: { new in
+                    buttonAdd.isEnabled = new.count > 0
+                    assets = new
+                })
+            }
+        }())
         
         if UIDevice.current.userInterfaceIdiom == .pad {
             vc.preferredContentSize.height = vc.preferredSize.height * 0.9
@@ -23,6 +51,7 @@ extension UIAlertController {
             vc.preferredContentSize.height = vc.preferredSize.height
         }
         
+        addAction(buttonAdd)
         set(vc: vc)
     }
 }
@@ -89,7 +118,7 @@ final class PhotoLibraryPickerViewController: UIViewController {
     
     // MARK: Initialize
     
-    required public init(flow: UICollectionViewScrollDirection, paging: Bool, selection: Selection?) {
+    required public init(flow: UICollectionViewScrollDirection, paging: Bool, selection: Selection) {
         super.init(nibName: nil, bundle: nil)
         
         self.selection = selection
@@ -98,9 +127,12 @@ final class PhotoLibraryPickerViewController: UIViewController {
         self.collectionView.isPagingEnabled = paging
         
         switch selection {
-        case .single(_)?: collectionView.allowsSelection = true
-        case .multiple(_)?: collectionView.allowsMultipleSelection = true
-        case .none: break }
+            
+        case .single(_):
+            collectionView.allowsSelection = true
+        case .multiple(_):
+            collectionView.allowsMultipleSelection = true
+        }
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -129,7 +161,6 @@ final class PhotoLibraryPickerViewController: UIViewController {
     }
     
     func checkStatus(completionHandler: @escaping ([PHAsset]) -> ()) {
-        Log("status = \(PHPhotoLibrary.authorizationStatus())")
         switch PHPhotoLibrary.authorizationStatus() {
             
         case .notDetermined:
@@ -168,7 +199,6 @@ final class PhotoLibraryPickerViewController: UIViewController {
                 completionHandler(assets)
                 
             case .error(let error):
-                Log("------ error")
                 let alert = UIAlertController(style: .alert, title: "Error", message: error.localizedDescription)
                 alert.addAction(title: "OK") { [unowned self] action in
                     self.alertController?.dismiss(animated: true)
@@ -238,7 +268,6 @@ extension PhotoLibraryPickerViewController: UICollectionViewDataSource {
 extension PhotoLibraryPickerViewController: UICollectionViewDelegateFlowLayout {
     
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        Log("view size = \(view.bounds), collectionView = \(collectionView.size), itemSize = \(itemSize)")
         return itemSize
     }
 }
