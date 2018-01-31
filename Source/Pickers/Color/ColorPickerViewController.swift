@@ -15,7 +15,7 @@ extension UIAlertController {
         let buttonSelection = UIAlertAction(title: "Select", style: .default) { action in
             selection?(color)
         }
-        buttonSelection.isEnabled = false
+        buttonSelection.isEnabled = true
         
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         guard let vc = storyboard.instantiateViewController(withIdentifier: "ColorPicker") as? ColorPickerViewController else { return }
@@ -23,7 +23,6 @@ extension UIAlertController {
         
         set(title: color.hexString, font: .systemFont(ofSize: 17), color: color)
         vc.set(color: color) { new in
-            buttonSelection.isEnabled = color != new
             color = new
             self.set(title: color.hexString, font: .systemFont(ofSize: 17), color: color)
         }
