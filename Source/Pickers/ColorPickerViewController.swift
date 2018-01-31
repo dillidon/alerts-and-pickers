@@ -10,7 +10,7 @@ extension UIAlertController {
     ///   - vInset: bottom margin to button
     ///   - configuration: textField
     
-    func addColorPicker(color: UIColor = .black, action: ColorPickerViewController.Action?) {
+    public func addColorPicker(color: UIColor = .black, action: ColorPickerViewController.Action?) {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         guard let vc = storyboard.instantiateViewController(withIdentifier: "ColorPicker") as? ColorPickerViewController else { return }
         set(vc: vc)
@@ -18,11 +18,11 @@ extension UIAlertController {
     }
 }
 
-class ColorPickerViewController: UIViewController {
+final public class ColorPickerViewController: UIViewController {
     
-    typealias Action = (UIColor) -> Swift.Void
+    public typealias Action = (UIColor) -> Swift.Void
     
-    fileprivate var action: Action?
+    public var action: Action?
     
     @IBOutlet weak var colorView: UIView!
     
@@ -43,7 +43,7 @@ class ColorPickerViewController: UIViewController {
     
     fileprivate var preferredHeight: CGFloat = 0
     
-    func set(color: UIColor, action: Action?) {
+    public func set(color: UIColor, action: Action?) {
         let components = color.hsbaComponents
         
         hue = components.hue
@@ -71,7 +71,7 @@ class ColorPickerViewController: UIViewController {
         self.action = action
     }
     
-    override func viewDidLoad() {
+    override public func viewDidLoad() {
         super.viewDidLoad()
         Log("preferredHeight = \(preferredHeight)")
         
@@ -120,7 +120,7 @@ class ColorPickerViewController: UIViewController {
         }
     }
 
-    override func viewDidLayoutSubviews() {
+    override public func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         preferredHeight = mainStackView.frame.maxY
         Log("preferredHeight = \(preferredHeight)")

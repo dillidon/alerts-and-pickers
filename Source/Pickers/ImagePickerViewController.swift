@@ -11,7 +11,7 @@ extension UIAlertController {
     ///   - images: for content to select
     ///   - selection: type and action for selection of image/images
     
-    func addImagePicker(flow: UICollectionViewScrollDirection, paging: Bool, height: CGFloat? = nil, images: [UIImage], selection: ImagePickerViewController.SelectionType? = nil) {
+    public func addImagePicker(flow: UICollectionViewScrollDirection, paging: Bool, height: CGFloat? = nil, images: [UIImage], selection: ImagePickerViewController.SelectionType? = nil) {
         let imagePicker = ImagePickerViewController(flow: flow, paging: paging, data: images, selection: selection)
         if let height = height {
             imagePicker.preferredContentSize.height = height
@@ -22,12 +22,12 @@ extension UIAlertController {
     }
 }
 
-final class ImagePickerViewController: UIViewController {
+final public class ImagePickerViewController: UIViewController {
     
     public typealias SingleAction = (UIImage?) -> Swift.Void
     public typealias MultiAction = ([UIImage]) -> Swift.Void
     
-    enum SelectionType {
+    public enum SelectionType {
         case single(action: SingleAction?)
         case multiple(action: MultiAction?)
     }
@@ -104,7 +104,7 @@ final class ImagePickerViewController: UIViewController {
     
     // MARK: Initialize
     
-    required init(flow: UICollectionViewScrollDirection, paging: Bool, data: [UIImage], selection: SelectionType?) {
+    required public init(flow: UICollectionViewScrollDirection, paging: Bool, data: [UIImage], selection: SelectionType?) {
         self.data = data
         self.selection = selection
         super.init(nibName: nil, bundle: nil)
@@ -122,7 +122,7 @@ final class ImagePickerViewController: UIViewController {
         //layout.estimatedItemSize = UICollectionViewFlowLayoutAutomaticSize
     }
     
-    required init?(coder aDecoder: NSCoder) {
+    required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -130,21 +130,21 @@ final class ImagePickerViewController: UIViewController {
         Log("has deinitialized")
     }
     
-    override func loadView() {
+    override public func loadView() {
         view = collectionView
     }
     
-    override func viewDidLoad() {
+    override public func viewDidLoad() {
         super.viewDidLoad()
         view.addSubview(indicatorView)
     }
     
-    override func viewWillAppear(_ animated: Bool) {
+    override public func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         updateDataSource()
     }
     
-    override func viewDidLayoutSubviews() {
+    override public func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         indicatorView.center = view.center
     }
@@ -187,11 +187,11 @@ final class ImagePickerViewController: UIViewController {
 
 extension ImagePickerViewController: UICollectionViewDelegate {
     
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         dataSource[indexPath.item].action?(collectionView.cellForItem(at: indexPath) as? ItemWithImage)
     }
     
-    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+    public func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         switch selection {
         case .multiple(_)?:
             dataSource[indexPath.item].action?(collectionView.cellForItem(at: indexPath) as? ItemWithImage)
@@ -203,15 +203,15 @@ extension ImagePickerViewController: UICollectionViewDelegate {
 
 extension ImagePickerViewController: UICollectionViewDataSource {
     
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
+    public func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
     
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return dataSource.count
     }
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let item = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: ItemWithImage.self), for: indexPath) as? ItemWithImage else { return UICollectionViewCell() }
         dataSource[indexPath.item].config?(item)
         return item

@@ -12,7 +12,7 @@ extension UIAlertController {
     ///   - message: alert controller's message (default is nil).
     ///   - defaultActionButtonTitle: default action button title (default is "OK")
     ///   - tintColor: alert controller's tint color (default is nil)
-    convenience init(style: UIAlertControllerStyle, source: UIView? = nil, title: String? = nil, message: String? = nil, tintColor: UIColor? = nil) {
+    convenience public init(style: UIAlertControllerStyle, source: UIView? = nil, title: String? = nil, message: String? = nil, tintColor: UIColor? = nil) {
         self.init(title: title, message: message, preferredStyle: style)
         
         // TODO: for iPad or other views
@@ -56,7 +56,7 @@ extension UIAlertController {
     ///   - style: action style (default is UIAlertActionStyle.default)
     ///   - isEnabled: isEnabled status for action (default is true)
     ///   - handler: optional action handler to be called when button is tapped (default is nil)
-    func addAction(image: UIImage? = nil, title: String, color: UIColor? = nil, style: UIAlertActionStyle = .default, isEnabled: Bool = true, handler: ((UIAlertAction) -> Void)? = nil) {
+    public func addAction(image: UIImage? = nil, title: String, color: UIColor? = nil, style: UIAlertActionStyle = .default, isEnabled: Bool = true, handler: ((UIAlertAction) -> Void)? = nil) {
         let action = UIAlertAction(title: title, style: style, handler: handler)
         action.isEnabled = isEnabled
         
@@ -79,7 +79,7 @@ extension UIAlertController {
     ///   - title: alert title
     ///   - font: alert title font
     ///   - color: alert title color
-    func set(title: String?, font: UIFont, color: UIColor) {
+    public func set(title: String?, font: UIFont, color: UIColor) {
         if title != nil {
             self.title = title
         }
@@ -100,7 +100,7 @@ extension UIAlertController {
     ///   - message: alert message
     ///   - font: alert message font
     ///   - color: alert message color
-    func set(message: String?, font: UIFont, color: UIColor) {
+    public func set(message: String?, font: UIFont, color: UIColor) {
         if message != nil {
             self.message = message
         }
@@ -119,7 +119,7 @@ extension UIAlertController {
     /// - Parameters:
     ///   - vc: ViewController
     ///   - height: height of content viewController
-    func set(vc: UIViewController?, width: CGFloat? = nil, height: CGFloat? = nil) {
+    public func set(vc: UIViewController?, width: CGFloat? = nil, height: CGFloat? = nil) {
         guard let vc = vc else { return }
         setValue(vc, forKey: "contentViewController")
         if let height = height {

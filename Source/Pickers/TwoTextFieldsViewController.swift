@@ -11,13 +11,13 @@ extension UIAlertController {
     ///   - textFieldOne: first textField
     ///   - textFieldTwo: second textField
     
-    func addTwoTextFields(height: CGFloat = 58, hInset: CGFloat = 0, vInset: CGFloat = 0, textFieldOne: TextField.Config?, textFieldTwo: TextField.Config?) {
+    public func addTwoTextFields(height: CGFloat = 58, hInset: CGFloat = 0, vInset: CGFloat = 0, textFieldOne: TextField.Config?, textFieldTwo: TextField.Config?) {
         let textField = TwoTextFieldsViewController(height: height, hInset: hInset, vInset: vInset, textFieldOne: textFieldOne, textFieldTwo: textFieldTwo)
         set(vc: textField, height: height * 2 + 2 * vInset)
     }
 }
 
-final class TwoTextFieldsViewController: UIViewController {
+final public class TwoTextFieldsViewController: UIViewController {
     
     fileprivate lazy var textFieldView: UIView = UIView()
     fileprivate lazy var textFieldOne: TextField = TextField()
@@ -27,7 +27,7 @@ final class TwoTextFieldsViewController: UIViewController {
     fileprivate var hInset: CGFloat
     fileprivate var vInset: CGFloat
     
-    init(height: CGFloat, hInset: CGFloat, vInset: CGFloat, textFieldOne configurationOneFor: TextField.Config?, textFieldTwo configurationTwoFor: TextField.Config?) {
+    public init(height: CGFloat, hInset: CGFloat, vInset: CGFloat, textFieldOne configurationOneFor: TextField.Config?, textFieldTwo configurationTwoFor: TextField.Config?) {
         self.height = height
         self.hInset = hInset
         self.vInset = vInset
@@ -50,7 +50,7 @@ final class TwoTextFieldsViewController: UIViewController {
         //preferredContentSize.height = height * 2 + vInset
     }
     
-    required init?(coder aDecoder: NSCoder) {
+    required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -58,12 +58,12 @@ final class TwoTextFieldsViewController: UIViewController {
         Log("has deinitialized")
     }
     
-    override func viewDidLoad() {
+    override public func viewDidLoad() {
         super.viewDidLoad()
 
     }
     
-    override func viewDidLayoutSubviews() {
+    override public func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
         textFieldView.width = view.width - hInset * 2

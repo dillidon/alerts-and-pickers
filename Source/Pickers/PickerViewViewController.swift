@@ -8,13 +8,13 @@ extension UIAlertController {
     ///   - values: values for picker view
     ///   - initialSelection: initial selection of picker view
     ///   - action: action for selected value of picker view
-    func addPickerView(values: PickerViewViewController.Values,  initialSelection: PickerViewViewController.Index? = nil, action: PickerViewViewController.Action?) {
+    public func addPickerView(values: PickerViewViewController.Values,  initialSelection: PickerViewViewController.Index? = nil, action: PickerViewViewController.Action?) {
         let pickerView = PickerViewViewController(values: values, initialSelection: initialSelection, action: action)
         set(vc: pickerView, height: 216)
     }
 }
 
-final class PickerViewViewController: UIViewController {
+final public class PickerViewViewController: UIViewController {
     
     public typealias Values = [[String]]
     public typealias Index = (column: Int, row: Int)
@@ -28,14 +28,14 @@ final class PickerViewViewController: UIViewController {
         return $0
     }(UIPickerView())
     
-    init(values: Values, initialSelection: Index? = nil, action: Action?) {
+    public init(values: Values, initialSelection: Index? = nil, action: Action?) {
         super.init(nibName: nil, bundle: nil)
         self.values = values
         self.initialSelection = initialSelection
         self.action = action
     }
     
-    required init?(coder aDecoder: NSCoder) {
+    required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -43,17 +43,17 @@ final class PickerViewViewController: UIViewController {
         Log("has deinitialized")
     }
     
-    override func loadView() {
+    override public func loadView() {
         view = pickerView
     }
     
-    override func viewDidLoad() {
+    override public func viewDidLoad() {
         super.viewDidLoad()
         pickerView.dataSource = self
         pickerView.delegate = self
     }
     
-    override func viewWillAppear(_ animated: Bool) {
+    override public func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         if let initialSelection = initialSelection, values.count > initialSelection.column, values[initialSelection.column].count > initialSelection.row {
             pickerView.selectRow(initialSelection.row, inComponent: initialSelection.column, animated: true)

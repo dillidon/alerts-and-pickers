@@ -10,24 +10,24 @@ extension UIAlertController {
     ///   - minimumDate: minimum date of date picker
     ///   - maximumDate: maximum date of date picker
     ///   - action: an action for datePicker value change
-    func addDatePicker(mode: UIDatePickerMode, date: Date?, minimumDate: Date? = nil, maximumDate: Date? = nil, action: DatePickerViewController.Action?) {
+    public func addDatePicker(mode: UIDatePickerMode, date: Date?, minimumDate: Date? = nil, maximumDate: Date? = nil, action: DatePickerViewController.Action?) {
         let datePicker = DatePickerViewController(mode: mode, date: date, minimumDate: minimumDate, maximumDate: maximumDate, action: action)
         set(vc: datePicker, height: 216)
     }
 }
 
-final class DatePickerViewController: UIViewController {
+final public class DatePickerViewController: UIViewController {
     
     public typealias Action = (Date) -> Void
     
-    fileprivate var action: Action?
+    public var action: Action?
     
     fileprivate lazy var datePicker: UIDatePicker = {
         $0.addTarget(self, action: #selector(DatePickerViewController.actionForDatePicker), for: .valueChanged)
         return $0
     }(UIDatePicker())
     
-    required init(mode: UIDatePickerMode, date: Date? = nil, minimumDate: Date? = nil, maximumDate: Date? = nil, action: Action?) {
+    required public init(mode: UIDatePickerMode, date: Date? = nil, minimumDate: Date? = nil, maximumDate: Date? = nil, action: Action?) {
         super.init(nibName: nil, bundle: nil)
         datePicker.datePickerMode = mode
         datePicker.date = date ?? Date()
@@ -36,7 +36,7 @@ final class DatePickerViewController: UIViewController {
         self.action = action
     }
     
-    required init?(coder aDecoder: NSCoder) {
+    required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -44,7 +44,7 @@ final class DatePickerViewController: UIViewController {
         Log("has deinitialized")
     }
     
-    override func loadView() {
+    override public func loadView() {
         view = datePicker
     }
     
