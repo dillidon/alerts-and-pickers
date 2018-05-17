@@ -158,7 +158,7 @@ You can use both styles `.alert` and `.actionSheet` of `UIAlertController`.
 let alert = UIAlertController(style: .alert, title: "Login")
 
 let configOne: TextField.Config = { textField in
-    textField.left(image: user), color: .black)
+    textField.left(image: user, color: .black)
     textField.leftViewPadding = 16
     textField.leftTextPadding = 12
     textField.becomeFirstResponder()
