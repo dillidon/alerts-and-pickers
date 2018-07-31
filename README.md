@@ -215,6 +215,13 @@ alert.addDatePicker(mode: .dateAndTime, date: date, minimumDate: minDate, maximu
 alert.addAction(title: "OK", style: .cancel)
 alert.show()
 ```
+Get the date in your action handler.
+```swift
+alert.addAction(title: "OK", style: .cancel) { _  in
+    let date = alert.dateFromDatePicker()
+    // action with selected date
+}
+```
 
 ## PickerView
 
@@ -241,6 +248,13 @@ alert.addPickerView(values: pickerViewValues, initialSelection: pickerViewSelect
 }
 alert.addAction(title: "Done", style: .cancel)
 alert.show()
+```
+Get the picker in your action handler.
+```swift
+alert.addAction(title: "Done", style: .cancel) {
+    let picker = alert.pickerView()
+    // action with the picker view
+}
 ```
 
 ## Locale Pickers

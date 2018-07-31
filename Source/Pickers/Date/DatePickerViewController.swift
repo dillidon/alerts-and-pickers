@@ -15,6 +15,18 @@ extension UIAlertController {
         let datePicker = DatePickerViewController(mode: mode, date: date, minimumDate: minimumDate, maximumDate: maximumDate, action: action)
         set(vc: datePicker, height: 217)
     }
+    
+    /// Returns the date from the datePicker
+    /// Author: Jahid Hasan Polash
+    /// InfancyIT
+    /// jahidhasanpolash@gmail.com
+    func dateFromDatePicker() -> Date? {
+        guard let datePickerVC = value(forKey: "contentViewController") as? DatePickerViewController
+            else {
+                return nil
+        }
+        return datePickerVC.datePicker.date
+    }
 }
 
 final class DatePickerViewController: UIViewController {

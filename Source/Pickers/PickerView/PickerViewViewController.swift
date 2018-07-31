@@ -12,6 +12,18 @@ extension UIAlertController {
         let pickerView = PickerViewViewController(values: values, initialSelection: initialSelection, action: action)
         set(vc: pickerView, height: 216)
     }
+    
+    /// Returns the picker view itself to extract data or index from it
+    /// Author: Jahid Hasan Polash
+    /// InfancyIT
+    /// jahidhasanpolash@gmail.com
+    func pickerView() -> UIPickerView? {
+        guard let pickerViewController = value(forKey: "contentViewController") as? PickerViewViewController
+            else {
+                return nil
+        }
+        return pickerViewController.pickerView
+    }
 }
 
 final class PickerViewViewController: UIViewController {
