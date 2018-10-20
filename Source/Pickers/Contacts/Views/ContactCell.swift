@@ -5,8 +5,7 @@ final class ContactTableViewCell: UITableViewCell {
     // MARK: Properties
     
     static let identifier = String(describing: ContactTableViewCell.self)
-    static let size: CGSize = CGSize(width: 80, height: 80)
-    
+
     var contact: Contact?
     
     // MARK: Initialize
@@ -46,6 +45,9 @@ final class ContactTableViewCell: UITableViewCell {
     func update() {
         guard let contact = contact else { return }
         
+        let value: CGFloat = self.contentView.height - 8
+        imageView?.size = CGSize(width: value, height: value)
+
         if let ava = contact.image {
             imageView?.image = ava
         } else {
