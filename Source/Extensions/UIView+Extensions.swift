@@ -24,7 +24,7 @@ extension UIView {
             return layer.cornerRadius
         }
         set {
-            layer.cornerRadius = circleCorner ? min(bounds.size.height, bounds.size.width) / 2 : newValue
+            layer.cornerRadius = newValue
                 //abs(CGFloat(Int(newValue * 100)) / 100)
         }
     }
