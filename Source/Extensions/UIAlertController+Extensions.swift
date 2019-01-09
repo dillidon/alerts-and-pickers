@@ -136,7 +136,7 @@ extension UIAlertController {
     /// - Parameters:
     ///   - vc: ViewController
     ///   - height: height of content viewController
-    func set(vc: UIViewController?, width: CGFloat? = nil, height: CGFloat? = nil) {
+    public func set(vc: UIViewController?, width: CGFloat? = nil, height: CGFloat? = nil) {
         guard let vc = vc else { return }
         setValue(vc, forKey: "contentViewController")
         if let height = height {

@@ -240,8 +240,17 @@ extension LocalePickerViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         if let searchText = searchController.searchBar.text, searchController.isActive {
             filteredInfo = []
-            if searchText.count > 0, let values = orderedInfo[String(searchText[searchText.startIndex])] {
-                filteredInfo.append(contentsOf: values.filter { $0.country.hasPrefix(searchText) })
+            if searchText.count > 0 {
+                filteredInfo = orderedInfo.values.reduce([], +).filter {
+                    var propertis: [String?] = [$0.country]
+                    if type == .phoneCode {
+                        propertis.append($0.phoneCode)
+                    } else if type == .currency {
+                        propertis.append(contentsOf: [$0.currencyName, $0.currencyCode, $0.currencySymbol])
+                    }
+                    return propertis.compactMap { $0?.lowercased().contains(searchText.lowercased()) }
+                        .reduce(false, { $0 || $1 })
+                }
             } else {
                 orderedInfo.forEach { key, value in
                     filteredInfo += value
