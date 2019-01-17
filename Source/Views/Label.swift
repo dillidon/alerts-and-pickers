@@ -9,7 +9,7 @@ open class Label: UILabel {
     open var insets: UIEdgeInsets = .zero
     
     override open func drawText(in rect: CGRect) {
-        super.drawText(in: UIEdgeInsetsInsetRect(rect, insets))
+        super.drawText(in: rect.inset(by: insets))
     }
     
     // Override -intrinsicContentSize: for Auto layout code
