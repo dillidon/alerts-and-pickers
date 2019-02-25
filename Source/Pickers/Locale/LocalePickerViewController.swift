@@ -84,7 +84,7 @@ final class LocalePickerViewController: UIViewController {
     fileprivate lazy var indicatorView: UIActivityIndicatorView = {
         $0.color = .lightGray
         return $0
-    }(UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge))
+    }(UIActivityIndicatorView(style: .whiteLarge))
     
     // MARK: Initialize
     
@@ -176,7 +176,7 @@ final class LocalePickerViewController: UIViewController {
                 
                 DispatchQueue.main.async {
                     
-                    let alert = UIAlertController(style: .alert, title: error.title, message: error.message)
+                    let alert = UIAlertController(title: error.title, message: error.message, preferredStyle: .alert)
                     alert.addAction(title: "OK", style: .cancel) { action in
                         self.indicatorView.stopAnimating()
                         self.alertController?.dismiss(animated: true)
