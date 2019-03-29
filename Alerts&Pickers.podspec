@@ -8,6 +8,6 @@ s.author             = { "Yuji Hato" => "1192490197@qq.com" }
 s.platform     = :ios
 s.ios.deployment_target = "9.0"
 s.source       = { :git => "https://github.com/dongdongpc/alerts-and-pickers.git", :tag => s.version }
-s.source_files  = "Source/"
+s.source_files  = "Source/*.swift"
 s.requires_arc = true
 end
