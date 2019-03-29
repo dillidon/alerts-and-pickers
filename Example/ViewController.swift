@@ -293,7 +293,7 @@ class ViewController: UIViewController {
             
             let frameSizes: [CGFloat] = (150...300).map { CGFloat($0) }
             let pickerViewValues: [[String]] = [frameSizes.map { Int($0).description }]
-            let pickerViewSelectedValue: PickerViewViewController.Index = (column: 0, row: frameSizes.index(of: 216) ?? 0)
+            let pickerViewSelectedValue: PickerViewViewController.Index = (column: 0, row: frameSizes.firstIndex(of: 216) ?? 0)
             
             alert.addPickerView(values: pickerViewValues, initialSelection: pickerViewSelectedValue) { vc, picker, index, values in
                 

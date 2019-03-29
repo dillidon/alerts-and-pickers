@@ -76,6 +76,8 @@ final class PhotoLibraryPickerViewController: UIViewController {
         switch layout.scrollDirection {
         case .vertical: return UIDevice.current.userInterfaceIdiom == .pad ? 3 : 2
         case .horizontal: return 1
+        @unknown default:
+            fatalError()
         }
     }
     
@@ -85,6 +87,8 @@ final class PhotoLibraryPickerViewController: UIViewController {
             return CGSize(width: view.bounds.width / columns, height: view.bounds.width / columns)
         case .horizontal:
             return CGSize(width: view.bounds.width, height: view.bounds.height / columns)
+        @unknown default:
+            fatalError()
         }
     }
     
@@ -188,6 +192,8 @@ final class PhotoLibraryPickerViewController: UIViewController {
                 self.alertController?.dismiss(animated: true)
             }
             alert.show()
+        @unknown default:
+            fatalError()
         }
     }
     
