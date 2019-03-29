@@ -3,7 +3,7 @@
 </div>
 
 <p align="center">
-<img src="https://img.shields.io/badge/Swift-4.0-orange.svg" alt="Swift 4.0"/>
+<img src="https://img.shields.io/badge/Swift-4.0-orange.svg" alt="Swift 5.0"/>
 <img src="https://img.shields.io/badge/platform-iOS-brightgreen.svg" alt="Platform: iOS"/>
 <img src="https://img.shields.io/badge/Xcode-9%2B-brightgreen.svg" alt="XCode 9+"/>
 <img src="https://img.shields.io/badge/iOS-11%2B-brightgreen.svg" alt="iOS 11"/>
@@ -454,7 +454,7 @@ Download and drop `/Source` folder in your project.
 
 ## Requirements
 
-* Swift 4
+* Swift 5
 * iOS 11 or higher
 
 ## Authors
