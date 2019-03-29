@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		365C130B224E93B70024D6A5 /* Alerts&Pickers.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 365C130A224E93B70024D6A5 /* Alerts&Pickers.podspec */; };
 		FA005E922015D769001EA8C6 /* Contacts.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA005E912015D769001EA8C6 /* Contacts.swift */; };
 		FA005E942015E490001EA8C6 /* UISearchBar+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA005E932015E490001EA8C6 /* UISearchBar+Extensions.swift */; };
 		FA005E9620162BB5001EA8C6 /* Assets.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA005E9520162BB5001EA8C6 /* Assets.swift */; };
@@ -73,6 +74,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		365C130A224E93B70024D6A5 /* Alerts&Pickers.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Alerts&Pickers.podspec"; sourceTree = SOURCE_ROOT; };
 		FA005E912015D769001EA8C6 /* Contacts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Contacts.swift; sourceTree = "<group>"; };
 		FA005E932015E490001EA8C6 /* UISearchBar+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UISearchBar+Extensions.swift"; sourceTree = "<group>"; };
 		FA005E9520162BB5001EA8C6 /* Assets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Assets.swift; sourceTree = "<group>"; };
@@ -243,6 +245,7 @@
 				FA3BB28A2008B46500E06F8F /* Resources */,
 				FA3BB2AA2008B46800E06F8F /* ViewController.swift */,
 				FA3BB2AB2008B46800E06F8F /* AppDelegate.swift */,
+				365C130A224E93B70024D6A5 /* Alerts&Pickers.podspec */,
 			);
 			path = Example;
 			sourceTree = "<group>";
@@ -550,6 +553,7 @@
 				FA3BB2CF2008B9FA00E06F8F /* LICENSE in Resources */,
 				FA3BB2BF2008B46900E06F8F /* Countries.bundle in Resources */,
 				FA3BB2AD2008B46800E06F8F /* LaunchScreen.storyboard in Resources */,
+				365C130B224E93B70024D6A5 /* Alerts&Pickers.podspec in Resources */,
 				FA3BB2AC2008B46800E06F8F /* Assets.xcassets in Resources */,
 				FA3BB2CD2008B98F00E06F8F /* Assets in Resources */,
 				FA3BB2892008B45600E06F8F /* README.md in Resources */,
