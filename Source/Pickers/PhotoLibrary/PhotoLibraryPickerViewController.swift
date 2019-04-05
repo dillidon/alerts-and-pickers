@@ -12,7 +12,7 @@ extension UIAlertController {
     ///   - images: for content to select
     ///   - selection: type and action for selection of image/images
     
-    func addPhotoLibraryPicker(flow: UICollectionViewScrollDirection, paging: Bool, selection: PhotoLibraryPickerViewController.Selection) {
+    func addPhotoLibraryPicker(flow: UICollectionView.ScrollDirection, paging: Bool, selection: PhotoLibraryPickerViewController.Selection) {
         let selection: PhotoLibraryPickerViewController.Selection = selection
         var asset: PHAsset?
         var assets: [PHAsset] = []
@@ -76,6 +76,8 @@ final class PhotoLibraryPickerViewController: UIViewController {
         switch layout.scrollDirection {
         case .vertical: return UIDevice.current.userInterfaceIdiom == .pad ? 3 : 2
         case .horizontal: return 1
+        @unknown default:
+            fatalError()
         }
     }
     
@@ -85,6 +87,8 @@ final class PhotoLibraryPickerViewController: UIViewController {
             return CGSize(width: view.bounds.width / columns, height: view.bounds.width / columns)
         case .horizontal:
             return CGSize(width: view.bounds.width, height: view.bounds.height / columns)
+        @unknown default:
+            fatalError()
         }
     }
     
@@ -96,7 +100,7 @@ final class PhotoLibraryPickerViewController: UIViewController {
         $0.register(ItemWithImage.self, forCellWithReuseIdentifier: String(describing: ItemWithImage.self))
         $0.showsVerticalScrollIndicator = false
         $0.showsHorizontalScrollIndicator = false
-        $0.decelerationRate = UIScrollViewDecelerationRateFast
+        $0.decelerationRate = UIScrollView.DecelerationRate.fast
         $0.contentInsetAdjustmentBehavior = .always
         $0.bounces = true
         $0.backgroundColor = .clear
@@ -118,7 +122,7 @@ final class PhotoLibraryPickerViewController: UIViewController {
     
     // MARK: Initialize
     
-    required public init(flow: UICollectionViewScrollDirection, paging: Bool, selection: Selection) {
+    required public init(flow: UICollectionView.ScrollDirection, paging: Bool, selection: Selection) {
         super.init(nibName: nil, bundle: nil)
         
         self.selection = selection
@@ -180,7 +184,7 @@ final class PhotoLibraryPickerViewController: UIViewController {
             let productName = Bundle.main.infoDictionary!["CFBundleName"]!
             let alert = UIAlertController(style: .alert, title: "Permission denied", message: "\(productName) does not have access to contacts. Please, allow the application to access to your photo library.")
             alert.addAction(title: "Settings", style: .destructive) { action in
-                if let settingsURL = URL(string: UIApplicationOpenSettingsURLString) {
+                if let settingsURL = URL(string: UIApplication.openSettingsURLString) {
                     UIApplication.shared.open(settingsURL)
                 }
             }
@@ -188,6 +192,8 @@ final class PhotoLibraryPickerViewController: UIViewController {
                 self.alertController?.dismiss(animated: true)
             }
             alert.show()
+        @unknown default:
+            fatalError()
         }
     }
     
@@ -199,7 +205,7 @@ final class PhotoLibraryPickerViewController: UIViewController {
                 completionHandler(assets)
                 
             case .error(let error):
-                let alert = UIAlertController(style: .alert, title: "Error", message: error.localizedDescription)
+                let alert = UIAlertController.init(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
                 alert.addAction(title: "OK") { [unowned self] action in
                     self.alertController?.dismiss(animated: true)
                 }
