@@ -168,8 +168,8 @@ open class VerticalScrollFlowLayout: UICollectionViewFlowLayout {
     }
     
     private func getUpdatedBehaviorItemCenter(behavior: UIAttachmentBehavior,touchLocation: CGPoint) -> CGPoint {
-        let yDistanceFromTouch = fabs(touchLocation.y - behavior.anchorPoint.y)
-        let xDistanceFromTouch = fabs(touchLocation.x - behavior.anchorPoint.x)
+        let yDistanceFromTouch = abs(touchLocation.y - behavior.anchorPoint.y)
+        let xDistanceFromTouch = abs(touchLocation.x - behavior.anchorPoint.x)
         let scrollResistance = (yDistanceFromTouch + xDistanceFromTouch) / (springHardness * 100)
         
         let attrs = behavior.items.first as! UICollectionViewLayoutAttributes

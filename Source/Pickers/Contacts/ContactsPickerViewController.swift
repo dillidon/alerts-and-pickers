@@ -177,6 +177,8 @@ final class ContactsPickerViewController: UIViewController {
                 self.alertController?.dismiss(animated: true)
             }
             alert.show()
+        @unknown default:
+          fatalError()
         }
     }
     

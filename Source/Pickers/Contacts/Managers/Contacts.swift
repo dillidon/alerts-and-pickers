@@ -5,6 +5,14 @@ import CoreTelephony
 
 /// https://github.com/satishbabariya/SwiftyContacts
 
+extension String.Index {
+  
+  public func utf16Offset<S: StringProtocol>(in s: S) -> Int {
+    return s.utf16.distance(from: s.utf16.startIndex, to: self)
+  }
+  
+}
+
 public struct Contacts {
     
     /// Result Enum
@@ -168,8 +176,8 @@ public struct Contacts {
         let contactStore: CNContactStore = CNContactStore()
         var contacts: [CNContact] = [CNContact]()
         let predicate: NSPredicate
-
-        if string.endIndex.encodedOffset > 0 {
+      
+        if string.endIndex.utf16Offset(in: string) > 0 {
             predicate = CNContact.predicateForContacts(matchingName: string)
         } else {
             predicate = CNContact.predicateForContactsInContainer(withIdentifier: CNContactStore().defaultContainerIdentifier())
@@ -201,7 +209,6 @@ public struct Contacts {
         }
     }
 }
-
 
 public struct Telephone {
     
