@@ -5,6 +5,14 @@ import CoreTelephony
 
 /// https://github.com/satishbabariya/SwiftyContacts
 
+extension String.Index {
+  
+  public func utf16Offset<S: StringProtocol>(in s: S) -> Int {
+    return s.utf16.distance(from: s.utf16.startIndex, to: self)
+  }
+  
+}
+
 public struct Contacts {
     
     /// Result Enum
@@ -168,8 +176,8 @@ public struct Contacts {
         let contactStore: CNContactStore = CNContactStore()
         var contacts: [CNContact] = [CNContact]()
         let predicate: NSPredicate
-
-        if string.endIndex.encodedOffset > 0 {
+      
+        if string.endIndex.utf16Offset(in: string) > 0 {
             predicate = CNContact.predicateForContacts(matchingName: string)
         } else {
             predicate = CNContact.predicateForContactsInContainer(withIdentifier: CNContactStore().defaultContainerIdentifier())
@@ -201,7 +209,6 @@ public struct Contacts {
         }
     }
 }
-
 
 public struct Telephone {
     
@@ -256,11 +263,16 @@ public struct Telephone {
                 return
             }
             if #available(iOS 10.0, *) {
-                UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                UIApplication.shared.open(url, options: convertToUIApplicationOpenExternalURLOptionsKeyDictionary([:]), completionHandler: nil)
             } else {
                 // Fallback on earlier versions
                 UIApplication.shared.openURL(url)
             }
         }
     }
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertToUIApplicationOpenExternalURLOptionsKeyDictionary(_ input: [String: Any]) -> [UIApplication.OpenExternalURLOptionsKey: Any] {
+	return Dictionary(uniqueKeysWithValues: input.map { key, value in (UIApplication.OpenExternalURLOptionsKey(rawValue: key), value)})
 }
