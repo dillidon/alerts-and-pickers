@@ -120,7 +120,7 @@ open class VerticalScrollFlowLayout: UICollectionViewFlowLayout {
         
         let touchLocation = collectionView!.panGestureRecognizer.location(in: collectionView)
         
-        dynamicAnimator.behaviors.flatMap { $0 as? UIAttachmentBehavior }.forEach { behavior in
+      dynamicAnimator.behaviors.compactMap { $0 as? UIAttachmentBehavior }.forEach { behavior in
             let attrs = behavior.items.first as! UICollectionViewLayoutAttributes
             attrs.center = getUpdatedBehaviorItemCenter(behavior: behavior, touchLocation: touchLocation)
             self.dynamicAnimator.updateItem(usingCurrentState: attrs)
