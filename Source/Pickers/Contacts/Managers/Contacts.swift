@@ -101,7 +101,7 @@ public struct Contacts {
         
         let contactStore: CNContactStore = CNContactStore()
         let fetchRequest: CNContactFetchRequest = CNContactFetchRequest(keysToFetch: [CNContactVCardSerialization.descriptorForRequiredKeys()])
-        var orderedContacts: [String: [CNContact]] = [String: [CNContact]]()
+        let orderedContacts: [String: [CNContact]] = [String: [CNContact]]()
         CNContact.localizedString(forKey: CNLabelPhoneNumberiPhone)
         fetchRequest.mutableObjects = false
         fetchRequest.unifyResults = true
@@ -109,18 +109,21 @@ public struct Contacts {
         do {
             try contactStore.enumerateContacts(with: fetchRequest, usingBlock: { (contact, _) -> Void in
                 // Ordering contacts based on alphabets in firstname
-                var key: String = "#"
                 // If ordering has to be happening via family name change it here.
-                let firstLetter = contact.givenName[0..<1]
-                if firstLetter.containsAlphabets {
-                    key = firstLetter.uppercased()
-                }
-                var contacts = [CNContact]()
-                if let segregatedContact = orderedContacts[key] {
-                    contacts = segregatedContact
-                }
-                contacts.append(contact)
-                orderedContacts[key] = contacts
+                fatalError("Requires fixing - No time to do this, sorry")
+                
+//                var key: String = "#"
+                
+//                let firstLetter = contact.givenName[0..<1]
+//                if firstLetter.containsAlphabets {
+//                    key = firstLetter.uppercased()
+//                }
+//                var contacts = [CNContact]()
+//                if let segregatedContact = orderedContacts[key] {
+//                    contacts = segregatedContact
+//                }
+//                contacts.append(contact)
+//                orderedContacts[key] = contacts
             })
         } catch {
             completionHandler(GroupedByAlphabetsFetchResults.error(error: error))
