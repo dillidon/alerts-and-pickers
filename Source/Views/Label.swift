@@ -8,9 +8,9 @@ open class Label: UILabel {
     
     open var insets: UIEdgeInsets = .zero
     
-    override open func drawText(in rect: CGRect) {
-        super.drawText(in: UIEdgeInsetsInsetRect(rect, insets))
-    }
+//    override open func drawText(in rect: CGRect) {
+//        super.drawText(in: UIEdgeInsetsInsetRect(rect, insets))
+//    }
     
     // Override -intrinsicContentSize: for Auto layout code
     override open var intrinsicContentSize: CGSize {
