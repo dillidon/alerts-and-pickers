@@ -46,7 +46,7 @@ final class TextViewerViewController: UIViewController {
         case .attributedText(let text):
             textView.attributedText = text.map { $0.text }.joined(separator: "\n")
         }
-        textView.textContainerInset = UIEdgeInsetsMake(UI.hInset, UI.vInset, UI.hInset, UI.vInset)
+        textView.textContainerInset = UIEdgeInsets.init(top: UI.hInset, left: UI.vInset, bottom: UI.hInset, right: UI.vInset)
         //preferredContentSize.height = self.textView.contentSize.height
     }
     
