@@ -11,10 +11,7 @@ extension String {
     }
     
     subscript (r: Range<Int>) -> String {
-//        let start = index(startIndex, offsetBy: r.lowerBound)
         let end = index(startIndex, offsetBy: r.upperBound)
-//		let newStr = String(str[..<index])
-//		return String(self[Range(..<end)])
 		return String(self[..<end])
 	}
 	
