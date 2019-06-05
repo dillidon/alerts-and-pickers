@@ -11,11 +11,10 @@ extension String {
     }
     
     subscript (r: Range<Int>) -> String {
-        let start = index(startIndex, offsetBy: r.lowerBound)
         let end = index(startIndex, offsetBy: r.upperBound)
-        return String(self[Range(start ..< end)])
-    }
-    
+		return String(self[..<end])
+	}
+	
     var containsAlphabets: Bool {
         //Checks if all the characters inside the string are alphabets
         let set = CharacterSet.letters
@@ -30,27 +29,27 @@ extension String {
 public extension String {
     
     /// Regular string.
-    public var regular: NSAttributedString {
+	var regular: NSAttributedString {
         return NSMutableAttributedString(string: self, attributes: [.font: UIFont.systemFont(ofSize: UIFont.systemFontSize)])
     }
     
     /// Bold string.
-    public var bold: NSAttributedString {
+	var bold: NSAttributedString {
         return NSMutableAttributedString(string: self, attributes: [.font: UIFont.boldSystemFont(ofSize: UIFont.systemFontSize)])
     }
     
     /// Underlined string
-    public var underline: NSAttributedString {
-        return NSAttributedString(string: self, attributes: [.underlineStyle: NSUnderlineStyle.styleSingle.rawValue])
+	var underline: NSAttributedString {
+        return NSAttributedString(string: self, attributes: [.underlineStyle: NSUnderlineStyle.single.rawValue])
     }
     
     /// Strikethrough string.
-    public var strikethrough: NSAttributedString {
-        return NSAttributedString(string: self, attributes: [.strikethroughStyle: NSNumber(value: NSUnderlineStyle.styleSingle.rawValue as Int)])
+	var strikethrough: NSAttributedString {
+        return NSAttributedString(string: self, attributes: [.strikethroughStyle: NSNumber(value: NSUnderlineStyle.single.rawValue as Int)])
     }
     
     /// Italic string.
-    public var italic: NSAttributedString {
+	var italic: NSAttributedString {
         return NSMutableAttributedString(string: self, attributes: [.font: UIFont.italicSystemFont(ofSize: UIFont.systemFontSize)])
     }
     
@@ -58,7 +57,7 @@ public extension String {
     ///
     /// - Parameter color: text color.
     /// - Returns: a NSAttributedString versions of string colored with given color.
-    public func colored(with color: UIColor) -> NSAttributedString {
+	func colored(with color: UIColor) -> NSAttributedString {
         return NSMutableAttributedString(string: self, attributes: [.foregroundColor: color])
     }
 }
