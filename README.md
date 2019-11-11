@@ -1,5 +1,5 @@
 <div align = "center">
-<img src="Source/Assets/Logo.png" width="700" />
+<img src="Assets/Logo.png" width="700" />
 </div>
 
 <p align="center">
@@ -28,15 +28,15 @@ Advanced usage of native UIAlertController with TextField, TextView, DatePicker,
 - [x] Pure Swift 4.
 
 <div align = "center">
-<img src="Source/Assets/gifs/actionSheet-.gif" width="400" />
-<img src="Source/Assets/gifs/alert-.gif" width="400" />
+<img src="Assets/gifs/actionSheet-.gif" width="400" />
+<img src="Assets/gifs/alert-.gif" width="400" />
 </div>
 
 ## Usage
 
 <div align = "center">
-<img src="Source/Assets/gifs/actionSheet-simple.gif" width="350" />
-<img src="Source/Assets/gifs/alert-simple.gif" width="350" />
+<img src="Assets/gifs/actionSheet-simple.gif" width="350" />
+<img src="Assets/gifs/alert-simple.gif" width="350" />
 </div>
 
 - New Alert
@@ -82,8 +82,8 @@ alert.show(animated: true, vibrate: true) {
 }
 ```
 <div align = "center">
-<img src="Source/Assets/gifs/actionSheet-simple-image.gif" width="350" />
-<img src="Source/Assets/gifs/alert-simple-image.gif" width="350" />
+<img src="Assets/gifs/actionSheet-simple-image.gif" width="350" />
+<img src="Assets/gifs/alert-simple-image.gif" width="350" />
 </div>
 
 
@@ -116,8 +116,8 @@ In native UIAlertController you can only add `UITextField` to `.alert` style wit
 You can use both styles `.alert` and `.actionSheet` of `UIAlertController`.
 
 <div align = "center">
-<img src="Source/Assets/gifs/actionSheet-textField-1.gif" width="350" />
-<img src="Source/Assets/gifs/alert-textField-1.gif" width="350" />
+<img src="Assets/gifs/actionSheet-textField-1.gif" width="350" />
+<img src="Assets/gifs/alert-textField-1.gif" width="350" />
 </div>
 
 ```swift
@@ -150,8 +150,8 @@ alert.show()
 You can use both styles `.alert` and `.actionSheet` of `UIAlertController`.
 
 <div align = "center">
-<img src="Source/Assets/gifs/actionSheet-textField-2.gif" width="350" />
-<img src="Source/Assets/gifs/alert-textField-2.gif" width="350" />
+<img src="Assets/gifs/actionSheet-textField-2.gif" width="350" />
+<img src="Assets/gifs/alert-textField-2.gif" width="350" />
 </div>
 
 ```swift
@@ -203,8 +203,8 @@ alert.show()
 `UIDatePicker` does not look very much in `.alert` style.
 
 <div align = "center">
-<img src="Source/Assets/gifs/actionSheet-datePicker.gif" width="350" />
-<img src="Source/Assets/gifs/alert-datePicker.gif" width="350" />
+<img src="Assets/gifs/actionSheet-datePicker.gif" width="350" />
+<img src="Assets/gifs/alert-datePicker.gif" width="350" />
 </div>
 
 ```swift
@@ -221,8 +221,8 @@ alert.show()
 Example how to use `UIPickerView` as `contentViewController` and change height of the `UIAlertController`.
 
 <div align = "center">
-<img src="Source/Assets/gifs/actionSheet-pickerView.gif" width="350" />
-<img src="Source/Assets/gifs/alert-pickerView.gif" width="350" />
+<img src="Assets/gifs/actionSheet-pickerView.gif" width="350" />
+<img src="Assets/gifs/alert-pickerView.gif" width="350" />
 </div>
 
 ```swift
@@ -248,8 +248,8 @@ alert.show()
 * #### Country Picker
 
 <div align = "center">
-<img src="Source/Assets/gifs/actionSheet-countryPicker.gif" width="350" />
-<img src="Source/Assets/gifs/alert-countryPicker.gif" width="350" />
+<img src="Assets/gifs/actionSheet-countryPicker.gif" width="350" />
+<img src="Assets/gifs/alert-countryPicker.gif" width="350" />
 </div>
 
 ```swift
@@ -264,8 +264,8 @@ alert.show()
 * #### Phone Code Picker
 
 <div align = "center">
-<img src="Source/Assets/gifs/actionSheet-phoneCodePicker.gif" width="350" />
-<img src="Source/Assets/gifs/alert-phoneCodePicker.gif" width="350" />
+<img src="Assets/gifs/actionSheet-phoneCodePicker.gif" width="350" />
+<img src="Assets/gifs/alert-phoneCodePicker.gif" width="350" />
 </div>
 
 ```swift
@@ -280,8 +280,8 @@ alert.show()
 * #### Currency Picker
 
 <div align = "center">
-<img src="Source/Assets/gifs/actionSheet-currencyPicker.gif" width="350" />
-<img src="Source/Assets/gifs/alert-currencyPicker.gif" width="350" />
+<img src="Assets/gifs/actionSheet-currencyPicker.gif" width="350" />
+<img src="Assets/gifs/alert-currencyPicker.gif" width="350" />
 </div>
 
 ```swift
@@ -298,8 +298,8 @@ alert.show()
 ## Image Picker
 
 <div align = "center">
-<img src="Source/Assets/gifs/actionSheet-imagePicker-h.gif" width="350" />
-<img src="Source/Assets/gifs/actionSheet-imagePicker-v.gif" width="350" />
+<img src="Assets/gifs/actionSheet-imagePicker-h.gif" width="350" />
+<img src="Assets/gifs/actionSheet-imagePicker-v.gif" width="350" />
 </div>
 
 * Horizontal Image Picker with paging and single selection:
@@ -338,7 +338,7 @@ alert.show()
 ## PhotoLibrary Picker
 
 <div align = "center">
-<img src="Source/Assets/gifs/actionSheet-photoLibraryPicker.gif" width="350" />
+<img src="Assets/gifs/actionSheet-photoLibraryPicker.gif" width="350" />
 </div>
 
 ```swift
@@ -358,8 +358,8 @@ alert.show()
 Example how to use UIViewController instantiated from Storyboard with Autolayout as `contentViewController` in the `UIAlertController`.
 
 <div align = "center">
-<img src="Source/Assets/gifs/actionSheet-colorPicker.gif" width="350" />
-<img src="Source/Assets/gifs/alert-colorPicker.gif" width="350" />
+<img src="Assets/gifs/actionSheet-colorPicker.gif" width="350" />
+<img src="Assets/gifs/alert-colorPicker.gif" width="350" />
 </div>
 
 ```swift
@@ -374,8 +374,8 @@ alert.show()
 ## Contacts Picker
 
 <div align = "center">
-<img src="Source/Assets/gifs/actionSheet-contactsPicker.gif" width="350" />
-<img src="Source/Assets/gifs/alert-contactsPicker.gif" width="350" />
+<img src="Assets/gifs/actionSheet-contactsPicker.gif" width="350" />
+<img src="Assets/gifs/alert-contactsPicker.gif" width="350" />
 </div>
 
 ```swift
@@ -390,7 +390,7 @@ alert.show()
 ## Location Picker
 
 <div align = "center">
-<img src="Source/Assets/gifs/actionSheet-locationPicker.gif" width="350" />
+<img src="Assets/gifs/actionSheet-locationPicker.gif" width="350" />
 </div>
 
 ```swift
@@ -405,7 +405,7 @@ alert.show()
 ## Telegram Picker
 
 <div align = "center">
-<img src="Source/Assets/gifs/actionSheet-telegramPicker.gif" width="350" />
+<img src="Assets/gifs/actionSheet-telegramPicker.gif" width="350" />
 </div>
 
 ```swift
@@ -427,8 +427,8 @@ alert.show()
 ## TextViewer
 
 <div align = "center">
-<img src="Source/Assets/gifs/actionSheet-textViewer.gif" width="350" />
-<img src="Source/Assets/gifs/alert-textViewer.gif" width="350" />
+<img src="Assets/gifs/actionSheet-textViewer.gif" width="350" />
+<img src="Assets/gifs/alert-textViewer.gif" width="350" />
 </div>
 
 ```swift
