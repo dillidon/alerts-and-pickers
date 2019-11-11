@@ -446,11 +446,31 @@ There are some things to keep in mind when using `.actionSheet` and `.alert` sty
 * Pickers better to use in `.actionSheet` style.
 * `UITextField` can be used in both styles.
 
-## Installing
 
-#### Manually
+## Installation
 
-Download and drop `/Source` folder in your project.
+### CocoaPods
+
+[CocoaPods](http://cocoapods.org) is a dependency manager for Cocoa projects. You can install it with the following command:
+
+```bash
+$ gem install cocoapods
+```
+
+To integrate SwiftTabPager into your Xcode project using CocoaPods, specify it in your `Podfile`:
+
+```ruby
+use_frameworks!
+
+pod 'AlertsAndPickers'
+```
+
+Then, run the following command:
+
+```bash
+$ pod install
+```
+
 
 ## Requirements
 
@@ -460,6 +480,7 @@ Download and drop `/Source` folder in your project.
 ## Authors
 
 * **Roman Volodko** -  [dillidon](https://github.com/dillidon)
+* **Arthur Simonyan** -  [artsimonyan23](https://github.com/artsimonyan23)
 
 ## Communication
 
