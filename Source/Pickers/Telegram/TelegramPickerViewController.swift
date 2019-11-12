@@ -174,7 +174,19 @@ final class TelegramPickerViewController: UIViewController {
     }
     
     func layoutSubviews() {
-        tableView.tableHeaderView?.height = preferredHeight
+        if let headerView = tableView.tableHeaderView {
+
+            let height = preferredHeight
+            var headerFrame = headerView.frame
+
+            //Comparison necessary to avoid infinite loop
+            if height != headerFrame.size.height {
+                headerFrame.size.height = height
+                headerView.frame = headerFrame
+                tableView.tableHeaderView = headerView
+            }
+        }
+//        tableView.tableHeaderView?.height = preferredHeight
         preferredContentSize.height = tableView.contentSize.height
     }
     
@@ -216,9 +228,7 @@ final class TelegramPickerViewController: UIViewController {
                     UIApplication.shared.open(settingsURL)
                 }
             }
-            alert.addAction(title: "OK", style: .cancel) { [unowned self] action in
-                self.alertController?.dismiss(animated: true)
-            }
+            alert.addAction(title: "OK", style: .cancel)
             alert.show()
         @unknown default:
             break
