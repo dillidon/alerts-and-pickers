@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		672929F9237AC0DB00901F65 /* geolocation.png in Resources */ = {isa = PBXBuildFile; fileRef = 672929F8237AC0DB00901F65 /* geolocation.png */; };
 		67EF7EDE2379CA4E00A46B4B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 67EF7EDD2379CA4E00A46B4B /* Assets.xcassets */; };
 		FA005E922015D769001EA8C6 /* Contacts.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA005E912015D769001EA8C6 /* Contacts.swift */; };
 		FA005E942015E490001EA8C6 /* UISearchBar+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA005E932015E490001EA8C6 /* UISearchBar+Extensions.swift */; };
@@ -72,6 +73,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		672929F8237AC0DB00901F65 /* geolocation.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = geolocation.png; sourceTree = "<group>"; };
 		67EF7EDD2379CA4E00A46B4B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FA005E912015D769001EA8C6 /* Contacts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Contacts.swift; sourceTree = "<group>"; };
 		FA005E932015E490001EA8C6 /* UISearchBar+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UISearchBar+Extensions.swift"; sourceTree = "<group>"; };
@@ -149,6 +151,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		672929F3237ABEBA00901F65 /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				672929F8237AC0DB00901F65 /* geolocation.png */,
+			);
+			path = Images;
+			sourceTree = "<group>";
+		};
 		FA3BB26A2008B41B00E06F8F = {
 			isa = PBXGroup;
 			children = (
@@ -247,6 +257,7 @@
 		FA3BB2CB2008B87A00E06F8F /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				672929F3237ABEBA00901F65 /* Images */,
 				FA826F83200E8B6200ECC926 /* Viewers */,
 				FA3BB2932008B46600E06F8F /* Extensions */,
 				FA3BB2A12008B46800E06F8F /* Pickers */,
@@ -545,6 +556,7 @@
 				FABFAA66200C961500961895 /* Main.storyboard in Resources */,
 				FA3BB2CF2008B9FA00E06F8F /* LICENSE in Resources */,
 				FA3BB2BF2008B46900E06F8F /* Countries.bundle in Resources */,
+				672929F9237AC0DB00901F65 /* geolocation.png in Resources */,
 				FA3BB2AD2008B46800E06F8F /* LaunchScreen.storyboard in Resources */,
 				67EF7EDE2379CA4E00A46B4B /* Assets.xcassets in Resources */,
 				FA3BB2892008B45600E06F8F /* README.md in Resources */,

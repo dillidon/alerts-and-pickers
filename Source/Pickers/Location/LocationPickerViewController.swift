@@ -90,7 +90,7 @@ public final class LocationPickerViewController: UIViewController {
         $0.backgroundColor = UIColor.white.withAlphaComponent(0.8)
         $0.maskToBounds = true
         $0.cornerRadius = 22
-        $0.setImage(#imageLiteral(resourceName: "geolocation"), for: UIControl.State())
+        $0.setImage(UIImage(named: "geolocation", in: Bundle(for: Self.self), compatibleWith: nil), for: UIControl.State())
         $0.addTarget(self, action: #selector(LocationPickerViewController.currentLocationPressed),
                          for: .touchUpInside)
         return $0
