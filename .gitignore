@@ -52,6 +52,7 @@ xcuserdata/
 *.moved-aside
 *.xccheckout
 *.xcscmblueprint
+AlertsAndPickers.podspec
 
 ## Obj-C/Swift specific
 *.hmap

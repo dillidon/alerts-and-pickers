@@ -10,7 +10,7 @@ extension UIAlertController {
     ///   - images: for content to select
     ///   - selection: type and action for selection of image/images
     
-    func addImagePicker(flow: UICollectionViewScrollDirection, paging: Bool, images: [UIImage], selection: ImagePickerViewController.SelectionType? = nil) {
+    public func addImagePicker(flow: UICollectionView.ScrollDirection, paging: Bool, images: [UIImage], selection: ImagePickerViewController.SelectionType? = nil) {
         let vc = ImagePickerViewController(flow: flow, paging: paging, images: images, selection: selection)
         
         if UIDevice.current.userInterfaceIdiom == .pad {
@@ -24,7 +24,7 @@ extension UIAlertController {
     }
 }
 
-final class ImagePickerViewController: UIViewController {
+public final class ImagePickerViewController: UIViewController {
     
     public typealias SingleSelection = (UIImage?) -> Swift.Void
     public typealias MultipleSelection = ([UIImage]) -> Swift.Void
@@ -48,6 +48,8 @@ final class ImagePickerViewController: UIViewController {
         switch layout.scrollDirection {
         case .vertical: return UIDevice.current.userInterfaceIdiom == .pad ? 3 : 2
         case .horizontal: return 1
+        @unknown default:
+            return 0
         }
     }
     
@@ -57,6 +59,8 @@ final class ImagePickerViewController: UIViewController {
             return CGSize(width: view.bounds.width / columns, height: view.bounds.width / columns)
         case .horizontal:
             return CGSize(width: view.bounds.width, height: view.bounds.height / columns)
+        @unknown default:
+            return CGSize.zero
         }
     }
     
@@ -68,7 +72,7 @@ final class ImagePickerViewController: UIViewController {
         $0.register(ItemWithImage.self, forCellWithReuseIdentifier: ItemWithImage.identifier)
         $0.showsVerticalScrollIndicator = false
         $0.showsHorizontalScrollIndicator = false
-        $0.decelerationRate = UIScrollViewDecelerationRateFast
+        $0.decelerationRate = UIScrollView.DecelerationRate.fast
         $0.contentInsetAdjustmentBehavior = .never
         $0.bounces = false
         $0.backgroundColor = .clear
@@ -90,7 +94,7 @@ final class ImagePickerViewController: UIViewController {
     
     // MARK: Initialize
     
-    required init(flow: UICollectionViewScrollDirection, paging: Bool, images: [UIImage], selection: SelectionType?) {
+    required init(flow: UICollectionView.ScrollDirection, paging: Bool, images: [UIImage], selection: SelectionType?) {
         super.init(nibName: nil, bundle: nil)
         self.images = images
         self.selection = selection
@@ -112,7 +116,7 @@ final class ImagePickerViewController: UIViewController {
         Log("has deinitialized")
     }
     
-    override func loadView() {
+    override public func loadView() {
         view = collectionView
     }
 }
@@ -121,7 +125,7 @@ final class ImagePickerViewController: UIViewController {
 
 extension ImagePickerViewController: UICollectionViewDelegate {
     
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let image = images[indexPath.item]
         switch selection {
             
@@ -137,7 +141,7 @@ extension ImagePickerViewController: UICollectionViewDelegate {
         case .none: break }
     }
     
-    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+    public func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         let image = images[indexPath.item]
         switch selection {
         case .multiple(let action)?:
@@ -153,15 +157,15 @@ extension ImagePickerViewController: UICollectionViewDelegate {
 
 extension ImagePickerViewController: UICollectionViewDataSource {
     
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
+    public func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
     
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return images.count
     }
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let item = collectionView.dequeueReusableCell(withReuseIdentifier: ItemWithImage.identifier, for: indexPath) as? ItemWithImage else { return UICollectionViewCell() }
         item.imageView.image = images[indexPath.row]
         return item

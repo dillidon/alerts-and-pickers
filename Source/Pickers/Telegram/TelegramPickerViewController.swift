@@ -18,7 +18,7 @@ extension UIAlertController {
     /// - Parameters:
     ///   - selection: type and action for selection of asset/assets
     
-    func addTelegramPicker(selection: @escaping TelegramSelection) {
+    public func addTelegramPicker(selection: @escaping TelegramSelection) {
         let vc = TelegramPickerViewController(selection: selection)
         set(vc: vc)
     }
@@ -102,7 +102,7 @@ final class TelegramPickerViewController: UIViewController {
         $0.allowsMultipleSelection = true
         $0.showsVerticalScrollIndicator = false
         $0.showsHorizontalScrollIndicator = false
-        $0.decelerationRate = UIScrollViewDecelerationRateFast
+        $0.decelerationRate = UIScrollView.DecelerationRate.fast
         $0.contentInsetAdjustmentBehavior = .never
         $0.contentInset = UI.insets
         $0.backgroundColor = .clear
@@ -174,7 +174,19 @@ final class TelegramPickerViewController: UIViewController {
     }
     
     func layoutSubviews() {
-        tableView.tableHeaderView?.height = preferredHeight
+        if let headerView = tableView.tableHeaderView {
+
+            let height = preferredHeight
+            var headerFrame = headerView.frame
+
+            //Comparison necessary to avoid infinite loop
+            if height != headerFrame.size.height {
+                headerFrame.size.height = height
+                headerView.frame = headerFrame
+                tableView.tableHeaderView = headerView
+            }
+        }
+//        tableView.tableHeaderView?.height = preferredHeight
         preferredContentSize.height = tableView.contentSize.height
     }
     
@@ -212,14 +224,14 @@ final class TelegramPickerViewController: UIViewController {
             let productName = Bundle.main.infoDictionary!["CFBundleName"]!
             let alert = UIAlertController(style: .alert, title: "Permission denied", message: "\(productName) does not have access to contacts. Please, allow the application to access to your photo library.")
             alert.addAction(title: "Settings", style: .destructive) { action in
-                if let settingsURL = URL(string: UIApplicationOpenSettingsURLString) {
+                if let settingsURL = URL(string: UIApplication.openSettingsURLString) {
                     UIApplication.shared.open(settingsURL)
                 }
             }
-            alert.addAction(title: "OK", style: .cancel) { [unowned self] action in
-                self.alertController?.dismiss(animated: true)
-            }
+            alert.addAction(title: "OK", style: .cancel)
             alert.show()
+        @unknown default:
+            break
         }
     }
     
@@ -247,7 +259,7 @@ final class TelegramPickerViewController: UIViewController {
         selectedAssets.contains(asset)
             ? selectedAssets.remove(asset)
             : selectedAssets.append(asset)
-        selection?(TelegramSelectionType.photo(selectedAssets))
+//        selection?(TelegramSelectionType.photo(selectedAssets))
         
         let currentCount = selectedAssets.count
 
@@ -267,7 +279,7 @@ final class TelegramPickerViewController: UIViewController {
         case .photoOrVideo:
             alertController?.addPhotoLibraryPicker(flow: .vertical, paging: false,
                 selection: .multiple(action: { assets in
-                    self.selection?(TelegramSelectionType.photo(assets))
+//                    self.selection?(TelegramSelectionType.photo(assets))
                 }))
             
         case .file:
