@@ -3,15 +3,15 @@ import UIKit
 public extension UISegmentedControl {
     
     /// Font of titles
-    public func title(font: UIFont) {
-        let attributes: [NSAttributedStringKey: Any] = [.font: font]
-        setTitleTextAttributes(attributes, for: UIControlState())
+    func title(font: UIFont) {
+        let attributes: [NSAttributedString.Key: Any] = [.font: font]
+        setTitleTextAttributes(attributes, for: UIControl.State())
         //setNeedsDisplay()
         //layoutIfNeeded()
     }
     
     /// Segments titles.
-    public var segmentTitles: [String?] {
+    var segmentTitles: [String?] {
         get {
             var titles: [String?] = []
             var i = 0
@@ -30,7 +30,7 @@ public extension UISegmentedControl {
     }
     
     /// Segments images.
-    public var segmentImages: [UIImage?] {
+    var segmentImages: [UIImage?] {
         get {
             var images: [UIImage?] = []
             var i = 0
