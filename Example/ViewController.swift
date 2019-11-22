@@ -99,7 +99,7 @@ class ViewController: UIViewController {
     
     // MARK: Properties
     
-    fileprivate var alertStyle: UIAlertControllerStyle = .actionSheet
+    fileprivate var alertStyle: UIAlertController.Style = .actionSheet
     
     fileprivate lazy var segments: SegmentedControl = {
         let styles: [String] = ["Alert", "ActionSheet"]
@@ -120,7 +120,7 @@ class ViewController: UIViewController {
         $0.register(TypeOneCell.self, forCellWithReuseIdentifier: TypeOneCell.identifier)
         $0.showsVerticalScrollIndicator = false
         $0.showsHorizontalScrollIndicator = false
-        $0.decelerationRate = UIScrollViewDecelerationRateFast
+        $0.decelerationRate = UIScrollView.DecelerationRate.fast
         //$0.contentInsetAdjustmentBehavior = .never
         $0.bounces = true
         $0.backgroundColor = .white
@@ -293,7 +293,7 @@ class ViewController: UIViewController {
             
             let frameSizes: [CGFloat] = (150...300).map { CGFloat($0) }
             let pickerViewValues: [[String]] = [frameSizes.map { Int($0).description }]
-            let pickerViewSelectedValue: PickerViewViewController.Index = (column: 0, row: frameSizes.index(of: 216) ?? 0)
+            let pickerViewSelectedValue: PickerViewViewController.Index = (column: 0, row: frameSizes.firstIndex(of: 216) ?? 0)
             
             alert.addPickerView(values: pickerViewValues, initialSelection: pickerViewSelectedValue) { vc, picker, index, values in
                 

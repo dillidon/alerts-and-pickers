@@ -9,7 +9,7 @@ extension UIImageView {
     ///   - color: This optional paramter sets the background of the image. By default, a random color will be generated.
     ///   - circular: This boolean will determine if the image view will be clipped to a circular shape.
     ///   - textAttributes: This dictionary allows you to specify font, text color, shadow properties, etc.
-    open func setImage(string: String?, color: UIColor? = nil, circular: Bool = false, textAttributes: [NSAttributedStringKey: Any]? = nil) {
+    open func setImage(string: String?, color: UIColor? = nil, circular: Bool = false, textAttributes: [NSAttributedString.Key: Any]? = nil) {
         
         let image = imageSnap(text: string != nil ? string?.initials : "", color: color ?? UIColor.random, circular: circular, textAttributes: textAttributes)
         
@@ -18,7 +18,7 @@ extension UIImageView {
         }
     }
     
-    private func imageSnap(text: String?, color: UIColor, circular: Bool, textAttributes: [NSAttributedStringKey: Any]?) -> UIImage? {
+    private func imageSnap(text: String?, color: UIColor, circular: Bool, textAttributes: [NSAttributedString.Key: Any]?) -> UIImage? {
         
         let scale = Float(UIScreen.main.scale)
         var size = bounds.size
@@ -41,7 +41,7 @@ extension UIImageView {
         
         // Text
         if let text = text {
-            let attributes: [NSAttributedStringKey: Any] = textAttributes ?? [.foregroundColor: UIColor.white, .font: UIFont.systemFont(ofSize: 15.0)]
+            let attributes: [NSAttributedString.Key: Any] = textAttributes ?? [.foregroundColor: UIColor.white, .font: UIFont.systemFont(ofSize: 15.0)]
             
             let textSize = text.size(withAttributes: attributes)
             let bounds = self.bounds
@@ -91,24 +91,24 @@ let kGradientBotomOffset: HSVOffset = (hue: 0.025, saturation: -0.05, brightness
 
 extension UIImageView {
     
-    public func setImageForName(string: String, backgroundColor: UIColor? = nil, circular: Bool, textAttributes: [NSAttributedStringKey: AnyObject]?, gradient: Bool = false) {
+    public func setImageForName(string: String, backgroundColor: UIColor? = nil, circular: Bool, textAttributes: [NSAttributedString.Key: AnyObject]?, gradient: Bool = false) {
         
         setImageForName(string: string, backgroundColor: backgroundColor, circular: circular, textAttributes: textAttributes, gradient: gradient, gradientColors: nil)
     }
     
-    public func setImageForName(string: String, gradientColors: GradientColors? = nil, circular: Bool = true, textAttributes: [NSAttributedStringKey: AnyObject]? = nil) {
+    public func setImageForName(string: String, gradientColors: GradientColors? = nil, circular: Bool = true, textAttributes: [NSAttributedString.Key: AnyObject]? = nil) {
         
         setImageForName(string: string, backgroundColor: nil, circular: circular, textAttributes: textAttributes, gradient: true, gradientColors: gradientColors)
     }
     
-    public func setImageForName(string: String, backgroundColor: UIColor? = nil, circular: Bool, textAttributes: [NSAttributedStringKey: AnyObject]? = nil, gradient: Bool = false, gradientColors: GradientColors? = nil) {
+    public func setImageForName(string: String, backgroundColor: UIColor? = nil, circular: Bool, textAttributes: [NSAttributedString.Key: AnyObject]? = nil, gradient: Bool = false, gradientColors: GradientColors? = nil) {
         
         let initials: String = initialsFromString(string: string)
         let color: UIColor = (backgroundColor != nil) ? backgroundColor! : randomColor(for: string)
         let gradientColors = gradientColors ?? topAndBottomColors(for: color)
-        let attributes: [NSAttributedStringKey: AnyObject] = (textAttributes != nil) ? textAttributes! : [
-            NSAttributedStringKey.font: self.fontForFontName(name: nil),
-            NSAttributedStringKey.foregroundColor: UIColor.white
+        let attributes: [NSAttributedString.Key: AnyObject] = (textAttributes != nil) ? textAttributes! : [
+            NSAttributedString.Key.font: self.fontForFontName(name: nil),
+            NSAttributedString.Key.foregroundColor: UIColor.white
         ]
         
         self.image = imageSnapshot(text: initials, backgroundColor: color, circular: circular, textAttributes: attributes, gradient: gradient, gradientColors: gradientColors)
@@ -126,7 +126,7 @@ extension UIImageView {
         
     }
     
-    private func imageSnapshot(text imageText: String, backgroundColor: UIColor, circular: Bool, textAttributes: [NSAttributedStringKey : AnyObject], gradient: Bool, gradientColors: GradientColors) -> UIImage {
+    private func imageSnapshot(text imageText: String, backgroundColor: UIColor, circular: Bool, textAttributes: [NSAttributedString.Key : AnyObject], gradient: Bool, gradientColors: GradientColors) -> UIImage {
         
         let scale: CGFloat = UIScreen.main.scale
         
