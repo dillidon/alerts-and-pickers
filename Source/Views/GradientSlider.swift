@@ -276,11 +276,11 @@ import UIKit
     //MARK: - Layout
     
     override open var intrinsicContentSize: CGSize {
-        return CGSize(width: UIViewNoIntrinsicMetric, height: thumbSize)
+        return CGSize(width: UIView.noIntrinsicMetric, height: thumbSize)
     }
     
     override open var alignmentRectInsets: UIEdgeInsets {
-        return UIEdgeInsetsMake(4.0, 2.0, 4.0, 2.0)
+        return UIEdgeInsets.init(top: 4.0, left: 2.0, bottom: 4.0, right: 2.0)
     }
     
     override open func layoutSublayers(of layer: CALayer) {
@@ -358,7 +358,7 @@ import UIKit
             set(value: newValue, animated: false)
         }
         actionBlock(self,_value)
-        sendActions(for: [UIControlEvents.valueChanged, UIControlEvents.touchUpInside])
+        sendActions(for: [UIControl.Event.valueChanged, UIControl.Event.touchUpInside])
 
     }
     

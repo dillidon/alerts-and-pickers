@@ -41,14 +41,14 @@ struct Address {
     }
     
     var line: String? {
-        return [line1, line2].flatMap{$0}.joined(separator: ", ")
+        return [line1, line2].compactMap{$0}.joined(separator: ", ")
     }
     
     var line1: String? {
-        return [[building, street].flatMap{$0}.joined(separator: " "), apt].flatMap{$0}.joined(separator: ", ")
+        return [[building, street].compactMap{$0}.joined(separator: " "), apt].compactMap{$0}.joined(separator: ", ")
     }
     
     var line2: String? {
-        return [[city, zip].flatMap{$0}.joined(separator: " "), country].flatMap{$0}.joined(separator: ", ")
+        return [[city, zip].compactMap{$0}.joined(separator: " "), country].compactMap{$0}.joined(separator: ", ")
     }
 }
