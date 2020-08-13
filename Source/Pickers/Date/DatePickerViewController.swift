@@ -11,13 +11,13 @@ extension UIAlertController {
     ///   - maximumDate: maximum date of date picker
     ///   - action: an action for datePicker value change
     
-    func addDatePicker(mode: UIDatePicker.Mode, date: Date?, minimumDate: Date? = nil, maximumDate: Date? = nil, action: DatePickerViewController.Action?) {
+    public func addDatePicker(mode: UIDatePicker.Mode, date: Date?, minimumDate: Date? = nil, maximumDate: Date? = nil, action: DatePickerViewController.Action?) {
         let datePicker = DatePickerViewController(mode: mode, date: date, minimumDate: minimumDate, maximumDate: maximumDate, action: action)
         set(vc: datePicker, height: 217)
     }
 }
 
-final class DatePickerViewController: UIViewController {
+public final class DatePickerViewController: UIViewController {
     
     public typealias Action = (Date) -> Void
     
@@ -45,7 +45,7 @@ final class DatePickerViewController: UIViewController {
         Log("has deinitialized")
     }
     
-    override func loadView() {
+    public override func loadView() {
         view = datePicker
     }
     
