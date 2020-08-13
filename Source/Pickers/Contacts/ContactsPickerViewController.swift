@@ -167,9 +167,9 @@ final class ContactsPickerViewController: UIViewController {
         case .denied, .restricted:
             /// User has denied the current app to access the contacts.
             let productName = Bundle.main.infoDictionary!["CFBundleName"]!
-            let alert = UIAlertController(style: .alert, title: "Permission denied", message: "\(productName) does not have access to contacts. Please, allow the application to access to your contacts.")
+            let alert = UIAlertController(title: "Permission denied", message: "\(productName) does not have access to contacts. Please, allow the application to access to your contacts.", preferredStyle: .alert)
             alert.addAction(title: "Settings", style: .destructive) { action in
-                if let settingsURL = URL(string: UIApplicationOpenSettingsURLString) {
+                if let settingsURL = URL(string: UIApplication.openSettingsURLString) {
                     UIApplication.shared.open(settingsURL)
                 }
             }
@@ -189,7 +189,7 @@ final class ContactsPickerViewController: UIViewController {
                 
             case .error(let error):
                 Log("------ error")
-                let alert = UIAlertController(style: .alert, title: "Error", message: error.localizedDescription)
+                let alert = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
                 alert.addAction(title: "OK") { [unowned self] action in
                     self.alertController?.dismiss(animated: true)
                 }
