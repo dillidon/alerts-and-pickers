@@ -220,7 +220,10 @@ final class TelegramPickerViewController: UIViewController {
                 self.alertController?.dismiss(animated: true)
             }
             alert.show()
+        case .limited:
+            break
         }
+        
     }
     
     func fetchPhotos(completionHandler: @escaping ([PHAsset]) -> ()) {
